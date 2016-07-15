@@ -1,8 +1,10 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Reflection;
 using KRPC;
+using KRPC.Server;
 using KRPC.Server.TCP;
 using KRPC.Service;
 using KRPC.Utils;
@@ -10,18 +12,20 @@ using NDesk.Options;
 
 namespace TestServer
 {
-    class MainClass
+    [SuppressMessage ("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
+    static class MainClass
     {
         static void Help (OptionSet options)
         {
             Console.WriteLine ("usage: TestServer.exe [-h] [-v] [--rpc_port=VALUE] [--stream_port=VALUE]");
             Console.WriteLine ("                      [--type=TYPE] [--debug] [--quiet] [--server-debug]");
-            Console.WriteLine ("");
+            Console.WriteLine ();
             Console.WriteLine ("A kRPC test server for the client library unit tests");
-            Console.WriteLine ("");
+            Console.WriteLine ();
             options.WriteOptionDescriptions (Console.Out);
         }
 
+        [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         public static void Main (string[] args)
         {
             bool showHelp = false;
@@ -29,13 +33,13 @@ namespace TestServer
 
             Logger.Enabled = true;
             Logger.Level = Logger.Severity.Info;
-            RPCException.VerboseErrors = false;
+            RPCException.VerboseErrors = true;
             bool serverDebug = false;
             ushort rpcPort = 0;
             ushort streamPort = 0;
             string type = "protobuf";
 
-            var options = new OptionSet () { {
+            var options = new OptionSet { {
                     "h|help", "show this help message and exit",
                     v => showHelp = v != null
                 }, {
@@ -56,7 +60,6 @@ namespace TestServer
                         if (v != null) {
                             Logger.Enabled = true;
                             Logger.Level = Logger.Severity.Debug;
-                            RPCException.VerboseErrors = true;
                         }
                     }
                 }, { "quiet", "Set log level to 'warning'",
@@ -64,7 +67,6 @@ namespace TestServer
                         if (v != null) {
                             Logger.Enabled = true;
                             Logger.Level = Logger.Severity.Warning;
-                            RPCException.VerboseErrors = false;
                         }
                     }
                 }, {
@@ -89,26 +91,26 @@ namespace TestServer
 
             KRPC.Service.Scanner.Scanner.GetServices ();
 
-            var core = KRPCCore.Instance;
-            KRPCCore.Context.SetGameScene (GameScene.SpaceCenter);
+            var core = Core.Instance;
+            CallContext.SetGameScene (GameScene.SpaceCenter);
             var timeSpan = new TimeSpan ();
-            KRPCCore.Instance.GetUniversalTime = () => timeSpan.TotalSeconds;
+            Core.Instance.GetUniversalTime = () => timeSpan.TotalSeconds;
 
             var rpcTcpServer = new TCPServer ("RPCServer", IPAddress.Loopback, rpcPort);
             var streamTcpServer = new TCPServer ("StreamServer", IPAddress.Loopback, streamPort);
-            KRPCServer server;
+            Server server;
             if (type == "protobuf") {
                 var rpcServer = new KRPC.Server.ProtocolBuffers.RPCServer (rpcTcpServer);
                 var streamServer = new KRPC.Server.ProtocolBuffers.StreamServer (streamTcpServer);
-                server = new KRPCServer (rpcServer, streamServer);
+                server = new Server (rpcServer, streamServer);
             } else if (type == "websockets") {
                 var rpcServer = new KRPC.Server.WebSockets.RPCServer (rpcTcpServer);
                 var streamServer = new KRPC.Server.WebSockets.StreamServer (streamTcpServer);
-                server = new KRPCServer (rpcServer, streamServer);
+                server = new Server (rpcServer, streamServer);
             } else if (type == "websockets-echo") {
                 var rpcServer = new KRPC.Server.WebSockets.RPCServer (rpcTcpServer, echo: true);
                 var streamServer = new KRPC.Server.WebSockets.StreamServer (streamTcpServer);
-                server = new KRPCServer (rpcServer, streamServer);
+                server = new Server (rpcServer, streamServer);
             } else {
                 Console.WriteLine ("Server type '" + type + "' not supported");
                 return;
