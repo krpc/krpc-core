@@ -1,0 +1,65 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
+load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
+
+http_archive(
+    name = "bazel_skylib",
+    sha256 = "b8a1527901774180afc798aeb28c4634bdccf19c4d98e7bdd1ce79d1fe9aaad7",
+    url = "https://github.com/bazelbuild/bazel-skylib/releases/download/1.4.1/bazel-skylib-1.4.1.tar.gz",
+)
+
+load("@bazel_skylib//:workspace.bzl", "bazel_skylib_workspace")
+
+bazel_skylib_workspace()
+
+git_repository(
+    name = "rules_dotnet",
+    remote = "https://github.com/djungelorm/rules_dotnet.git",
+    commit = "7f7431f645cbf0e11df43f5782967cafbad1afb0",
+)
+
+load(
+    "@rules_dotnet//dotnet:repositories.bzl",
+    "dotnet_register_toolchains",
+    "rules_dotnet_dependencies",
+)
+
+rules_dotnet_dependencies()
+
+dotnet_register_toolchains("dotnet", "7.0.101")
+
+load("@rules_dotnet//dotnet:rules_dotnet_nuget_packages.bzl", "rules_dotnet_nuget_packages")
+
+rules_dotnet_nuget_packages()
+
+load("@rules_dotnet//dotnet:paket2bazel_dependencies.bzl", "paket2bazel_dependencies")
+
+paket2bazel_dependencies()
+
+http_archive(
+    name = "build_stack_rules_proto",
+    sha256 = "ac7e2966a78660e83e1ba84a06db6eda9a7659a841b6a7fd93028cd8757afbfb",
+    strip_prefix = "rules_proto-2.0.1",
+    urls = ["https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz"],
+)
+
+# TODO: use prebuilt toolchains?
+register_toolchains("@build_stack_rules_proto//toolchain:standard")
+
+load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_deps")
+
+http_archive(
+    name = 'com_google_protobuf',
+    url = 'https://github.com/protocolbuffers/protobuf/archive/v3.10.1.tar.gz',
+    sha256 = '6adf73fd7f90409e479d6ac86529ade2d45f50494c5c10f539226693cb8fe4f7',
+    strip_prefix = 'protobuf-3.10.1'
+)
+
+protobuf_core_deps()
+
+load(":workspace.bzl", "krpc_core_workspace")
+
+krpc_core_workspace()
+
+load("//deps:paket.bzl", "paket")
+
+paket()

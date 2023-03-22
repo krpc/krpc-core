@@ -1,0 +1,85 @@
+load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_filegroup", "pkg_files", "strip_prefix")
+load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
+load("@rules_dotnet//dotnet:defs.bzl", "import_dll")
+load("//:config.bzl", "version")
+
+test_suite(
+    name = "test",
+    tests = [
+        "//core:test",
+        # '//client/websockets:test',
+        # '//client/serialio:test',
+        # '//tools/ServiceDefinitions:test',
+        # '//tools/TestServer:test'
+    ],
+)
+
+test_suite(
+    name = "lint",
+    tests = [
+        # "//client/websockets:lint",
+        "//core:lint",
+    ],
+)
+
+filegroup(
+    name = "csproj",
+    srcs = [
+        ":csproj_krpc_core_info",
+        ":csproj_protobuf",
+        ":csproj_google_protobuf",
+        ":csproj_krpc_io_ports"
+    ],
+)
+
+copy_file(
+    name = "csproj_protobuf",
+    src = "//protobuf:krpc_csharp",
+    out = "csproj/core/src/KRPC.cs",
+)
+
+copy_file(
+    name = "csproj_krpc_core_info",
+    src = "//core:krpc_core_info",
+    out = "csproj/core/src/AssemblyInfo.cs",
+)
+
+copy_file(
+    name = "csproj_test_server_info",
+    src = "//tools/TestServer:test_server_info",
+    out = "csproj/tools/TestServer/src/AssemblyInfo.cs",
+)
+
+copy_file(
+    name = "csproj_google_protobuf",
+    src = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
+    out = "csproj/Google.Protobuf.dll",
+)
+
+copy_file(
+    name = "csproj_krpc_io_ports",
+    src = "@csharp_krpc_io_ports//file",
+    out = "csproj/KRPC.IO.Ports.dll",
+)
+
+# TODO: use nuget to import this library
+import_dll(
+    name = "Google.Protobuf",
+    dll = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
+    visibility = ['//visibility:public']
+)
+
+# TODO: use nuget to import this library
+import_dll(
+    name = "KRPC.IO.Ports",
+    dll = "@csharp_krpc_io_ports//file",
+    visibility = ['//visibility:public']
+)
+
+# TODO: use nuget to import this library
+import_dll(
+    name = "NDesk.Options",
+    dll = "@csharp_ndesk_options//:lib/NDesk.Options.dll",
+    visibility = ['//visibility:public']
+)
