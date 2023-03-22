@@ -1,3 +1,7 @@
+v3.1.0
+ * Update to Bazel 6.1.0
+ * Add dotnet
+
 v3.0.1
  * Add cmake
 
