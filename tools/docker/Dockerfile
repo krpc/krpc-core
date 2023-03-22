@@ -34,6 +34,11 @@ RUN mkdir /usr/local/lib/ksp-${ksp_version} && \
     rm ksp-${ksp_version}.tar.gz && \
     ln -s /usr/local/lib/ksp-${ksp_version} /usr/local/lib/ksp
 
+# Install dotnet
+RUN apt-get update && \
+    apt-get install -y dotnet-sdk-6.0 && \
+    apt-get install -y dotnet-runtime-6.0
+
 # Install mono
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
       --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
