@@ -23,10 +23,10 @@ jobs:
       - name: fetch
         uses: krpc/krpc-core/.github/actions/bazel-fetch@main
       - name: build
-        run: |
-          bazel build \
-            //core:krpc_core \
-            //tools/TestServer:TestServer \
+        run: >
+          bazel build
+            //core:krpc_core
+            //tools/TestServer:TestServer
             //tools/ServiceDefinitions:ServiceDefinitions
 
   build-krpc-core-windows:
@@ -35,10 +35,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: build
-        run: |
-          bazel build \
-            //core:krpc_core \
-            //tools/TestServer:TestServer \
+        run: >
+          bazel build
+            //core:krpc_core
+            //tools/TestServer:TestServer
             //tools/ServiceDefinitions:ServiceDefinitions
 
   build-krpc-core-sln-linux:
