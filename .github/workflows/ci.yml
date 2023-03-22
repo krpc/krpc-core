@@ -1,0 +1,62 @@
+name: ci
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-krpc-core:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/krpc/buildenv:3.0.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: fetch
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+      - name: build
+        run: |
+          bazel build \
+            //core:krpc_core \
+            //tools/TestServer:TestServer \
+            //tools/ServiceDefinitions:ServiceDefinitions
+
+  build-krpc-core-sln:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/krpc/buildenv:3.0.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: fetch
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+      - name: deps
+        run: bazel build //:csproj
+      - name: build
+        run: dotnet build KRPC.Core.sln
+
+  test-krpc-core:
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/krpc/buildenv:3.0.1
+      credentials:
+        username: ${{ github.actor }}
+        password: ${{ secrets.github_token }}
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: fetch
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+      - name: test
+        run: bazel test //core:test
