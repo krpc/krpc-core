@@ -1,0 +1,66 @@
+load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "publish_binary")
+load("//:config.bzl", "version")
+
+csharp_binary(
+    name = "TestServer",
+    srcs = [
+        "src/Program.cs",
+        "src/TestService.cs",
+        ":test_server_info",
+    ],
+    private_deps = [
+        "@paket.nuget_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+    visibility = ["//visibility:public"],
+    warning_level = 4,
+    warnings_not_as_errors = ["CS1591"],
+    deps = [
+        "//:Google.Protobuf",
+        "//:KRPC.IO.Ports",
+        "//:NDesk.Options",
+        "//core:krpc_core",
+    ],
+)
+
+expand_template(
+    name = "test_server_info",
+    out = "src/AssemblyInfo.cs",
+    substitutions = {
+        "{VERSION}": version,
+    },
+    template = "src/AssemblyInfo.cs.tmpl",
+    visibility = ["//visibility:public"],
+)
+
+csharp_library(
+    name = "TestService",
+    srcs = ["src/TestService.cs"],
+    private_deps = [
+        "@paket.nuget_deps//microsoft.netcore.app.ref",
+    ],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+    warning_level = 4,
+    warnings_not_as_errors = ["CS1591"],
+    deps = ["//core:krpc_core"],
+)
+
+# TODO: include readme
+publish_binary(
+    name = "publish_test_server",
+    binary = ":TestServer",
+    target_framework = "net6.0",
+)
+
+# TODO: reenable once issue with rules_dotnet is resolved
+# https://github.com/bazelbuild/rules_dotnet/issues/347
+# service_definitions(
+#     name = 'ServiceDefinitions',
+#     assemblies = [':TestService'],
+#     service = 'TestService',
+#     out = 'TestService.json',
+#     visibility = ['//visibility:public']
+# )

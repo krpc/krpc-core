@@ -1,0 +1,30 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33502.453
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KRPC.Core", "core\src\KRPC.Core.csproj", "{FF6D2F26-9F39-4862-B28A-86BA64BCD28C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KRPC.Core.Test", "core\test\KRPC.Core.Test.csproj", "{24CC9A62-4B7F-42BD-AF4A-DCD35923E7B7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FF6D2F26-9F39-4862-B28A-86BA64BCD28C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF6D2F26-9F39-4862-B28A-86BA64BCD28C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF6D2F26-9F39-4862-B28A-86BA64BCD28C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF6D2F26-9F39-4862-B28A-86BA64BCD28C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24CC9A62-4B7F-42BD-AF4A-DCD35923E7B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24CC9A62-4B7F-42BD-AF4A-DCD35923E7B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24CC9A62-4B7F-42BD-AF4A-DCD35923E7B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24CC9A62-4B7F-42BD-AF4A-DCD35923E7B7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EDBEA0BF-56C5-4A6B-8E8D-E3E5B03EE59A}
+	EndGlobalSection
+EndGlobal

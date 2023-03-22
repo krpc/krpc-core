@@ -7,9 +7,3 @@ game. It's intended purpose is for automated testing of kRPC clients.
 
 To run, execute "TestServer.exe" from a command line.
 Run "TestServer.exe --help" for more information on configuring the server.
-
-Note:
- * The version of KRPC.dll in this archive will not work with KSP. It is
-   only intended for use with TestServer outside of the game.
- * The Mono DLLs included are from Mono 4.5 - they are not the
-   same as those used by KSP.
