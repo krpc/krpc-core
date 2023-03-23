@@ -1,3 +1,5 @@
+" Rules for building service definition json from a service assembly "
+
 load("@rules_dotnet//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
 
 def _impl(ctx):

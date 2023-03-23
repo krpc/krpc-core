@@ -1,3 +1,5 @@
+" Workspace setup for dependent repositories "
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive", "http_file")
 
 def krpc_core_workspace():

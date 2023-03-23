@@ -1,6 +1,7 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
-load("//tools/service_definitions:defs.bzl", "service_definitions")
+
+# load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
 csharp_library(

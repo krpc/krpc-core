@@ -1,6 +1,5 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@rules_dotnet//dotnet:defs.bzl", "import_dll")
-load("//:config.bzl", "version")
 
 test_suite(
     name = "test",
