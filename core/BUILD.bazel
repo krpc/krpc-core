@@ -45,9 +45,7 @@ csharp_library(
 expand_template(
     name = "krpc_core_info",
     out = "src/AssemblyInfo.cs",
-    substitutions = {
-        "{VERSION}": version,
-    },
+    substitutions = {"{VERSION}": version},
     template = "src/AssemblyInfo.cs.tmpl",
     visibility = ["//visibility:public"],
 )
@@ -74,9 +72,9 @@ csharp_nunit_test(
     warning_level = 4,
     warnings_not_as_errors = ["CS1591"],
     deps = [
+        ":krpc_core",
         "//:Google.Protobuf",
         "//:KRPC.IO.Ports",
-        ":krpc_core",
         "@paket.nuget_deps//moq",
         "@paket.nuget_deps//newtonsoft.json",
     ],

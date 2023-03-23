@@ -9,7 +9,7 @@ filegroup(
     srcs = [
         "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
     ],
-    visibility = ['//visibility:public']
+    visibility = ["//visibility:public"],
 )
 
 filegroup(
@@ -17,7 +17,7 @@ filegroup(
     srcs = [
         "@csharp_krpc_io_ports//file",
     ],
-    visibility = ['//visibility:public']
+    visibility = ["//visibility:public"],
 )
 
 test_suite(
@@ -43,10 +43,10 @@ test_suite(
 filegroup(
     name = "csproj",
     srcs = [
-        ":csproj_krpc_core_info",
-        ":csproj_protobuf",
         ":csproj_google_protobuf",
-        ":csproj_krpc_io_ports"
+        ":csproj_krpc_core_info",
+        ":csproj_krpc_io_ports",
+        ":csproj_protobuf",
     ],
 )
 
@@ -84,19 +84,19 @@ copy_file(
 import_dll(
     name = "Google.Protobuf",
     dll = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
-    visibility = ['//visibility:public']
+    visibility = ["//visibility:public"],
 )
 
 # TODO: use nuget to import this library
 import_dll(
     name = "KRPC.IO.Ports",
     dll = "@csharp_krpc_io_ports//file",
-    visibility = ['//visibility:public']
+    visibility = ["//visibility:public"],
 )
 
 # TODO: use nuget to import this library
 import_dll(
     name = "NDesk.Options",
     dll = "@csharp_ndesk_options//:lib/NDesk.Options.dll",
-    visibility = ['//visibility:public']
+    visibility = ["//visibility:public"],
 )

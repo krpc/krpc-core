@@ -3,23 +3,23 @@ load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary")
 load("//:config.bzl", "version")
 
 csharp_binary(
-    name = 'ServiceDefinitions',
-    srcs =  glob(['**/*.cs']) + [':service_definitions_info'],
-    deps = [
-        "//core:krpc_core",
-        "//:Google.Protobuf",
-        "//:KRPC.IO.Ports",
-        "@paket.nuget_deps//moq",
-        "@paket.nuget_deps//newtonsoft.json",
-        "//:NDesk.Options",
-    ],
-    target_frameworks = ["net6.0"],
+    name = "ServiceDefinitions",
+    srcs = glob(["**/*.cs"]) + [":service_definitions_info"],
     private_deps = [
         "@paket.nuget_deps//microsoft.netcore.app.ref",
     ],
+    target_frameworks = ["net6.0"],
     treat_warnings_as_errors = True,
+    visibility = ["//visibility:public"],
     warning_level = 4,
-    visibility = ['//visibility:public']
+    deps = [
+        "//:Google.Protobuf",
+        "//:KRPC.IO.Ports",
+        "//:NDesk.Options",
+        "//core:krpc_core",
+        "@paket.nuget_deps//moq",
+        "@paket.nuget_deps//newtonsoft.json",
+    ],
 )
 
 expand_template(
