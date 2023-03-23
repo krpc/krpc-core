@@ -7,6 +7,7 @@ load("//:config.bzl", "version")
 test_suite(
     name = "test",
     tests = [
+        "//:lint",
         "//core:test",
         # '//client/websockets:test',
         # '//client/serialio:test',
