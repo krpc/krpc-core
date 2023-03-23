@@ -1,5 +1,34 @@
 /bazel-*
-.config
+
+# KSP2
+lib/ksp2
+
+# Paket
 .paket
+paket-files
+
+# Visual Studio
+.vs/
+.localhistory/
 bin
 obj
+
+# .NET tools
+.config
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# NuGet
+*.nuget.props
+*.nuget.targets
+
+# Python
+__pycache__/
+*.pyc
+.env
+.venv
+
+# MSBuild Binary and Structured Log
+*.binlog

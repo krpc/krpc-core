@@ -1,0 +1,77 @@
+load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "publish_binary")
+load("//tools/service_definitions:defs.bzl", "service_definitions")
+load("//:config.bzl", "version")
+
+csharp_binary(
+    name = "test_server",
+    srcs = [
+        "src/Program.cs",
+        "src/TestService.cs",
+        ":assembly_info",
+    ],
+    out = "TestServer",
+    private_deps = ["@paket.nuget_deps//microsoft.netcore.app.ref"],
+    target_frameworks = ["net6.0"],
+    treat_warnings_as_errors = True,
+    visibility = ["//visibility:public"],
+    warning_level = 4,
+    warnings_not_as_errors = ["CS1591"],
+    deps = [
+        "//:google_protobuf",
+        "//:krpc_io_ports",
+        "//:ndesk_options",
+        "//core",
+    ],
+)
+
+expand_template(
+    name = "assembly_info",
+    out = "src/AssemblyInfo.cs",
+    substitutions = {"{VERSION}": version},
+    template = "src/AssemblyInfo.cs.tmpl",
+    visibility = ["//visibility:public"],
+)
+
+csharp_library(
+    name = "test_service",
+    srcs = [
+        "src/TestService.cs",
+        ":service_assembly_info",
+    ],
+    out = "TestService",
+    private_deps = ["@paket.nuget_deps//netstandard.library.ref"],
+    target_frameworks = ["netstandard2.1"],
+    treat_warnings_as_errors = True,
+    warning_level = 4,
+    warnings_not_as_errors = ["CS1591"],
+    deps = ["//core"],
+)
+
+expand_template(
+    name = "service_assembly_info",
+    out = "src/ServiceAssemblyInfo.cs",
+    substitutions = {"{VERSION}": version},
+    template = "src/ServiceAssemblyInfo.cs.tmpl",
+    visibility = ["//visibility:public"],
+)
+
+service_definitions(
+    name = "service_definitions",
+    srcs = [
+        ":test_service",
+        "//core",
+    ],
+    out = "TestService.json",
+    service = "TestService",
+    visibility = ["//visibility:public"],
+)
+
+# TODO: include readme and service definitions
+# TODO: package as a zip file
+# FIXME: .runtimeconfig.json and .deps.json are named using "test_server", not "TestServer"
+publish_binary(
+    name = "publish_test_server",
+    binary = ":test_server",
+    target_framework = "net6.0",
+)
