@@ -1,5 +1,6 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "publish_binary")
+load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
 csharp_binary(
@@ -35,8 +36,8 @@ expand_template(
 csharp_library(
     name = "test_service",
     srcs = [
-        ":service_assembly_info",
         "src/TestService.cs",
+        ":service_assembly_info",
     ],
     out = "TestService",
     private_deps = ["@paket.nuget_deps//netstandard.library.ref"],
@@ -55,6 +56,17 @@ expand_template(
     visibility = ["//visibility:public"],
 )
 
+service_definitions(
+    name = "service_definitions",
+    srcs = [
+        ":test_service",
+        "//core",
+    ],
+    out = "TestService.json",
+    service = "TestService",
+    visibility = ["//visibility:public"],
+)
+
 # TODO: include readme and service definitions
 # TODO: package as a zip file
 # FIXME: .runtimeconfig.json and .deps.json are named using "test_server", not "TestServer"
@@ -63,13 +75,3 @@ publish_binary(
     binary = ":test_server",
     target_framework = "net6.0",
 )
-
-# TODO: reenable once issue with rules_dotnet is resolved
-# https://github.com/bazelbuild/rules_dotnet/issues/347
-# service_definitions(
-#     name = 'ServiceDefinitions',
-#     assemblies = [':TestService'],
-#     service = 'TestService',
-#     out = 'TestService.json',
-#     visibility = ['//visibility:public']
-# )

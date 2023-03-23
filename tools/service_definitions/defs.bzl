@@ -8,7 +8,7 @@ def _impl(ctx):
         libs.extend(src[DotnetAssemblyInfo].libs)
     args = ["--output=%s" % ctx.outputs.out.path, ctx.attr.service] + [x.path for x in libs]
     ctx.actions.run(
-        inputs = ctx.files.srcs,
+        inputs = libs,
         outputs = [ctx.outputs.out],
         arguments = args,
         progress_message = "Generating service definitions for %s" % ctx.outputs.out.short_path,
@@ -26,7 +26,7 @@ service_definitions = rule(
         "_service_definitions_tool": attr.label(
             executable = True,
             cfg = "exec",
-            default = Label("//tools/ServiceDefinitions:ServiceDefinitions"),
+            default = Label("//tools/service_definitions"),
         ),
     },
 )

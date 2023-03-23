@@ -68,11 +68,18 @@ namespace ServiceDefinitions
             for (var i = 1; i < positionalArgs.Count; i++) {
                 var path = positionalArgs [i];
 
+                if (!File.Exists(path))
+                {
+                    Console.Error.WriteLine ("Assembly '" + path + "' does not exist.");
+                    return 1;
+                }
                 try {
-                    AssemblyName name = AssemblyName.GetAssemblyName (path);
-                    Assembly.Load (name);
-                } catch (FileNotFoundException) {
-                    Console.Error.WriteLine ("Assembly '" + path + "' not found.");
+                    Assembly.LoadFrom (path);
+                } catch (FileNotFoundException e) {
+                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'.");
+                    Console.Error.WriteLine (e.Message);
+                    if (e.InnerException != null)
+                        Console.Error.WriteLine (e.InnerException.Message);
                     return 1;
                 } catch (FileLoadException e) {
                     Console.Error.WriteLine ("Failed to load assembly '" + path + "'.");

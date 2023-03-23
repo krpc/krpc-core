@@ -1,7 +1,6 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
-
-# load("//tools/service_definitions:defs.bzl", "service_definitions")
+load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
 csharp_library(
@@ -30,15 +29,13 @@ expand_template(
     visibility = ["//visibility:public"],
 )
 
-# TODO: enable service definitions once this is resolved
-# https://github.com/bazelbuild/rules_dotnet/issues/347
-# service_definitions(
-#     name = 'service_definitions',
-#     srcs = [':core'],
-#     service = 'KRPC',
-#     out = 'KRPC.Core.json',
-#     visibility = ['//visibility:public']
-# )
+service_definitions(
+    name = "service_definitions",
+    srcs = [":core"],
+    out = "KRPC.json",
+    service = "KRPC",
+    visibility = ["//visibility:public"],
+)
 
 test_suite(
     name = "test",
