@@ -36,7 +36,7 @@ jobs:
         uses: actions/checkout@v3
       - name: build
         run: >
-          bazel --bazelrc=tools/docker/bazelrc build
+          bazel --bazelrc=.github/workflows/bazelrc build
           //core
           //tools/test_server
           //tools/service_definitions
@@ -64,7 +64,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v3
       - name: deps
-        run: bazel --bazelrc=tools/docker/bazelrc build //:csproj
+        run: bazel --bazelrc=.github/workflows/bazelrc build //:csproj
       - name: build
         run: dotnet build KRPC.Core.sln
 
@@ -90,4 +90,4 @@ jobs:
   #     - name: checkout
   #       uses: actions/checkout@v3
   #     - name: test
-  #       run: bazel --bazelrc=tools/docker/bazelrc test //core:test
+  #       run: bazel --bazelrc=.github/workflows/bazelrc test //core:test
