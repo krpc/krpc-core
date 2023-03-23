@@ -3,44 +3,40 @@ load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "publi
 load("//:config.bzl", "version")
 
 csharp_binary(
-    name = "TestServer",
+    name = "test_server",
     srcs = [
         "src/Program.cs",
         "src/TestService.cs",
-        ":test_server_info",
+        ":assembly_info",
     ],
-    private_deps = [
-        "@paket.nuget_deps//microsoft.netcore.app.ref",
-    ],
+    out = "TestServer",
+    private_deps = ["@paket.nuget_deps//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
     treat_warnings_as_errors = True,
     visibility = ["//visibility:public"],
     warning_level = 4,
     warnings_not_as_errors = ["CS1591"],
     deps = [
-        "//:Google.Protobuf",
-        "//:KRPC.IO.Ports",
-        "//:NDesk.Options",
-        "//core:krpc_core",
+        "//:google_protobuf",
+        "//:krpc_io_ports",
+        "//:ndesk_options",
+        "//core",
     ],
 )
 
 expand_template(
-    name = "test_server_info",
+    name = "assembly_info",
     out = "src/AssemblyInfo.cs",
-    substitutions = {
-        "{VERSION}": version,
-    },
+    substitutions = {"{VERSION}": version},
     template = "src/AssemblyInfo.cs.tmpl",
     visibility = ["//visibility:public"],
 )
 
 csharp_library(
-    name = "TestService",
+    name = "test_service",
     srcs = ["src/TestService.cs"],
-    private_deps = [
-        "@paket.nuget_deps//microsoft.netcore.app.ref",
-    ],
+    out = "TestService",
+    private_deps = ["@paket.nuget_deps//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
     treat_warnings_as_errors = True,
     warning_level = 4,
@@ -48,10 +44,12 @@ csharp_library(
     deps = ["//core:krpc_core"],
 )
 
-# TODO: include readme
+# TODO: include readme and service definitions
+# TODO: package as a zip file
+# FIXME: .runtimeconfig.json and .deps.json are named using "test_server", not "TestServer"
 publish_binary(
     name = "publish_test_server",
-    binary = ":TestServer",
+    binary = ":test_server",
     target_framework = "net6.0",
 )
 

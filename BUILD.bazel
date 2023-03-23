@@ -1,29 +1,10 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-load("@rules_pkg//pkg:mappings.bzl", "filter_directory", "pkg_filegroup", "pkg_files", "strip_prefix")
-load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 load("@rules_dotnet//dotnet:defs.bzl", "import_dll")
 load("//:config.bzl", "version")
-
-filegroup(
-    name = "google_protobuf",
-    srcs = [
-        "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
-    ],
-    visibility = ["//visibility:public"],
-)
-
-filegroup(
-    name = "krpc_io_ports",
-    srcs = [
-        "@csharp_krpc_io_ports//file",
-    ],
-    visibility = ["//visibility:public"],
-)
 
 test_suite(
     name = "test",
     tests = [
-        "//:lint",
         "//core:test",
         # '//client/websockets:test',
         # '//client/serialio:test',
@@ -35,18 +16,22 @@ test_suite(
 test_suite(
     name = "lint",
     tests = [
-        # "//client/websockets:lint",
         "//core:lint",
+        # "//client/websockets:lint",
     ],
 )
 
+# Note: used to place generated files in known locations for .csproj files
 filegroup(
     name = "csproj",
     srcs = [
         ":csproj_google_protobuf",
-        ":csproj_krpc_core_info",
+        ":csproj_krpc_core_assembly_info",
         ":csproj_krpc_io_ports",
+        ":csproj_ndesk_options",
         ":csproj_protobuf",
+        ":csproj_service_definitions_assembly_info",
+        ":csproj_test_server_assembly_info",
     ],
 )
 
@@ -57,46 +42,60 @@ copy_file(
 )
 
 copy_file(
-    name = "csproj_krpc_core_info",
-    src = "//core:krpc_core_info",
+    name = "csproj_krpc_core_assembly_info",
+    src = "//core:assembly_info",
     out = "csproj/core/src/AssemblyInfo.cs",
 )
 
 copy_file(
-    name = "csproj_test_server_info",
-    src = "//tools/TestServer:test_server_info",
-    out = "csproj/tools/TestServer/src/AssemblyInfo.cs",
-)
-
-copy_file(
     name = "csproj_google_protobuf",
-    src = ":google_protobuf",
+    src = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
     out = "csproj/Google.Protobuf.dll",
 )
 
 copy_file(
     name = "csproj_krpc_io_ports",
-    src = ":krpc_io_ports",
+    src = "@csharp_krpc_io_ports//file",
     out = "csproj/KRPC.IO.Ports.dll",
 )
 
+copy_file(
+    name = "csproj_ndesk_options",
+    src = "@csharp_ndesk_options//:lib/NDesk.Options.dll",
+    out = "csproj/NDesk.Options.dll",
+)
+
+copy_file(
+    name = "csproj_test_server_assembly_info",
+    src = "//tools/test_server:assembly_info",
+    out = "csproj/tools/test_server/src/AssemblyInfo.cs",
+)
+
+copy_file(
+    name = "csproj_service_definitions_assembly_info",
+    src = "//tools/service_definitions:assembly_info",
+    out = "csproj/tools/service_definitions/src/AssemblyInfo.cs",
+)
+
+# Note: used by dependent repositories to get dependency
 # TODO: use nuget to import this library
 import_dll(
-    name = "Google.Protobuf",
+    name = "google_protobuf",
     dll = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
     visibility = ["//visibility:public"],
 )
 
+# Note: used by dependent repositories to get dependency
 # TODO: use nuget to import this library
 import_dll(
-    name = "KRPC.IO.Ports",
+    name = "krpc_io_ports",
     dll = "@csharp_krpc_io_ports//file",
     visibility = ["//visibility:public"],
 )
 
 # TODO: use nuget to import this library
 import_dll(
-    name = "NDesk.Options",
+    name = "ndesk_options",
     dll = "@csharp_ndesk_options//:lib/NDesk.Options.dll",
     visibility = ["//visibility:public"],
 )

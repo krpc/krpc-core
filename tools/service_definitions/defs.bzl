@@ -4,7 +4,7 @@ def _impl(ctx):
     libs = []
     for src in ctx.attr.srcs:
         libs.extend(src[DotnetAssemblyInfo].libs)
-    args = ['--output=%s' % ctx.outputs.out.path, ctx.attr.service] + [x.path for x in libs]
+    args = ["--output=%s" % ctx.outputs.out.path, ctx.attr.service] + [x.path for x in libs]
     ctx.actions.run(
         inputs = ctx.files.srcs,
         outputs = [ctx.outputs.out],

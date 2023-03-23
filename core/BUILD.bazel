@@ -1,49 +1,28 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
-load("//tools/ServiceDefinitions:defs.bzl", "service_definitions")
+load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
-filegroup(
-    name = "core",
-    srcs = [
-        ":krpc_core",
-        # ":service_definitions",
-    ],
-)
-
-test_suite(
-    name = "test",
-    tests = [
-        ":krpc_core_test",
-        ":lint",
-    ],
-)
-
-test_suite(
-    name = "lint",
-    # TODO: use dotnet analyzers and dotnet format
-    tests = [],
-)
-
 csharp_library(
-    name = "krpc_core",
-    srcs = [":krpc_core_info"] + glob(["src/**/*.cs"]) + ["//protobuf:krpc_csharp"],
-    out = "KRPC.Core",
-    private_deps = [
-        "@paket.nuget_deps//netstandard.library.ref",
+    name = "core",
+    srcs = glob(["src/**/*.cs"]) + [
+        ":assembly_info",
+        "//protobuf:krpc_csharp",
     ],
-    target_frameworks = ["netstandard2.1"],  # TODO: should be netstandard2.0
+    out = "KRPC.Core",
+    private_deps = ["@paket.nuget_deps//netstandard.library.ref"],
+    target_frameworks = ["netstandard2.1"],
     treat_warnings_as_errors = True,
     visibility = ["//visibility:public"],
     warning_level = 4,
     deps = [
-        "//:Google.Protobuf",
-        "//:KRPC.IO.Ports",
+        "//:google_protobuf",
+        "//:krpc_io_ports",
     ],
 )
 
 expand_template(
-    name = "krpc_core_info",
+    name = "assembly_info",
     out = "src/AssemblyInfo.cs",
     substitutions = {"{VERSION}": version},
     template = "src/AssemblyInfo.cs.tmpl",
@@ -54,28 +33,40 @@ expand_template(
 # https://github.com/bazelbuild/rules_dotnet/issues/347
 # service_definitions(
 #     name = 'service_definitions',
-#     srcs = [':krpc_core'],
+#     srcs = [':core'],
 #     service = 'KRPC',
 #     out = 'KRPC.Core.json',
 #     visibility = ['//visibility:public']
 # )
 
+test_suite(
+    name = "test",
+    tests = [
+        ":core_test",
+        ":lint",
+    ],
+)
+
 csharp_nunit_test(
-    name = "krpc_core_test",
+    name = "core_test",
     srcs = glob(["test/**/*.cs"]),
     out = "KRPC.Core.Test",
-    private_deps = [
-        "@paket.nuget_deps//microsoft.netcore.app.ref",
-    ],
+    private_deps = ["@paket.nuget_deps//microsoft.netcore.app.ref"],
     target_frameworks = ["net6.0"],
     treat_warnings_as_errors = True,
     warning_level = 4,
     warnings_not_as_errors = ["CS1591"],
     deps = [
-        ":krpc_core",
-        "//:Google.Protobuf",
-        "//:KRPC.IO.Ports",
+        ":core",
+        "//:google_protobuf",
+        "//:krpc_io_ports",
         "@paket.nuget_deps//moq",
         "@paket.nuget_deps//newtonsoft.json",
     ],
+)
+
+test_suite(
+    name = "lint",
+    # TODO: use dotnet analyzers and dotnet format
+    tests = [],
 )
