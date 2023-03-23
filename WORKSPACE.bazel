@@ -42,23 +42,17 @@ http_archive(
     urls = ["https://github.com/stackb/rules_proto/archive/v2.0.1.tar.gz"],
 )
 
-# TODO: use prebuilt toolchains?
-register_toolchains("@build_stack_rules_proto//toolchain:standard")
+register_toolchains("@build_stack_rules_proto//toolchain:prebuilt")
 
 load("@build_stack_rules_proto//deps:protobuf_core_deps.bzl", "protobuf_core_deps")
 
-http_archive(
-    name = 'com_google_protobuf',
-    url = 'https://github.com/protocolbuffers/protobuf/archive/v3.10.1.tar.gz',
-    sha256 = '6adf73fd7f90409e479d6ac86529ade2d45f50494c5c10f539226693cb8fe4f7',
-    strip_prefix = 'protobuf-3.10.1'
-)
-
 protobuf_core_deps()
 
-load(":workspace.bzl", "krpc_core_workspace")
+load(":workspace.bzl", "krpc_core_workspace", "krpc_core_prebuilt_protoc")
 
 krpc_core_workspace()
+
+krpc_core_prebuilt_protoc()
 
 load("//deps:paket.bzl", "paket")
 

@@ -1,23 +1,16 @@
-load("@rules_proto//proto:defs.bzl", "proto_library")
+load("@rules_proto//proto:defs.bzl", "proto_library", "proto_lang_toolchain")
 load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
-load("@build_stack_rules_proto//rules:proto_plugin.bzl", "proto_plugin")
 
 proto_library(
     name = "krpc_proto",
-    srcs = ["krpc.proto"],
+    srcs = ["krpc.proto"]
 )
-
-proto_plugin(name="csharp")
 
 proto_compile(
     name = "krpc_csharp",
-    output_mappings = [
-        "KRPC.cs=Krpc.cs",
-    ],
-    outputs = [
-        "KRPC.cs",
-    ],
-    plugins = [":csharp"],
+    outputs = ["KRPC.cs"],
+    output_mappings = ["KRPC.cs=Krpc.cs"],
+    plugins = ["@build_stack_rules_proto//plugin/builtin:csharp"],
     proto = "krpc_proto",
     visibility = ["//visibility:public"],
 )

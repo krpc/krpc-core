@@ -23,3 +23,50 @@ def krpc_core_workspace():
         type = 'zip',
         build_file_content = "exports_files(['lib/NDesk.Options.dll'])"
     )
+
+
+def krpc_core_prebuilt_protoc():
+    http_archive(
+        name = "prebuilt_protoc_linux",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "0c97a75c8f8fafc55323599053626a0a822e5b66299f6643a2b086f859b56afd",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v3.10.1/protoc-3.10.1-linux-x86_64.zip",
+        ],
+    )
+
+    http_archive(
+        name = "prebuilt_protoc_osx",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "ee3f4051e55830596729efe48183218bdb44cf2f83b188460859bd63b2a09576",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v3.10.1/protoc-3.10.1-osx-x86_64.zip",
+        ],
+    )
+
+    http_archive(
+        name = "prebuilt_protoc_windows",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc.exe"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "964f055db26372e46d8232a09fe6d661de3ca1b82fbbc1ede33696b1e379a11b",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v3.10.1/protoc-3.10.1-win32.zip",
+        ],
+    )
