@@ -25,9 +25,7 @@ csharp_binary(
 expand_template(
     name = "service_definitions_info",
     out = "src/AssemblyInfo.cs",
-    substitutions = {
-        "{VERSION}": version,
-    },
+    substitutions = {"{VERSION}": version},
     template = "src/AssemblyInfo.cs.tmpl",
     visibility = ["//visibility:public"],
 )
