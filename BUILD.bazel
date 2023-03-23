@@ -4,6 +4,22 @@ load("@rules_pkg//pkg:zip.bzl", "pkg_zip")
 load("@rules_dotnet//dotnet:defs.bzl", "import_dll")
 load("//:config.bzl", "version")
 
+filegroup(
+    name = "google_protobuf",
+    srcs = [
+        "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
+    ],
+    visibility = ['//visibility:public']
+)
+
+filegroup(
+    name = "krpc_io_ports",
+    srcs = [
+        "@csharp_krpc_io_ports//file",
+    ],
+    visibility = ['//visibility:public']
+)
+
 test_suite(
     name = "test",
     tests = [
@@ -54,13 +70,13 @@ copy_file(
 
 copy_file(
     name = "csproj_google_protobuf",
-    src = "@csharp_protobuf_unity//:lib/net45/Google.Protobuf.dll",
+    src = ":google_protobuf",
     out = "csproj/Google.Protobuf.dll",
 )
 
 copy_file(
     name = "csproj_krpc_io_ports",
-    src = "@csharp_krpc_io_ports//file",
+    src = ":krpc_io_ports",
     out = "csproj/KRPC.IO.Ports.dll",
 )
 
