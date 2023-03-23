@@ -25,9 +25,9 @@ jobs:
       - name: build
         run: >
           bazel build
-          //core:krpc_core
-          //tools/TestServer:TestServer
-          //tools/ServiceDefinitions:ServiceDefinitions
+          //core
+          //tools/test_server
+          //tools/service_definitions
 
   build-krpc-core-windows:
     runs-on: windows-latest
@@ -37,9 +37,9 @@ jobs:
       - name: build
         run: >
           bazel --bazelrc=tools/docker/bazelrc build
-          //core:krpc_core
-          //tools/TestServer:TestServer
-          //tools/ServiceDefinitions:ServiceDefinitions
+          //core
+          //tools/test_server
+          //tools/service_definitions
 
   build-krpc-core-sln-linux:
     runs-on: ubuntu-latest
