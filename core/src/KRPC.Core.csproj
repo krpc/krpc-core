@@ -21,7 +21,7 @@
     <Compile Include="..\..\bazel-bin\csproj\core\src\AssemblyInfo.cs">
       <Link>AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="..\..\bazel-bin\csproj\core\src\KRPC.cs">
+    <Compile Include="..\..\bazel-bin\csproj\core\src\Schema\KRPC.cs">
       <Link>Schema\KRPC.cs</Link>
     </Compile>
   </ItemGroup>

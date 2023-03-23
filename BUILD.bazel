@@ -37,7 +37,7 @@ filegroup(
 copy_file(
     name = "csproj_protobuf",
     src = "//protobuf:krpc_csharp",
-    out = "csproj/core/src/KRPC.cs",
+    out = "csproj/core/src/Schema/KRPC.cs",
 )
 
 copy_file(
