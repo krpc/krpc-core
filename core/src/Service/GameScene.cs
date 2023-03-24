@@ -68,7 +68,7 @@ namespace KRPC.Service
     [SuppressMessage ("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     static class GameSceneUtils {
         public static string Name(GameScene scene) {
-            return string.Join(", ", scene.ToString().Split(',').Where(x => x != "Inherit").Select(x => x.Trim()).ToArray());
+            return scene.ToString().Replace("Inherit, ", "");
         }
 
         public static IList<string> Serialize(GameScene scene) {
