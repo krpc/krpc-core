@@ -47,7 +47,6 @@ namespace KRPC.Utils
         /// <summary>
         /// Returns all types with the specified attribute, from all assemblies.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static IEnumerable<Type> GetTypesWith<TAttribute>(bool inherit = false)
             where TAttribute : Attribute
         {
@@ -61,7 +60,6 @@ namespace KRPC.Utils
         /// <summary>
         /// Returns all methods within a given type that have the specified attribute.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static IEnumerable<MethodInfo> GetMethodsWith<TAttribute>(Type cls, bool inherit = false)
             where TAttribute : Attribute
         {
@@ -77,7 +75,6 @@ namespace KRPC.Utils
         /// <summary>
         /// Returns all properties within a given type that have the specified attribute.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static IEnumerable<PropertyInfo> GetPropertiesWith<TAttribute>(Type cls, bool inherit = false)
             where TAttribute : Attribute
         {
@@ -94,7 +91,6 @@ namespace KRPC.Utils
         /// Return attribute of type T for the given member. Does not follow inheritance.
         /// Throws ArgumentException if there is no attribute, or more than one attribute.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static T GetAttribute<T>(ICustomAttributeProvider member)
         {
             object[] attributes = member.GetCustomAttributes(typeof(T), false);
@@ -106,7 +102,6 @@ namespace KRPC.Utils
         /// <summary>
         /// Return true if member has the attribute of type T. Does not follow inheritance.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static bool HasAttribute<T>(ICustomAttributeProvider member)
         {
             return member.GetCustomAttributes(typeof(T), false).Length == 1;

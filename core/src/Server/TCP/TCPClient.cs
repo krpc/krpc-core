@@ -5,7 +5,6 @@ using System.Net.Sockets;
 
 namespace KRPC.Server.TCP
 {
-    [SuppressMessage("Gendarme.Rules.Naming", "AvoidRedundancyInTypeNameRule")]
     sealed class TCPClient : IClient<byte, byte>
     {
         readonly Guid guid;

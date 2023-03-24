@@ -17,7 +17,6 @@ namespace KRPC.Service
         readonly ProcedureCallContinuation[] calls;
         readonly ProcedureResult[] results;
 
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
         public RequestContinuation(IClient<Request, Response> client, Request request)
         {
             Client = client;

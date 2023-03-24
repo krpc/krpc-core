@@ -7,7 +7,6 @@ namespace KRPC.Utils
     /// <summary>
     /// Extension methods for dictionaries
     /// </summary>
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     public static class DictionaryExtensions
     {
         /// <summary>

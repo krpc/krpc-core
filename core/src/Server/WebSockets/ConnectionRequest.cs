@@ -57,7 +57,6 @@ namespace KRPC.Server.WebSockets
             return response.ToBytes();
         }
 
-        [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
         static void CheckValid(Request request)
         {
             // Check request line

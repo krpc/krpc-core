@@ -29,7 +29,6 @@ namespace KRPC.Service.KRPC
         /// This is an empty string if the client has no name.
         /// </summary>
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Design", "ConsiderConvertingMethodToPropertyRule")]
         public static string GetClientName()
         {
             return CallContext.Client.Name;
@@ -39,7 +38,6 @@ namespace KRPC.Service.KRPC
         /// Returns some information about the server, such as the version.
         /// </summary>
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Design", "ConsiderConvertingMethodToPropertyRule")]
         public static Status GetStatus()
         {
             var core = Core.Instance;
@@ -72,8 +70,6 @@ namespace KRPC.Service.KRPC
         /// Can be used by client libraries to automatically create functionality such as stubs.
         /// </summary>
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Design", "ConsiderConvertingMethodToPropertyRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         public static Messages.Services GetServices()
         {
             var services = new Messages.Services();
@@ -141,7 +137,6 @@ namespace KRPC.Service.KRPC
         /// Each entry in the list is a clients identifier, name and address.
         /// </summary>
         [KRPCProperty]
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotExposeNestedGenericSignaturesRule")]
         public static IList<Tuple<byte[], string, string>> Clients
         {
             get { return Core.Instance.RPCClients.Select(x => new Tuple<byte[], string, string>(x.Guid.ToByteArray(), x.Name, x.Address)).ToList(); }
@@ -152,8 +147,6 @@ namespace KRPC.Service.KRPC
         /// </summary>
         [KRPCEnum]
         [Serializable]
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage("Gendarme.Rules.Naming", "UsePluralNameInEnumFlagsRule")]
         public enum GameScene
         {
             /// <summary>

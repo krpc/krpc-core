@@ -12,10 +12,6 @@ namespace KRPC.Service
 {
     static class DocumentationUtils
     {
-        [SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidSwitchStatementsRule")]
         public static string ResolveCrefs(string documentation)
         {
             if (documentation.Length == 0)

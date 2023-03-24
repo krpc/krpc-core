@@ -143,10 +143,6 @@ namespace KRPC.Server.ProtocolBuffers
             return result;
         }
 
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidComplexMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidSwitchStatementsRule")]
         public static Schema.KRPC.Type ToProtobufMessage(this Type type)
         {
             var result = new Schema.KRPC.Type();

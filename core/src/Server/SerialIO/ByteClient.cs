@@ -4,7 +4,6 @@ using KRPC.IO.Ports;
 
 namespace KRPC.Server.SerialIO
 {
-    [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
     sealed class ByteClient : IClient<byte, byte>
     {
         readonly Guid guid;

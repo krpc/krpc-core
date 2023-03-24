@@ -7,17 +7,14 @@ namespace KRPC.Test.Service
     [TestFixture]
     public class ProcedureParameterTest
     {
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
         public static void MethodWithArg(int x)
         {
         }
 
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
         public static void MethodWithDefaultArg(string x = "foo")
         {
         }
 
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
         public static void MethodWithDefaultNullArg(string x = null)
         {
         }

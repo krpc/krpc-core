@@ -16,7 +16,6 @@ namespace KRPC.Service.KRPC
     /// A server side expression.
     /// </summary>
     [KRPCClass(Service = "KRPC")]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidCodeDuplicatedInSameClassRule")]
     public class Expression
     {
         readonly LinqExpression internalExpression;
@@ -436,7 +435,6 @@ namespace KRPC.Service.KRPC
         /// <returns>The set.</returns>
         /// <param name="values">The values. Should all be of the same type.</param>
         [KRPCMethod]
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
         public static Expression CreateSet(HashSet<Expression> values)
         {
             var valueType = values.First().Type;
@@ -464,7 +462,6 @@ namespace KRPC.Service.KRPC
             return new Expression(LinqExpression.Call(method, keysArg, valuesArg));
         }
 
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
         static Dictionary<Key, Value> CreateDictionaryHelper<Key, Value>(Key[] keys, Value[] values)
         {
             var dictionary = new Dictionary<Key, Value>();

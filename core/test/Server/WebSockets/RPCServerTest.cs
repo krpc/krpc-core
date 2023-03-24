@@ -9,7 +9,6 @@ using NUnit.Framework;
 namespace KRPC.Test.Server.WebSockets
 {
     [TestFixture]
-    [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
     public class RPCServerTest
     {
         static void CheckValidConnectionRequest(string request, string name)

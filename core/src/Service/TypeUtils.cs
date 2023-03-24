@@ -532,10 +532,6 @@ namespace KRPC.Service
         /// <summary>
         /// Serialize a type into a dictionary for use in a service definition.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidComplexMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidSwitchStatementsRule")]
         public static object SerializeType(Type type)
         {
             if (!IsAValidType(type))

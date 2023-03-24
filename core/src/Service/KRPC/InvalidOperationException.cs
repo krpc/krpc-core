@@ -7,7 +7,6 @@ namespace KRPC.Service.KRPC
     /// A method call was made to a method that is invalid
     /// given the current state of the object.
     /// </summary>
-    [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
     [KRPCException(Service = "KRPC", MappedException = typeof(System.InvalidOperationException))]
     public sealed class InvalidOperationException : System.Exception
     {

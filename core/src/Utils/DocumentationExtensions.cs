@@ -9,7 +9,6 @@ using System.Xml;
 
 namespace KRPC.Utils
 {
-    [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
     static class DocumentationExtensions
     {
         static IDictionary<string, XmlNode> documentation = new Dictionary<string, XmlNode>();
@@ -73,7 +72,6 @@ namespace KRPC.Utils
             return string.Empty;
         }
 
-        [SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule")]
         static XmlNode GetDocumentation(string assemblyPath)
         {
             var path = Path.GetDirectoryName(assemblyPath) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(assemblyPath) + ".xml";
@@ -98,7 +96,6 @@ namespace KRPC.Utils
             return documentation[path];
         }
 
-        [SuppressMessage("Gendarme.Rules.Portability", "DoNotHardcodePathsRule")]
         internal static string GetDocumentationName(MemberInfo member)
         {
             char prefix;

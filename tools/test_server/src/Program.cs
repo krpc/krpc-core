@@ -12,7 +12,6 @@ using NDesk.Options;
 
 namespace TestServer
 {
-    [SuppressMessage("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
     static class MainClass
     {
         static void Help(OptionSet options)
@@ -27,7 +26,6 @@ namespace TestServer
             options.WriteOptionDescriptions(Console.Out);
         }
 
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         public static void Main(string[] args)
         {
             bool showHelp = false;

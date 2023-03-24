@@ -9,7 +9,6 @@ using Status = KRPC.Schema.KRPC.ConnectionResponse.Types.Status;
 
 namespace KRPC.Server.ProtocolBuffers
 {
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidLargeClassesRule")]
     static class Utils
     {
 
@@ -20,7 +19,6 @@ namespace KRPC.Server.ProtocolBuffers
         /// Read a message from the client. If a partial message is received, its data is saved
         /// and will be resumed on the next call. Timeout is set to true if the receipt times out.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static T ReadMessage<T>(IClient<byte, byte> client, out bool timeout) where T : class, IMessage<T>, new()
         {
             timeout = false;
@@ -53,7 +51,6 @@ namespace KRPC.Server.ProtocolBuffers
         /// Read a message from the client. If a partial message is received, its data is saved
         /// in the DynamicBuffer so that this method can be called to try again later.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "AvoidMethodWithUnusedGenericTypeRule")]
         public static T ReadMessage<T>(IStream<byte, byte> stream, ref DynamicBuffer data) where T : class, IMessage<T>, new()
         {
             if (!stream.DataAvailable)

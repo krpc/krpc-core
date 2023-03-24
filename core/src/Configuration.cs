@@ -50,7 +50,6 @@ namespace KRPC
         /// <summary>
         /// Per-server configuration options
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
         public sealed class Server
         {
             /// <summary>
@@ -162,7 +161,6 @@ namespace KRPC
         /// <summary>
         /// Replace the server configuration with the given identifier
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Naming", "AvoidRedundancyInMethodNameRule")]
         public void ReplaceServer(Server newServer)
         {
             for (var i = 0; i < servers.Count; i++)
@@ -265,7 +263,6 @@ namespace KRPC
         /// <summary>
         /// Whether debug logging is enable
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Correctness", "MethodCanBeMadeStaticRule")]
         public bool DebugLogging
         {
             get { return Logger.Level == Logger.Severity.Debug; }

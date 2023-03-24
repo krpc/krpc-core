@@ -63,7 +63,6 @@ namespace KRPC.Test.Utils
         {
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "ConsiderUsingStaticTypeRule")]
         sealed class TestNonStaticClass
         {
         }

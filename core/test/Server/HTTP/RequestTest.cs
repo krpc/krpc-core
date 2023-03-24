@@ -6,9 +6,6 @@ using NUnit.Framework;
 namespace KRPC.Test.Server.HTTP
 {
     [TestFixture]
-    [SuppressMessage("Gendarme.Rules.Portability", "DoNotHardcodePathsRule")]
-    [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     public class RequestTest
     {
         [Test]

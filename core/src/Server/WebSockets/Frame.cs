@@ -7,10 +7,8 @@ namespace KRPC.Server.WebSockets
     {
         public Header Header { get; private set; }
 
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidReturningArraysOnPropertiesRule")]
         public byte[] Payload { get; private set; }
 
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidReturningArraysOnPropertiesRule")]
         public byte[] MaskedPayload
         {
             get

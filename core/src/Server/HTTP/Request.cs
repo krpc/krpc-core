@@ -9,7 +9,6 @@ namespace KRPC.Server.HTTP
     /// <summary>
     /// An HTTP request
     /// </summary>
-    [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
     public sealed class Request
     {
 #pragma warning disable 1591
@@ -28,8 +27,6 @@ namespace KRPC.Server.HTTP
             return FromString(Encoding.ASCII.GetString(data, index, count));
         }
 
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
         public static Request FromString(string content)
         {
             var request = new Request();

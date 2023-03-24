@@ -16,7 +16,6 @@ namespace KRPC.Service
         readonly System.Exception exception;
         readonly Func<object> continuation;
 
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
         public ProcedureCallContinuation(ProcedureCall procedureCall)
         {
             call = procedureCall;

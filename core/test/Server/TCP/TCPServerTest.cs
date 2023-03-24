@@ -9,7 +9,6 @@ using NUnit.Framework;
 namespace KRPC.Test.Server.TCP
 {
     [TestFixture]
-    [SuppressMessage("Gendarme.Rules.Naming", "AvoidRedundancyInTypeNameRule")]
     public class TCPServerTest
     {
         [Test]

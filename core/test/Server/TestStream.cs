@@ -5,9 +5,6 @@ using KRPC.Server;
 
 namespace KRPC.Test.Server
 {
-    [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
-    [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
     sealed class TestStream : IStream<byte, byte>, IDisposable
     {
         MemoryStream outputStream;

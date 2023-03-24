@@ -6,7 +6,6 @@ using KRPC.Service.Messages;
 
 namespace KRPC.Server.WebSockets
 {
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
     sealed class StreamStream : Message.StreamStream
     {
         public StreamStream(IStream<byte, byte> stream) : base(stream)

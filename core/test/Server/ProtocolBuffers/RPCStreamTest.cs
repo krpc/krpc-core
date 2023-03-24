@@ -9,7 +9,6 @@ using NUnit.Framework;
 namespace KRPC.Test.Server.ProtocolBuffers
 {
     [TestFixture]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidLargeClassesRule")]
     public class RPCStreamTest
     {
         Schema.KRPC.Request expectedRequest;
@@ -117,8 +116,6 @@ namespace KRPC.Test.Server.ProtocolBuffers
         }
 
         [Test]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         public void ReadSingleRequestInParts()
         {
             // Split the message bytes into 3 parts

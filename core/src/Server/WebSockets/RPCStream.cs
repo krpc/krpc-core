@@ -9,8 +9,6 @@ using KRPC.Utils;
 
 namespace KRPC.Server.WebSockets
 {
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidLargeClassesRule")]
     sealed class RPCStream : Message.RPCStream
     {
         /// <summary>
@@ -53,9 +51,6 @@ namespace KRPC.Server.WebSockets
             }
         }
 
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidComplexMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         protected override int Read(ref Request request, byte[] data, int offset, int length)
         {
             int read = 0;

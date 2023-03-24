@@ -7,7 +7,6 @@ namespace KRPC.Service.KRPC
     /// A server side expression.
     /// </summary>
     [KRPCClass(Service = "KRPC")]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     public class Type
     {
         internal System.Type InternalType { get; private set; }

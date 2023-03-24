@@ -5,9 +5,6 @@ using KRPC.IO.Ports;
 
 namespace KRPC.Server.SerialIO
 {
-    [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
-    [SuppressMessage("Gendarme.Rules.Smells", "AvoidLargeClassesRule")]
     sealed class ByteStream : IStream<byte, byte>
     {
         SerialPort stream;
@@ -121,7 +118,6 @@ namespace KRPC.Server.SerialIO
             throw new NotSupportedException();
         }
 
-        [SuppressMessage("Gendarme.Rules.Naming", "ParameterNamesShouldMatchOverriddenMethodRule")]
         public void Write(byte[] buffer)
         {
             Write(buffer, 0, buffer.Length);

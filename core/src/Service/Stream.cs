@@ -9,7 +9,6 @@ namespace KRPC.Service
     /// <summary>
     /// A stream.
     /// </summary>
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
     public abstract class Stream : Equatable<Stream>
     {
         internal StreamResult StreamResult { get; private set; }

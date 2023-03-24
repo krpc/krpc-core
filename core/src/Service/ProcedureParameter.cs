@@ -43,7 +43,6 @@ namespace KRPC.Service
         /// <summary>
         /// Create parameter information from a reflected parameter.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
         public ProcedureParameter(ParameterInfo parameter)
         {
             Type = parameter.ParameterType;

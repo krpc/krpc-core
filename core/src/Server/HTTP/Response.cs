@@ -4,7 +4,6 @@ using System.Text;
 
 namespace KRPC.Server.HTTP
 {
-    [SuppressMessage("Gendarme.Rules.Portability", "NewLineLiteralRule")]
     sealed class Response
     {
         const string PROTOCOL = "HTTP/1.1";

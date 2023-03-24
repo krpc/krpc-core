@@ -36,8 +36,6 @@ namespace KRPC.Server
         /// <summary>
         /// Convert a generic client requesting connection event to a non-generic one.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotDeclareStaticMembersOnGenericTypesRule")]
         public static implicit operator ClientRequestingConnectionEventArgs(ClientRequestingConnectionEventArgs<TIn, TOut> args)
         {
             return new ClientRequestingConnectionEventArgs(args.Client, args.Request);

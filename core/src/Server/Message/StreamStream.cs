@@ -4,7 +4,6 @@ using KRPC.Service.Messages;
 
 namespace KRPC.Server.Message
 {
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
     abstract class StreamStream : IStream<NoMessage, StreamUpdate>
     {
         protected StreamStream(IStream<byte, byte> stream)
@@ -39,7 +38,6 @@ namespace KRPC.Server.Message
         /// </summary>
         public abstract void Write(StreamUpdate value);
 
-        [SuppressMessage("Gendarme.Rules.Naming", "ParameterNamesShouldMatchOverriddenMethodRule")]
         public void Write(StreamUpdate[] buffer)
         {
             foreach (var value in buffer)

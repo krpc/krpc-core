@@ -368,7 +368,6 @@ namespace KRPC
         /// <summary>
         /// Update the server
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
         public void Update()
         {
             ulong startRPCsExecuted = RPCsExecuted;
@@ -434,7 +433,6 @@ namespace KRPC
         /// MaxPollTimePerUpdate microseconds. If NonBlockingUpdate is true, a single non-blocking call
         /// will be made to check for new RPCs.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         void RPCServerUpdate()
         {
             rpcTimer.Reset();
@@ -533,8 +531,6 @@ namespace KRPC
         /// <summary>
         /// Update the Stream server. Executes all streaming RPCs and sends the results to clients (if they have changed).
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         void StreamServerUpdate()
         {
             streamTimer.Reset();
@@ -731,9 +727,6 @@ namespace KRPC
         /// Adds a continuation to the queue for any client with a new request,
         /// if a continuation is not already being processed for the client.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         void PollRequests(IList<RequestContinuation> yieldedContinuations)
         {
             if (clientScheduler.Empty)
@@ -805,8 +798,6 @@ namespace KRPC
         /// Execute the continuation and send a response to the client,
         /// or throw a YieldException if the continuation is not complete.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidRepetitiveCallsToPropertiesRule")]
         static void ExecuteContinuation(RequestContinuation continuation)
         {
             var client = continuation.Client;

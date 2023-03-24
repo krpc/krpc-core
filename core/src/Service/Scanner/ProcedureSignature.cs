@@ -94,7 +94,6 @@ namespace KRPC.Service.Scanner
         /// </summary>
         public string PropertyName { get; private set; }
 
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongParameterListsRule")]
         internal ProcedureSignature(string serviceName, string procedureName, uint id, string documentation, IProcedureHandler handler, GameScene gameScene)
         {
             Name = procedureName;

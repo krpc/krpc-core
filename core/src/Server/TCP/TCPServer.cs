@@ -94,7 +94,6 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Start the server.
         /// </summary>
-        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
         public void Start()
         {
             if (OnClientRequestingConnection == null)
@@ -354,8 +353,6 @@ namespace KRPC.Server.TCP
             }
         }
 
-        [SuppressMessage("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule")]
-        [SuppressMessage("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
         void ListenerThread()
         {
             try

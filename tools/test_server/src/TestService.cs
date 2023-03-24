@@ -55,7 +55,6 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Globalization", "PreferStringComparisonOverrideRule")]
         public static string BytesToHexString(byte[] value)
         {
             return BitConverter.ToString(value).Replace("-", string.Empty).ToLower();
@@ -79,7 +78,6 @@ namespace TestServer
         static string stringPropertyPrivateSet = "foo";
 
         [KRPCProperty]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
         public static string StringPropertyPrivateSet
         {
             get { return stringPropertyPrivateSet; }
@@ -111,8 +109,6 @@ namespace TestServer
         /// Class documentation string.
         /// </summary>
         [KRPCClass]
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage("Gendarme.Rules.Design", "ImplementEqualsAndGetHashCodeInPairRule")]
         public sealed class TestClass : Equatable<TestClass>
         {
             internal string instanceValue;
@@ -163,7 +159,6 @@ namespace TestServer
             public TestClass ObjectProperty { get; set; }
 
             [KRPCProperty]
-            [SuppressMessage("Gendarme.Rules.Design", "AvoidPropertiesWithoutGetAccessorRule")]
             public string StringPropertyPrivateGet
             {
                 set { instanceValue = value; }
@@ -176,8 +171,6 @@ namespace TestServer
             }
 
             [KRPCMethod]
-            [SuppressMessage("Gendarme.Rules.Correctness", "MethodCanBeMadeStaticRule")]
-            [SuppressMessage("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
             public string OptionalArguments(string x, string y = "foo", string z = "bar", TestClass obj = null)
             {
                 return x + y + z + (obj == null ? "null" : obj.instanceValue);
@@ -191,7 +184,6 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
         public static string OptionalArguments(string x, string y = "foo", string z = "bar", TestClass obj = null)
         {
             return x + y + z + (obj == null ? "null" : obj.instanceValue);
@@ -202,8 +194,6 @@ namespace TestServer
         /// </summary>
         [KRPCEnum]
         [Serializable]
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
         public enum TestEnum
         {
             /// <summary>
@@ -266,7 +256,6 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
         public static HashSet<int> IncrementSet(HashSet<int> h)
         {
             if (h == null)
@@ -286,7 +275,6 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotExposeNestedGenericSignaturesRule")]
         public static IDictionary<string, IList<int>> IncrementNestedCollection(IDictionary<string, IList<int>> d)
         {
             if (d == null)
@@ -297,7 +285,6 @@ namespace TestServer
             return result;
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateTupleDefault
         {
             public static object Create()
@@ -313,7 +300,6 @@ namespace TestServer
             return x;
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateListDefault
         {
             public static object Create()
@@ -329,7 +315,6 @@ namespace TestServer
             return x;
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateSetDefault
         {
             public static object Create()
@@ -345,7 +330,6 @@ namespace TestServer
             return x;
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateDictionaryDefault
         {
             public static object Create()
@@ -417,23 +401,17 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
         public static int ThrowArgumentNullException(string foo)
         {
             throw new ArgumentNullException(nameof(foo));
         }
 
         [KRPCProcedure]
-        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
         public static int ThrowArgumentOutOfRangeException(int foo)
         {
             throw new ArgumentOutOfRangeException(nameof(foo));
         }
 
-        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage("Gendarme.Rules.Exceptions", "MissingExceptionConstructorsRule")]
-        [SuppressMessage("Gendarme.Rules.Serialization", "MissingSerializableAttributeOnISerializableTypeRule")]
-        [SuppressMessage("Gendarme.Rules.Serialization", "MissingSerializationConstructorRule")]
         [KRPCException]
         public sealed class CustomException : System.Exception
         {

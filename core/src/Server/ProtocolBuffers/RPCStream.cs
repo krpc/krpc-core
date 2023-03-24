@@ -5,7 +5,6 @@ using KRPC.Service.Messages;
 
 namespace KRPC.Server.ProtocolBuffers
 {
-    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
     sealed class RPCStream : Message.RPCStream
     {
         readonly CodedOutputStream codedOutputStream;

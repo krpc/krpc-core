@@ -11,7 +11,6 @@ namespace KRPC.Server
     /// <summary>
     /// A kRPC server.
     /// </summary>
-    [SuppressMessage("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
     public sealed class Server : IServer
     {
         /// <summary>
