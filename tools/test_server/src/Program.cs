@@ -12,23 +12,21 @@ using NDesk.Options;
 
 namespace TestServer
 {
-    [SuppressMessage ("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
     static class MainClass
     {
-        static void Help (OptionSet options)
+        static void Help(OptionSet options)
         {
-            Console.WriteLine ("usage: TestServer.exe [-h] [-v] [--type=TYPE]");
-            Console.WriteLine ("                      [--bind=ADDRESS] [--rpc_port=VALUE] [--stream_port=VALUE]");
-            Console.WriteLine ("                      [--port=PATH]");
-            Console.WriteLine ("                      [--debug] [--quiet] [--server-debug]");
-            Console.WriteLine ();
-            Console.WriteLine ("A kRPC test server for the client library unit tests");
-            Console.WriteLine ();
-            options.WriteOptionDescriptions (Console.Out);
+            Console.WriteLine("usage: TestServer.exe [-h] [-v] [--type=TYPE]");
+            Console.WriteLine("                      [--bind=ADDRESS] [--rpc_port=VALUE] [--stream_port=VALUE]");
+            Console.WriteLine("                      [--port=PATH]");
+            Console.WriteLine("                      [--debug] [--quiet] [--server-debug]");
+            Console.WriteLine();
+            Console.WriteLine("A kRPC test server for the client library unit tests");
+            Console.WriteLine();
+            options.WriteOptionDescriptions(Console.Out);
         }
 
-        [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        public static void Main (string[] args)
+        public static void Main(string[] args)
         {
             bool showHelp = false;
             bool showVersion = false;
@@ -100,27 +98,30 @@ namespace TestServer
                     v => serverDebug = v != null
                 }
             };
-            options.Parse (args);
+            options.Parse(args);
 
-            if (showHelp) {
-                Help (options);
+            if (showHelp)
+            {
+                Help(options);
                 return;
             }
 
-            if (showVersion) {
-                var assembly = Assembly.GetEntryAssembly ();
-                var info = FileVersionInfo.GetVersionInfo (assembly.Location);
-                var version = string.Format ("{0}.{1}.{2}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart);
-                Console.WriteLine ("TestServer.exe version " + version);
+            if (showVersion)
+            {
+                var assembly = Assembly.GetEntryAssembly();
+                var info = FileVersionInfo.GetVersionInfo(assembly.Location);
+                var version = string.Format("{0}.{1}.{2}", info.FileMajorPart, info.FileMinorPart, info.FileBuildPart);
+                Console.WriteLine("TestServer.exe version " + version);
                 return;
             }
 
             var core = Core.Instance;
             CallContext.GameScene = GameScene.SpaceCenter;
-            core.OnClientRequestingConnection += (s, e) => e.Request.Allow ();
+            core.OnClientRequestingConnection += (s, e) => e.Request.Allow();
 
             IPAddress bindAddress;
-            if (!IPAddress.TryParse(bind, out bindAddress)) {
+            if (!IPAddress.TryParse(bind, out bindAddress))
+            {
                 Console.WriteLine("Failed to parse bind address.");
                 return;
             }
@@ -128,74 +129,89 @@ namespace TestServer
             TCPServer rpcTcpServer = null;
             TCPServer streamTcpServer = null;
             KRPC.Server.SerialIO.ByteServer serialServer = null;
-            if (type == "protobuf" || type == "websockets" || type == "websockets-echo") {
-                rpcTcpServer = new TCPServer (bindAddress, rpcPort);
-                streamTcpServer = new TCPServer (bindAddress, streamPort);
+            if (type == "protobuf" || type == "websockets" || type == "websockets-echo")
+            {
+                rpcTcpServer = new TCPServer(bindAddress, rpcPort);
+                streamTcpServer = new TCPServer(bindAddress, streamPort);
             }
             if (type == "serialio")
-                serialServer = new KRPC.Server.SerialIO.ByteServer (
+                serialServer = new KRPC.Server.SerialIO.ByteServer(
                     portName, baudRate, dataBits, parity, stopBits);
 
             Server server;
-            if (type == "protobuf") {
-                var rpcServer = new KRPC.Server.ProtocolBuffers.RPCServer (rpcTcpServer);
-                var streamServer = new KRPC.Server.ProtocolBuffers.StreamServer (streamTcpServer);
-                server = new Server (Guid.NewGuid (), Protocol.ProtocolBuffersOverTCP, "TestServer", rpcServer, streamServer);
-            } else if (type == "websockets") {
-                var rpcServer = new KRPC.Server.WebSockets.RPCServer (rpcTcpServer);
-                var streamServer = new KRPC.Server.WebSockets.StreamServer (streamTcpServer);
-                server = new Server (Guid.NewGuid (), Protocol.ProtocolBuffersOverWebsockets, "TestServer", rpcServer, streamServer);
-            } else if (type == "websockets-echo") {
-                var rpcServer = new KRPC.Server.WebSockets.RPCServer (rpcTcpServer, true);
-                var streamServer = new KRPC.Server.WebSockets.StreamServer (streamTcpServer);
-                server = new Server (Guid.NewGuid (), Protocol.ProtocolBuffersOverWebsockets, "TestServer", rpcServer, streamServer);
-            } else if (type == "serialio") {
-                var rpcServer = new KRPC.Server.SerialIO.RPCServer (serialServer);
-                var streamServer = new KRPC.Server.SerialIO.StreamServer ();
-                server = new Server (Guid.NewGuid (), Protocol.ProtocolBuffersOverSerialIO, "TestServer", rpcServer, streamServer);
-            } else {
-                Logger.WriteLine ("Server type '" + type + "' not supported", Logger.Severity.Error);
+            if (type == "protobuf")
+            {
+                var rpcServer = new KRPC.Server.ProtocolBuffers.RPCServer(rpcTcpServer);
+                var streamServer = new KRPC.Server.ProtocolBuffers.StreamServer(streamTcpServer);
+                server = new Server(Guid.NewGuid(), Protocol.ProtocolBuffersOverTCP, "TestServer", rpcServer, streamServer);
+            }
+            else if (type == "websockets")
+            {
+                var rpcServer = new KRPC.Server.WebSockets.RPCServer(rpcTcpServer);
+                var streamServer = new KRPC.Server.WebSockets.StreamServer(streamTcpServer);
+                server = new Server(Guid.NewGuid(), Protocol.ProtocolBuffersOverWebsockets, "TestServer", rpcServer, streamServer);
+            }
+            else if (type == "websockets-echo")
+            {
+                var rpcServer = new KRPC.Server.WebSockets.RPCServer(rpcTcpServer, true);
+                var streamServer = new KRPC.Server.WebSockets.StreamServer(streamTcpServer);
+                server = new Server(Guid.NewGuid(), Protocol.ProtocolBuffersOverWebsockets, "TestServer", rpcServer, streamServer);
+            }
+            else if (type == "serialio")
+            {
+                var rpcServer = new KRPC.Server.SerialIO.RPCServer(serialServer);
+                var streamServer = new KRPC.Server.SerialIO.StreamServer();
+                server = new Server(Guid.NewGuid(), Protocol.ProtocolBuffersOverSerialIO, "TestServer", rpcServer, streamServer);
+            }
+            else
+            {
+                Logger.WriteLine("Server type '" + type + "' not supported", Logger.Severity.Error);
                 return;
             }
-            core.Add (server);
+            core.Add(server);
 
-            Logger.WriteLine ("Starting server...");
-            core.StartAll ();
-            Logger.WriteLine ("type = " + type);
-            if (rpcTcpServer != null) {
-                Logger.WriteLine ("bind = " + bindAddress);
-                Logger.WriteLine ("rpc_port = " + rpcTcpServer.ActualPort);
+            Logger.WriteLine("Starting server...");
+            core.StartAll();
+            Logger.WriteLine("type = " + type);
+            if (rpcTcpServer != null)
+            {
+                Logger.WriteLine("bind = " + bindAddress);
+                Logger.WriteLine("rpc_port = " + rpcTcpServer.ActualPort);
                 if (streamTcpServer != null)
-                    Logger.WriteLine ("stream_port = " + streamTcpServer.ActualPort);
+                    Logger.WriteLine("stream_port = " + streamTcpServer.ActualPort);
             }
-            if (serialServer != null) {
-                Logger.WriteLine ("port = " + serialServer.Address);
+            if (serialServer != null)
+            {
+                Logger.WriteLine("port = " + serialServer.Address);
             }
-            Logger.WriteLine ("Server started successfully");
+            Logger.WriteLine("Server started successfully");
 
             const long targetFPS = 60;
             long update = 0;
             long ticksPerUpdate = Stopwatch.Frequency / targetFPS;
-            var timer = new Stopwatch ();
-            while (server.Running) {
-                timer.Reset ();
-                timer.Start ();
+            var timer = new Stopwatch();
+            while (server.Running)
+            {
+                timer.Reset();
+                timer.Start();
 
-                core.Update ();
+                core.Update();
 
-                if (serverDebug && update % targetFPS == 0) {
+                if (serverDebug && update % targetFPS == 0)
+                {
                     // Output details about whether server.Update() took too little or too long to execute
                     var elapsed = timer.ElapsedTicks;
-                    var diffTicks = Math.Abs (ticksPerUpdate - elapsed);
-                    var diffTime = Math.Round (diffTicks / (double)Stopwatch.Frequency * 1000d, 2);
+                    var diffTicks = Math.Abs(ticksPerUpdate - elapsed);
+                    var diffTime = Math.Round(diffTicks / (double)Stopwatch.Frequency * 1000d, 2);
                     if (elapsed > ticksPerUpdate)
-                        Console.WriteLine ("Slow by " + diffTime + " ms (" + diffTicks + " ticks)");
+                        Console.WriteLine("Slow by " + diffTime + " ms (" + diffTicks + " ticks)");
                     else
-                        Console.WriteLine ("Fast by " + diffTime + " ms (" + diffTicks + " ticks)");
+                        Console.WriteLine("Fast by " + diffTime + " ms (" + diffTicks + " ticks)");
                 }
 
                 // Wait, to force 60 FPS
-                while (timer.ElapsedTicks < ticksPerUpdate) {
+                while (timer.ElapsedTicks < ticksPerUpdate)
+                {
                 }
                 update++;
             }

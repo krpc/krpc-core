@@ -20,24 +20,24 @@ namespace KRPC.Service
         /// <summary>
         /// Create an event stream.
         /// </summary>
-        public Event ()
+        public Event()
         {
-            stream = new EventStream ();
+            stream = new EventStream();
             client = CallContext.Client;
-            streamId = Core.Instance.AddStream (client, stream);
-            Message = new Messages.Event (new Messages.Stream (streamId));
+            streamId = Core.Instance.AddStream(client, stream);
+            Message = new Messages.Event(new Messages.Stream(streamId));
         }
 
         /// <summary>
         /// Create an event stream, that calls a function when it updates to
         /// determine if the event is triggered.
         /// </summary>
-        public Event (Func<Event, bool> func)
+        public Event(Func<Event, bool> func)
         {
-            stream = new EventStream (() => func(this));
+            stream = new EventStream(() => func(this));
             client = CallContext.Client;
-            streamId = Core.Instance.AddStream (client, stream);
-            Message = new Messages.Event (new Messages.Stream (streamId));
+            streamId = Core.Instance.AddStream(client, stream);
+            Message = new Messages.Event(new Messages.Stream(streamId));
         }
 
 
@@ -45,18 +45,18 @@ namespace KRPC.Service
         /// Create an event stream, that calls a continuation when it updates to
         /// determine if the event is triggered.
         /// </summary>
-        public Event (Func<bool> continuation)
+        public Event(Func<bool> continuation)
         {
-            stream = new EventStream (continuation);
+            stream = new EventStream(continuation);
             client = CallContext.Client;
-            streamId = Core.Instance.AddStream (client, stream);
-            Message = new Messages.Event (new Messages.Stream (streamId));
+            streamId = Core.Instance.AddStream(client, stream);
+            Message = new Messages.Event(new Messages.Stream(streamId));
         }
 
         /// <summary>
         /// Trigger the event.
         /// </summary>
-        public void Trigger ()
+        public void Trigger()
         {
             stream.Trigger();
         }
@@ -64,9 +64,9 @@ namespace KRPC.Service
         /// <summary>
         /// Remove the event.
         /// </summary>
-        public void Remove ()
+        public void Remove()
         {
-            stream.Remove ();
+            stream.Remove();
         }
 
         /// <summary>

@@ -1,6 +1,6 @@
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class EnumerationValue : IMessage
     {
         public string Name { get; private set; }
@@ -9,7 +9,7 @@ namespace KRPC.Service.Messages
 
         public string Documentation { get; set; }
 
-        public EnumerationValue (string name, int value)
+        public EnumerationValue(string name, int value)
         {
             Name = name;
             Value = value;

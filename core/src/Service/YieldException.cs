@@ -7,10 +7,8 @@ namespace KRPC.Service
     /// <summary>
     /// Base class for YieldException.
     /// </summary>
-    [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializableAttributeOnISerializableTypeRule")]
-    [SuppressMessage ("Gendarme.Rules.Exceptions", "MissingExceptionConstructorsRule")]
-    [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializationConstructorRule")]
-    public class YieldException : Exception {
+    public class YieldException : Exception
+    {
         /// <summary>
         /// The continuation to run to continue the work.
         /// </summary>
@@ -49,15 +47,12 @@ namespace KRPC.Service
     /// Thrown by a continuation to indicate that there is more work to do later,
     /// represented by the new continuation in the exception.
     /// </summary>
-    [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializableAttributeOnISerializableTypeRule")]
-    [SuppressMessage ("Gendarme.Rules.Exceptions", "MissingExceptionConstructorsRule")]
-    [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializationConstructorRule")]
     public sealed class YieldException<T> : YieldException
     {
         /// <summary>
         /// Create a yield exception, with a continuation representing the work to do later.
         /// </summary>
-        public YieldException (T value)
+        public YieldException(T value)
         {
             Value = value;
         }
@@ -65,9 +60,10 @@ namespace KRPC.Service
         /// <summary>
         /// The continuation to run to continue the work.
         /// </summary>
-        public T Value {
-          get { return (T)UntypedValue;  }
-          private set { UntypedValue = value; }
+        public T Value
+        {
+            get { return (T)UntypedValue; }
+            private set { UntypedValue = value; }
         }
     }
 }

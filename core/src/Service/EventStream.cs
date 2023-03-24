@@ -8,49 +8,53 @@ using KRPC.Service.Scanner;
 
 namespace KRPC.Service
 {
-    [SuppressMessage ("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
-    sealed class EventStream : Stream {
+    sealed class EventStream : Stream
+    {
         Func<bool> continuation;
         bool shouldRemove;
 
-        public EventStream ()
+        public EventStream()
         {
             Changed = false;
         }
 
-        public EventStream (Func<bool> eventContinuation)
+        public EventStream(Func<bool> eventContinuation)
         {
             Changed = false;
             continuation = eventContinuation;
         }
 
-        public override bool Equals (Service.Stream other)
+        public override bool Equals(Service.Stream other)
         {
-            return ReferenceEquals (this, other);
+            return ReferenceEquals(this, other);
         }
 
-        public override int GetHashCode ()
+        public override int GetHashCode()
         {
             return 0;
         }
 
-        public override void UpdateInternal() {
+        public override void UpdateInternal()
+        {
             if (continuation != null && continuation())
                 Trigger();
             if (shouldRemove)
-                Core.Instance.RemoveStream (Id);
+                Core.Instance.RemoveStream(Id);
         }
 
-        public void Trigger () {
+        public void Trigger()
+        {
             Result.Value = true;
             Changed = true;
         }
 
-        public void Remove () {
+        public void Remove()
+        {
             shouldRemove = true;
         }
 
-        public override void Sent () {
+        public override void Sent()
+        {
             Changed = false;
             var result = Result;
             if ((bool)result.Value)

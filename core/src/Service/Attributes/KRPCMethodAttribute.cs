@@ -5,7 +5,7 @@ namespace KRPC.Service.Attributes
     /// <summary>
     /// A kRPC method.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Method)]
     public sealed class KRPCMethodAttribute : Attribute
     {
         /// <summary>
@@ -21,7 +21,7 @@ namespace KRPC.Service.Attributes
         /// <summary>
         /// A kRPC method.
         /// </summary>
-        public KRPCMethodAttribute ()
+        public KRPCMethodAttribute()
         {
             GameScene = GameScene.Inherit;
         }

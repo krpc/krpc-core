@@ -34,12 +34,12 @@ namespace KRPC.Service
         /// </summary>
         public static Action Unpause { get; set; }
 
-        internal static void Set (IClient client)
+        internal static void Set(IClient client)
         {
             Client = client;
         }
 
-        internal static void Clear ()
+        internal static void Clear()
         {
             Client = null;
         }

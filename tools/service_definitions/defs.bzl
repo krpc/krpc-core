@@ -1,6 +1,6 @@
 " Rules for building service definition json from a service assembly "
 
-load("@rules_dotnet//dotnet/private:providers.bzl", "DotnetAssemblyInfo")
+load("@rules_dotnet//dotnet/private:providers.bzl", "DotnetAssemblyInfo")  # buildifier: disable=bzl-visibility
 
 def _impl(ctx):
     libs = []

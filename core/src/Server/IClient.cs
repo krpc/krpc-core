@@ -32,17 +32,17 @@ namespace KRPC.Server
         /// <summary>
         /// Close the connection to the client and free the connections resources.
         /// </summary>
-        void Close ();
+        void Close();
     }
 
     /// <summary>
     /// Generic client interface.
     /// </summary>
-    public interface IClient<TIn,TOut> : IEquatable<IClient<TIn,TOut>>, IClient
+    public interface IClient<TIn, TOut> : IEquatable<IClient<TIn, TOut>>, IClient
     {
         /// <summary>
         /// A stream for communicating with the client.
         /// </summary>
-        IStream<TIn,TOut> Stream { get; }
+        IStream<TIn, TOut> Stream { get; }
     }
 }

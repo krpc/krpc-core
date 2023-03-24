@@ -16,9 +16,9 @@ namespace KRPC.Service
         /// <summary>
         /// Create a stream continuation used to execute a stream RPC
         /// </summary>
-        public StreamContinuation (ProcedureCall call)
+        public StreamContinuation(ProcedureCall call)
         {
-            continuation = new ProcedureCallContinuation (call);
+            continuation = new ProcedureCallContinuation(call);
             originalContinuation = continuation;
         }
 
@@ -31,19 +31,24 @@ namespace KRPC.Service
         /// If the procedure throws an exception, the continuation should not be run
         /// again (the stream should be removed from the server).
         /// </summary>
-        public ProcedureResult Run ()
+        public ProcedureResult Run()
         {
             if (continuation == null)
-                throw new InvalidOperationException (
+                throw new InvalidOperationException(
                     "The stream continuation threw an exception previously and cannot be re-run");
-            try {
-                var result = continuation.Run ();
+            try
+            {
+                var result = continuation.Run();
                 continuation = originalContinuation;
                 return result;
-            } catch (YieldException<ProcedureCallContinuation> e) {
+            }
+            catch (YieldException<ProcedureCallContinuation> e)
+            {
                 continuation = e.Value;
-                throw new YieldException<StreamContinuation> (this);
-            } catch (System.Exception) {
+                throw new YieldException<StreamContinuation>(this);
+            }
+            catch (System.Exception)
+            {
                 continuation = null;
                 throw;
             }

@@ -10,35 +10,33 @@ using NUnit.Framework;
 namespace KRPC.Test.Utils
 {
     [TestFixture]
-    [SuppressMessage ("Gendarme.Rules.Portability", "NewLineLiteralRule")]
-    [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
     public class DocumentationExtentionsTest
     {
         static readonly System.Type cls = typeof(TestDocumentedClass);
         static readonly System.Type staticClass = typeof(TestDocumentedStaticClass);
-        static readonly MethodInfo method = typeof(TestDocumentedClass).GetMethod ("Method", BindingFlags.Public | BindingFlags.Instance);
-        static readonly MethodInfo staticMethod = typeof(TestDocumentedClass).GetMethod ("StaticMethod", BindingFlags.Public | BindingFlags.Static);
-        static readonly PropertyInfo property = typeof(TestDocumentedClass).GetProperty ("Property", BindingFlags.Public | BindingFlags.Instance);
-        static readonly PropertyInfo staticProperty = typeof(TestDocumentedClass).GetProperty ("StaticProperty", BindingFlags.Public | BindingFlags.Static);
-        static readonly MethodInfo methodArguments = typeof(TestDocumentedClass).GetMethods ().Single (m => m.Name == "MethodArguments");
+        static readonly MethodInfo method = typeof(TestDocumentedClass).GetMethod("Method", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo staticMethod = typeof(TestDocumentedClass).GetMethod("StaticMethod", BindingFlags.Public | BindingFlags.Static);
+        static readonly PropertyInfo property = typeof(TestDocumentedClass).GetProperty("Property", BindingFlags.Public | BindingFlags.Instance);
+        static readonly PropertyInfo staticProperty = typeof(TestDocumentedClass).GetProperty("StaticProperty", BindingFlags.Public | BindingFlags.Static);
+        static readonly MethodInfo methodArguments = typeof(TestDocumentedClass).GetMethods().Single(m => m.Name == "MethodArguments");
         static readonly System.Type nestedClass = typeof(TestDocumentedClass.NestedClass);
-        static readonly MethodInfo nestedClassMethod = typeof(TestDocumentedClass.NestedClass).GetMethod ("Method", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo nestedClassMethod = typeof(TestDocumentedClass.NestedClass).GetMethod("Method", BindingFlags.Public | BindingFlags.Instance);
 
-        static readonly MethodInfo childMethod = typeof(TestDocumentedParentClass).GetMethod ("ChildMethod", BindingFlags.Public | BindingFlags.Instance);
-        static readonly MethodInfo childStaticMethod = typeof(TestDocumentedParentClass).GetMethod ("ChildStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-        static readonly PropertyInfo childProperty = typeof(TestDocumentedParentClass).GetProperty ("ChildProperty", BindingFlags.Public | BindingFlags.Instance);
-        static readonly PropertyInfo childStaticProperty = typeof(TestDocumentedParentClass).GetProperty ("ChildStaticProperty", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+        static readonly MethodInfo childMethod = typeof(TestDocumentedParentClass).GetMethod("ChildMethod", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo childStaticMethod = typeof(TestDocumentedParentClass).GetMethod("ChildStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+        static readonly PropertyInfo childProperty = typeof(TestDocumentedParentClass).GetProperty("ChildProperty", BindingFlags.Public | BindingFlags.Instance);
+        static readonly PropertyInfo childStaticProperty = typeof(TestDocumentedParentClass).GetProperty("ChildStaticProperty", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-        static readonly MethodInfo childGenericMethod = typeof(TestDocumentedParentGenericClass).GetMethod ("ChildGenericMethod", BindingFlags.Public | BindingFlags.Instance);
-        static readonly MethodInfo childGenericStaticMethod = typeof(TestDocumentedParentGenericClass).GetMethod ("ChildGenericStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
-        static readonly PropertyInfo childGenericProperty = typeof(TestDocumentedParentGenericClass).GetProperty ("ChildGenericProperty", BindingFlags.Public | BindingFlags.Instance);
-        static readonly PropertyInfo childGenericStaticProperty = typeof(TestDocumentedParentGenericClass).GetProperty ("ChildGenericStaticProperty", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+        static readonly MethodInfo childGenericMethod = typeof(TestDocumentedParentGenericClass).GetMethod("ChildGenericMethod", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo childGenericStaticMethod = typeof(TestDocumentedParentGenericClass).GetMethod("ChildGenericStaticMethod", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+        static readonly PropertyInfo childGenericProperty = typeof(TestDocumentedParentGenericClass).GetProperty("ChildGenericProperty", BindingFlags.Public | BindingFlags.Instance);
+        static readonly PropertyInfo childGenericStaticProperty = typeof(TestDocumentedParentGenericClass).GetProperty("ChildGenericStaticProperty", BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 
-        static readonly MethodInfo notDocumented = typeof(TestDocumentedClass).GetMethod ("NotDocumented", BindingFlags.Public | BindingFlags.Instance);
-        static readonly MethodInfo multiLineDocumentation = typeof(TestDocumentedClass).GetMethod ("MultiLineDocumentation", BindingFlags.Public | BindingFlags.Instance);
-        static readonly MethodInfo crefDocumentation = typeof(TestDocumentedClass).GetMethod ("CrefDocumentation", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo notDocumented = typeof(TestDocumentedClass).GetMethod("NotDocumented", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo multiLineDocumentation = typeof(TestDocumentedClass).GetMethod("MultiLineDocumentation", BindingFlags.Public | BindingFlags.Instance);
+        static readonly MethodInfo crefDocumentation = typeof(TestDocumentedClass).GetMethod("CrefDocumentation", BindingFlags.Public | BindingFlags.Instance);
 
-        #pragma warning disable 0414
+#pragma warning disable 0414
         static object[] GetDocumentationNameCases = {
             new object[] {
                 cls,
@@ -111,15 +109,15 @@ namespace KRPC.Test.Utils
                 "P:KRPC.Test.Utils.TestDocumentedChildGenericClass`1.ChildGenericStaticProperty"
             }
         };
-        #pragma warning restore 0414
+#pragma warning restore 0414
 
-        [Test, TestCaseSource ("GetDocumentationNameCases")]
-        public void GetDocumentationName (MemberInfo member, string name)
+        [Test, TestCaseSource("GetDocumentationNameCases")]
+        public void GetDocumentationName(MemberInfo member, string name)
         {
-            Assert.AreEqual (name, DocumentationExtensions.GetDocumentationName (member));
+            Assert.AreEqual(name, DocumentationExtensions.GetDocumentationName(member));
         }
 
-        #pragma warning disable 0414
+#pragma warning disable 0414
         static object[] GetDocumentationCases = {
             new object[] {
                 cls,
@@ -198,18 +196,18 @@ namespace KRPC.Test.Utils
                 "<doc>\n<summary>Foo <see cref=\"T:KRPC.Test.Utils.TestDocumentedClass.NestedClass\" /> bar.</summary>\n</doc>"
             }
         };
-        #pragma warning restore 0414
+#pragma warning restore 0414
 
-        [Test, TestCaseSource ("GetDocumentationCases")]
-        public void TestGetDocumentation (MemberInfo member, string name)
+        [Test, TestCaseSource("GetDocumentationCases")]
+        public void TestGetDocumentation(MemberInfo member, string name)
         {
-            Assert.AreEqual (name, member.GetDocumentation ());
+            Assert.AreEqual(name, member.GetDocumentation());
         }
 
         [Test]
-        public void TestGetMultiLineDocumentation ()
+        public void TestGetMultiLineDocumentation()
         {
-            Assert.AreEqual (
+            Assert.AreEqual(
                 "<doc>\n" +
                 "<summary>\n" +
                 "This is the first line.\n" +
@@ -220,21 +218,20 @@ namespace KRPC.Test.Utils
                 "<param name=\"param2\">Param2 <paramref name=\"param1\" />.</param>\n" +
                 "<returns>Nothing....</returns>\n" +
                 "</doc>",
-                multiLineDocumentation.GetDocumentation ());
+                multiLineDocumentation.GetDocumentation());
         }
     }
 
     /// <summary>Class docs</summary>
-    [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
     sealed class TestDocumentedClass
     {
         /// <summary>Method docs</summary>
-        public void Method ()
+        public void Method()
         {
         }
 
         /// <summary>Static method docs</summary>
-        public static void StaticMethod ()
+        public static void StaticMethod()
         {
         }
 
@@ -245,22 +242,20 @@ namespace KRPC.Test.Utils
         public static int StaticProperty { get; set; }
 
         /// <summary>Method arguments docs</summary>
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
-        public void MethodArguments (int one, string two, Tuple<int,float,string> three, Response four, NestedClass five)
+        public void MethodArguments(int one, string two, Tuple<int, float, string> three, Response four, NestedClass five)
         {
         }
 
         /// <summary>Nested class docs</summary>
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
         public sealed class NestedClass
         {
             /// <summary>Nested class method docs</summary>
-            public void Method ()
+            public void Method()
             {
             }
         }
 
-        public void NotDocumented ()
+        public void NotDocumented()
         {
         }
 
@@ -273,13 +268,12 @@ namespace KRPC.Test.Utils
         /// <param name="param1">Param1.</param>
         /// <param name="param2">Param2 <paramref name="param1"/>.</param>
         /// <returns>Nothing....</returns>
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
-        public void MultiLineDocumentation (string param1, int param2)
+        public void MultiLineDocumentation(string param1, int param2)
         {
         }
 
         /// <summary>Foo <see cref="NestedClass"/> bar.</summary>
-        public void CrefDocumentation ()
+        public void CrefDocumentation()
         {
         }
     }
@@ -293,16 +287,15 @@ namespace KRPC.Test.Utils
     {
     }
 
-    [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
     class TestDocumentedChildClass
     {
         /// <summary>Inherited method docs</summary>
-        public void ChildMethod ()
+        public void ChildMethod()
         {
         }
 
         /// <summary>Inherited static method docs</summary>
-        public static void ChildStaticMethod ()
+        public static void ChildStaticMethod()
         {
         }
 
@@ -317,16 +310,15 @@ namespace KRPC.Test.Utils
     {
     }
 
-    [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
     class TestDocumentedChildGenericClass<T>
     {
         /// <summary>Inherited generic method docs</summary>
-        public void ChildGenericMethod ()
+        public void ChildGenericMethod()
         {
         }
 
         /// <summary>Inherited generic static method docs</summary>
-        public static void ChildGenericStaticMethod ()
+        public static void ChildGenericStaticMethod()
         {
         }
 

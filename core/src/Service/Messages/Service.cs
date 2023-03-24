@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class Service : IMessage
     {
         public string Name { get; private set; }
@@ -17,13 +17,13 @@ namespace KRPC.Service.Messages
 
         public string Documentation { get; set; }
 
-        public Service (string name)
+        public Service(string name)
         {
             Name = name;
-            Procedures = new List<Procedure> ();
-            Classes = new List<Class> ();
-            Enumerations = new List<Enumeration> ();
-            Exceptions = new List<Exception> ();
+            Procedures = new List<Procedure>();
+            Classes = new List<Class>();
+            Enumerations = new List<Enumeration>();
+            Exceptions = new List<Exception>();
             Documentation = string.Empty;
         }
     }

@@ -13,7 +13,7 @@ namespace KRPC.Service
         /// If the RPC is a class method, the first argument should
         /// be an instance of the class.
         /// </summary>
-        object Invoke (params object[] arguments);
+        object Invoke(params object[] arguments);
 
         /// <summary>
         /// Information about the parameters of the method

@@ -7,29 +7,28 @@ namespace KRPC.Test
 {
     static class TestingTools
     {
-        [SuppressMessage ("Gendarme.Rules.Globalization", "PreferStringComparisonOverrideRule")]
-        public static string ToHexString (this byte[] data)
+        public static string ToHexString(this byte[] data)
         {
-            return BitConverter.ToString (data).Replace ("-", string.Empty).ToLower ();
+            return BitConverter.ToString(data).Replace("-", string.Empty).ToLower();
         }
 
-        public static string ToHexString (this ByteString data)
+        public static string ToHexString(this ByteString data)
         {
-            return ToHexString (data.ToByteArray ());
+            return ToHexString(data.ToByteArray());
         }
 
-        public static byte[] ToBytes (this string data)
+        public static byte[] ToBytes(this string data)
         {
             return Enumerable
-                .Range (0, data.Length)
-                .Where (x => x % 2 == 0)
-                .Select (x => Convert.ToByte (data.Substring (x, 2), 16))
-                .ToArray ();
+                .Range(0, data.Length)
+                .Where(x => x % 2 == 0)
+                .Select(x => Convert.ToByte(data.Substring(x, 2), 16))
+                .ToArray();
         }
 
-        public static ByteString ToByteString (this string data)
+        public static ByteString ToByteString(this string data)
         {
-            return ByteString.CopyFrom (data.ToBytes ());
+            return ByteString.CopyFrom(data.ToBytes());
         }
     }
 }

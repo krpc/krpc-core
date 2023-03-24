@@ -4,53 +4,56 @@ using KRPC.IO.Ports;
 
 namespace KRPC.Server.SerialIO
 {
-    [SuppressMessage ("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
-    sealed class ByteClient : IClient<byte,byte>
+    sealed class ByteClient : IClient<byte, byte>
     {
         readonly Guid guid;
         SerialPort port;
         ByteStream stream;
 
-        public ByteClient (SerialPort serialPort, byte[] buffer = null)
+        public ByteClient(SerialPort serialPort, byte[] buffer = null)
         {
             if (serialPort == null)
-                throw new ArgumentNullException (nameof (serialPort));
-            guid = Guid.NewGuid ();
+                throw new ArgumentNullException(nameof(serialPort));
+            guid = Guid.NewGuid();
             port = serialPort;
             Address = port.PortName;
-            stream = new ByteStream (port, buffer);
+            stream = new ByteStream(port, buffer);
         }
 
-        public string Name {
-            get { return Guid.ToString (); }
+        public string Name
+        {
+            get { return Guid.ToString(); }
         }
 
-        public Guid Guid {
+        public Guid Guid
+        {
             get { return guid; }
         }
 
         public string Address { get; private set; }
 
-        public IStream<byte,byte> Stream {
+        public IStream<byte, byte> Stream
+        {
             get { return stream; }
         }
 
-        public bool Connected {
+        public bool Connected
+        {
             get { return port != null && port.IsOpen; }
         }
 
-        public void Close ()
+        public void Close()
         {
-            stream.Close ();
+            stream.Close();
             port = null;
         }
 
-        public override bool Equals (object obj)
+        public override bool Equals(object obj)
         {
-            return obj != null && Equals (obj as ByteClient);
+            return obj != null && Equals(obj as ByteClient);
         }
 
-        public bool Equals (IClient<byte,byte> other)
+        public bool Equals(IClient<byte, byte> other)
         {
             if (other == null)
                 return false;
@@ -60,21 +63,21 @@ namespace KRPC.Server.SerialIO
             return guid == otherClient.guid;
         }
 
-        public override int GetHashCode ()
+        public override int GetHashCode()
         {
-            return guid.GetHashCode ();
+            return guid.GetHashCode();
         }
 
-        public static bool operator == (ByteClient lhs, ByteClient rhs)
+        public static bool operator ==(ByteClient lhs, ByteClient rhs)
         {
-            if (ReferenceEquals (lhs, rhs))
+            if (ReferenceEquals(lhs, rhs))
                 return true;
             if ((object)lhs == null || (object)rhs == null)
                 return false;
-            return lhs.Equals (rhs);
+            return lhs.Equals(rhs);
         }
 
-        public static bool operator != (ByteClient lhs, ByteClient rhs)
+        public static bool operator !=(ByteClient lhs, ByteClient rhs)
         {
             return !(lhs == rhs);
         }

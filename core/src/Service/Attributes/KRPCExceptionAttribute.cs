@@ -5,7 +5,7 @@ namespace KRPC.Service.Attributes
     /// <summary>
     /// A kRPC exception.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class KRPCExceptionAttribute : Attribute
     {
         /// <summary>

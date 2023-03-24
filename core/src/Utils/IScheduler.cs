@@ -6,10 +6,10 @@ namespace KRPC.Utils
     {
         bool Empty { get; }
 
-        T Next ();
+        T Next();
 
-        void Add (T item);
+        void Add(T item);
 
-        void Remove (T item);
+        void Remove(T item);
     }
 }

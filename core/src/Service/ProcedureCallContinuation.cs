@@ -16,31 +16,36 @@ namespace KRPC.Service
         readonly System.Exception exception;
         readonly Func<object> continuation;
 
-        [SuppressMessage ("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
-        public ProcedureCallContinuation (ProcedureCall procedureCall)
+        public ProcedureCallContinuation(ProcedureCall procedureCall)
         {
             call = procedureCall;
-            try {
-                procedure = Services.Instance.GetProcedureSignature (call);
-            } catch (RPCException e) {
+            try
+            {
+                procedure = Services.Instance.GetProcedureSignature(call);
+            }
+            catch (RPCException e)
+            {
                 exception = e;
-            } catch (System.Exception e) {
+            }
+            catch (System.Exception e)
+            {
                 exception = e;
             }
         }
 
-        ProcedureCallContinuation (ProcedureSignature invokedProcedure, Func<object> currentContinuation)
+        ProcedureCallContinuation(ProcedureSignature invokedProcedure, Func<object> currentContinuation)
         {
             procedure = invokedProcedure;
             continuation = currentContinuation;
         }
 
-        public ProcedureResult Run ()
+        public ProcedureResult Run()
         {
             var services = Services.Instance;
             if (exception != null)
-              return new ProcedureResult { Error = services.HandleException (exception) };
-            try {
+                return new ProcedureResult { Error = services.HandleException(exception) };
+            try
+            {
                 if (continuation == null)
                     return services.ExecuteCall(procedure, call);
                 return services.ExecuteCall(procedure, continuation);
@@ -51,7 +56,8 @@ namespace KRPC.Service
             }
         }
 
-        public ProcedureSignature Procedure {
+        public ProcedureSignature Procedure
+        {
             get { return procedure; }
         }
     };

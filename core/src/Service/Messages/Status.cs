@@ -1,6 +1,6 @@
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class Status : IMessage
     {
         public string Version { get; private set; }
@@ -41,7 +41,7 @@ namespace KRPC.Service.Messages
 
         public float TimePerStreamUpdate { get; set; }
 
-        public Status (string version)
+        public Status(string version)
         {
             Version = version;
         }

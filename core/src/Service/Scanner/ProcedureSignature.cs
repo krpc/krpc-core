@@ -94,52 +94,65 @@ namespace KRPC.Service.Scanner
         /// </summary>
         public string PropertyName { get; private set; }
 
-        [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongParameterListsRule")]
-        internal ProcedureSignature (string serviceName, string procedureName, uint id, string documentation, IProcedureHandler handler, GameScene gameScene)
+        internal ProcedureSignature(string serviceName, string procedureName, uint id, string documentation, IProcedureHandler handler, GameScene gameScene)
         {
             Name = procedureName;
             FullyQualifiedName = serviceName + "." + Name;
             Id = id;
-            Documentation = DocumentationUtils.ResolveCrefs (documentation);
+            Documentation = DocumentationUtils.ResolveCrefs(documentation);
             Handler = handler;
             GameScene = gameScene;
-            Parameters = handler.Parameters.Select (x => new ParameterSignature (FullyQualifiedName, x)).ToList ();
+            Parameters = handler.Parameters.Select(x => new ParameterSignature(FullyQualifiedName, x)).ToList();
 
             var returnType = handler.ReturnType;
             HasReturnType = (returnType != typeof(void));
-            if (HasReturnType) {
+            if (HasReturnType)
+            {
                 ReturnType = returnType;
                 // Check it's a valid return type
-                if (!TypeUtils.IsAValidType (returnType))
-                    throw new ServiceException (returnType + " is not a valid Procedure return type, " + "in " + FullyQualifiedName);
+                if (!TypeUtils.IsAValidType(returnType))
+                    throw new ServiceException(returnType + " is not a valid Procedure return type, " + "in " + FullyQualifiedName);
                 ReturnIsNullable = handler.ReturnIsNullable;
             }
 
-            var parts = procedureName.Split (new char[]{'_'});
-            if (parts.Length == 2) {
-                if (parts [0] == ("get")) {
+            var parts = procedureName.Split(new char[] { '_' });
+            if (parts.Length == 2)
+            {
+                if (parts[0] == ("get"))
+                {
                     IsPropertyGetter = true;
-                    PropertyName = parts [1];
-                } else if (parts [0] == "set") {
-                    IsPropertySetter = true;
-                    PropertyName = parts [1];
-                } else {
-                    IsClassMember = true;
-                    ClassName = parts [0];
+                    PropertyName = parts[1];
                 }
-            } else if (parts.Length == 3) {
-                if (parts [1] == "get") {
+                else if (parts[0] == "set")
+                {
+                    IsPropertySetter = true;
+                    PropertyName = parts[1];
+                }
+                else
+                {
+                    IsClassMember = true;
+                    ClassName = parts[0];
+                }
+            }
+            else if (parts.Length == 3)
+            {
+                if (parts[1] == "get")
+                {
                     IsClassMember = true;
                     IsPropertyGetter = true;
-                    PropertyName = parts [2];
-                } else if (parts [1] == "set") {
+                    PropertyName = parts[2];
+                }
+                else if (parts[1] == "set")
+                {
                     IsClassMember = true;
-                    ClassName = parts [0];
+                    ClassName = parts[0];
                     IsPropertySetter = true;
-                    PropertyName = parts [2];
-                } else if (parts [1] == "static") {
+                    PropertyName = parts[2];
+                }
+                else if (parts[1] == "static")
+                {
                     IsClassMember = true;
-                    ClassName = parts [0];
+                    ClassName = parts[0];
                     IsStatic = true;
                 }
             }
@@ -148,18 +161,18 @@ namespace KRPC.Service.Scanner
         /// <summary>
         /// Serialize the signature.
         /// </summary>
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue ("id", Id);
-            info.AddValue ("parameters", Parameters);
+            info.AddValue("id", Id);
+            info.AddValue("parameters", Parameters);
             if (ReturnType != null)
             {
                 info.AddValue("return_type", TypeUtils.SerializeType(ReturnType));
                 info.AddValue("return_is_nullable", ReturnIsNullable);
             }
             if (GameScene != GameScene.All)
-                info.AddValue ("game_scenes", GameSceneUtils.Serialize(GameScene));
-            info.AddValue ("documentation", Documentation);
+                info.AddValue("game_scenes", GameSceneUtils.Serialize(GameScene));
+            info.AddValue("documentation", Documentation);
         }
     }
 }

@@ -12,15 +12,15 @@ namespace KRPC.Test.Service
         /// TestService2 procedure documentation.
         /// </summary>
         [KRPCProcedure]
-        public static int ClassTypeFromOtherServiceAsParameter (TestService.TestClass obj)
+        public static int ClassTypeFromOtherServiceAsParameter(TestService.TestClass obj)
         {
             return obj.IntProperty;
         }
 
         [KRPCProcedure]
-        public static TestService.TestClass ClassTypeFromOtherServiceAsReturn (string value)
+        public static TestService.TestClass ClassTypeFromOtherServiceAsReturn(string value)
         {
-            return new TestService.TestClass (value);
+            return new TestService.TestClass(value);
         }
     }
 }

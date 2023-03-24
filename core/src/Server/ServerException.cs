@@ -7,16 +7,16 @@ namespace KRPC.Server
     /// </summary>
     public class ServerException : Exception
     {
-        #pragma warning disable 1591
-        public ServerException ()
+#pragma warning disable 1591
+        public ServerException()
         {
         }
 
-        public ServerException (string message) : base (message)
+        public ServerException(string message) : base(message)
         {
         }
 
-        public ServerException (string message, Exception innerException) : base (message, innerException)
+        public ServerException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

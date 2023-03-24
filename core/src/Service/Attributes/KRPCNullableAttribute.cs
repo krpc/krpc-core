@@ -6,7 +6,7 @@ namespace KRPC.Service.Attributes
     /// A nullable parameter in a kRPC procedure, method or property.
     /// This attribute can be used to mark a parameter as being nullable.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class KRPCNullableAttribute : Attribute
     {
     }

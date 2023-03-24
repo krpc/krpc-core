@@ -6,11 +6,11 @@ namespace KRPC.Test
     public class ConfigurationTest
     {
         [Test]
-        public void DefaultConfig ()
+        public void DefaultConfig()
         {
-            var config = new Configuration ();
-            Assert.AreEqual (true, config.MainWindowVisible);
-            Assert.AreEqual (false, config.AutoAcceptConnections);
+            var config = new Configuration();
+            Assert.AreEqual(true, config.MainWindowVisible);
+            Assert.AreEqual(false, config.AutoAcceptConnections);
         }
     }
 }

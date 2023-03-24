@@ -5,7 +5,7 @@ namespace KRPC.Server
     /// </summary>
     public sealed class ServerStartedEventArgs : ServerEventArgs
     {
-        internal ServerStartedEventArgs (Server server) : base (server)
+        internal ServerStartedEventArgs(Server server) : base(server)
         {
         }
     }

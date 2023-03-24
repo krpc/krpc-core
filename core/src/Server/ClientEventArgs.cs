@@ -10,7 +10,7 @@ namespace KRPC.Server
         /// <summary>
         /// A client event for the given client.
         /// </summary>
-        protected ClientEventArgs (IClient client)
+        protected ClientEventArgs(IClient client)
         {
             Client = client;
         }
@@ -24,12 +24,12 @@ namespace KRPC.Server
     /// <summary>
     /// Abstract base class for a client event.
     /// </summary>
-    public abstract class ClientEventArgs<TIn,TOut> : EventArgs
+    public abstract class ClientEventArgs<TIn, TOut> : EventArgs
     {
         /// <summary>
         /// A client event for the given client.
         /// </summary>
-        protected ClientEventArgs (IClient<TIn,TOut> client)
+        protected ClientEventArgs(IClient<TIn, TOut> client)
         {
             Client = client;
         }
@@ -37,6 +37,6 @@ namespace KRPC.Server
         /// <summary>
         /// The client.
         /// </summary>
-        public IClient<TIn,TOut> Client { get; }
+        public IClient<TIn, TOut> Client { get; }
     }
 }

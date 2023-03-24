@@ -30,7 +30,8 @@ namespace KRPC.Service
         /// <summary>
         /// Whether the parameter has a Default value.
         /// </summary>
-        public bool HasDefaultValue {
+        public bool HasDefaultValue
+        {
             get { return DefaultValue != DBNull.Value; }
         }
 
@@ -42,22 +43,21 @@ namespace KRPC.Service
         /// <summary>
         /// Create parameter information from a reflected parameter.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
-        public ProcedureParameter (ParameterInfo parameter)
+        public ProcedureParameter(ParameterInfo parameter)
         {
             Type = parameter.ParameterType;
             Name = parameter.Name;
             bool hasDefaultValue = parameter.IsOptional && (parameter.Attributes & ParameterAttributes.HasDefault) == ParameterAttributes.HasDefault;
             DefaultValue = hasDefaultValue ? parameter.DefaultValue : DBNull.Value;
-            if (Reflection.HasAttribute<KRPCDefaultValueAttribute> (parameter))
-                DefaultValue = Reflection.GetAttribute<KRPCDefaultValueAttribute> (parameter).Value;
-            Nullable = Reflection.HasAttribute<KRPCNullableAttribute> (parameter);
+            if (Reflection.HasAttribute<KRPCDefaultValueAttribute>(parameter))
+                DefaultValue = Reflection.GetAttribute<KRPCDefaultValueAttribute>(parameter).Value;
+            Nullable = Reflection.HasAttribute<KRPCNullableAttribute>(parameter);
         }
 
         /// <summary>
         /// Create parameter information from its type and name.
         /// </summary>
-        public ProcedureParameter (Type type, string name)
+        public ProcedureParameter(Type type, string name)
         {
             Type = type;
             Name = name;

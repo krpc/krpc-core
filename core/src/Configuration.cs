@@ -19,20 +19,22 @@ namespace KRPC
         /// <summary>
         /// Returns the static configuration instance
         /// </summary>
-        public static Configuration Instance {
-            get {
+        public static Configuration Instance
+        {
+            get
+            {
                 if (instance == null)
-                    instance = new Configuration ();
+                    instance = new Configuration();
                 return instance;
             }
         }
 
-        internal Configuration ()
+        internal Configuration()
         {
             MainWindowVisible = true;
-            MainWindowPosition = new Tuple<float,float,float,float> (0, 0, 0, 0);
+            MainWindowPosition = new Tuple<float, float, float, float>(0, 0, 0, 0);
             InfoWindowVisible = false;
-            InfoWindowPosition = new Tuple<float,float,float,float> (0, 0, 0, 0);
+            InfoWindowPosition = new Tuple<float, float, float, float>(0, 0, 0, 0);
             AutoStartServers = false;
             AutoAcceptConnections = false;
             ConfirmRemoveClient = true;
@@ -48,7 +50,6 @@ namespace KRPC
         /// <summary>
         /// Per-server configuration options
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
         public sealed class Server
         {
             /// <summary>
@@ -88,30 +89,36 @@ namespace KRPC
             /// <summary>
             /// Create a server instance from this configuration
             /// </summary>
-            public KRPC.Server.Server Create ()
+            public KRPC.Server.Server Create()
             {
                 KRPC.Server.Message.RPCServer rpcServer = null;
                 KRPC.Server.Message.StreamServer streamServer = null;
 
                 var serverProtocol = Protocol;
                 if (serverProtocol == Protocol.ProtocolBuffersOverTCP ||
-                    serverProtocol == Protocol.ProtocolBuffersOverWebsockets) {
+                    serverProtocol == Protocol.ProtocolBuffersOverWebsockets)
+                {
                     var serverAddress = IPAddress.Loopback;
                     IPAddress.TryParse(Settings.GetValueOrDefault("address", IPAddress.Loopback.ToString()), out serverAddress);
                     ushort rpcPort = 0;
                     ushort streamPort = 0;
                     ushort.TryParse(Settings.GetValueOrDefault("rpc_port", "0"), out rpcPort);
                     ushort.TryParse(Settings.GetValueOrDefault("stream_port", "0"), out streamPort);
-                    var rpcTcpServer = new TCPServer (serverAddress, rpcPort);
-                    var streamTcpServer = new TCPServer (serverAddress, streamPort);
-                    if (serverProtocol == Protocol.ProtocolBuffersOverTCP) {
-                        rpcServer = new KRPC.Server.ProtocolBuffers.RPCServer (rpcTcpServer);
-                        streamServer = new KRPC.Server.ProtocolBuffers.StreamServer (streamTcpServer);
-                    } else {
-                        rpcServer = new KRPC.Server.WebSockets.RPCServer (rpcTcpServer);
-                        streamServer = new KRPC.Server.WebSockets.StreamServer (streamTcpServer);
+                    var rpcTcpServer = new TCPServer(serverAddress, rpcPort);
+                    var streamTcpServer = new TCPServer(serverAddress, streamPort);
+                    if (serverProtocol == Protocol.ProtocolBuffersOverTCP)
+                    {
+                        rpcServer = new KRPC.Server.ProtocolBuffers.RPCServer(rpcTcpServer);
+                        streamServer = new KRPC.Server.ProtocolBuffers.StreamServer(streamTcpServer);
                     }
-                } else {
+                    else
+                    {
+                        rpcServer = new KRPC.Server.WebSockets.RPCServer(rpcTcpServer);
+                        streamServer = new KRPC.Server.WebSockets.StreamServer(streamTcpServer);
+                    }
+                }
+                else
+                {
                     uint baudRate = 0;
                     ushort dataBits = 0;
                     KRPC.IO.Ports.Parity parity;
@@ -126,57 +133,61 @@ namespace KRPC
                     rpcServer = new KRPC.Server.SerialIO.RPCServer(serialServer);
                     streamServer = new KRPC.Server.SerialIO.StreamServer();
                 }
-                return new KRPC.Server.Server (Id, serverProtocol, Name, rpcServer, streamServer);
+                return new KRPC.Server.Server(Id, serverProtocol, Name, rpcServer, streamServer);
             }
         }
 
-        private readonly List<Server> servers = new List<Server> ();
+        private readonly List<Server> servers = new List<Server>();
 
         /// <summary>
         /// Configuration for all of the servers
         /// </summary>
-        public IList<Server> Servers {
+        public IList<Server> Servers
+        {
             get { return servers; }
         }
 
         /// <summary>
         /// Get the server configuration with the given identifier
         /// </summary>
-        public Server GetServer (Guid id)
+        public Server GetServer(Guid id)
         {
             foreach (var server in servers)
                 if (server.Id == id)
                     return server;
-            throw new KeyNotFoundException ();
+            throw new KeyNotFoundException();
         }
 
         /// <summary>
         /// Replace the server configuration with the given identifier
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Naming", "AvoidRedundancyInMethodNameRule")]
-        public void ReplaceServer (Server newServer)
+        public void ReplaceServer(Server newServer)
         {
-            for (var i = 0; i < servers.Count; i++) {
-                if (servers [i].Id == newServer.Id) {
-                    servers [i] = newServer;
+            for (var i = 0; i < servers.Count; i++)
+            {
+                if (servers[i].Id == newServer.Id)
+                {
+                    servers[i] = newServer;
                     return;
                 }
             }
-            throw new KeyNotFoundException ();
+            throw new KeyNotFoundException();
         }
 
         /// <summary>
         /// Remove the server configuration with the given identifier
         /// </summary>
-        public void RemoveServer (Guid id)
+        public void RemoveServer(Guid id)
         {
-            for (var i = 0; i < servers.Count; i++) {
-                if (servers [i].Id == id) {
-                    servers.RemoveAt (i);
+            for (var i = 0; i < servers.Count; i++)
+            {
+                if (servers[i].Id == id)
+                {
+                    servers.RemoveAt(i);
                     return;
                 }
             }
-            throw new KeyNotFoundException ();
+            throw new KeyNotFoundException();
         }
 
         /// <summary>
@@ -187,7 +198,7 @@ namespace KRPC
         /// <summary>
         /// Screen position of the main server window
         /// </summary>
-        public Tuple<float,float,float,float> MainWindowPosition { get; set; }
+        public Tuple<float, float, float, float> MainWindowPosition { get; set; }
 
         /// <summary>
         /// Whether the info window should be shown
@@ -197,7 +208,7 @@ namespace KRPC
         /// <summary>
         /// Screen position of the info window
         /// </summary>
-        public Tuple<float,float,float,float> InfoWindowPosition { get; set; }
+        public Tuple<float, float, float, float> InfoWindowPosition { get; set; }
 
         /// <summary>
         /// Whether servers should be started when the game loads
@@ -252,8 +263,8 @@ namespace KRPC
         /// <summary>
         /// Whether debug logging is enable
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Correctness", "MethodCanBeMadeStaticRule")]
-        public bool DebugLogging {
+        public bool DebugLogging
+        {
             get { return Logger.Level == Logger.Severity.Debug; }
             set { Logger.Level = value ? Logger.Severity.Debug : Logger.Severity.Info; }
         }

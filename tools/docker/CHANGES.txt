@@ -1,3 +1,6 @@
+v3.1.1
+ * Add buildifier
+
 v3.1.0
  * Update to Bazel 6.1.0
  * Add dotnet

@@ -1,13 +1,15 @@
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class ProcedureResult : IMessage
     {
         public bool HasValue { get; private set; }
 
-        public object Value {
+        public object Value
+        {
             get { return value_; }
-            set {
+            set
+            {
                 value_ = value;
                 HasValue = true;
             }
@@ -15,9 +17,11 @@ namespace KRPC.Service.Messages
 
         public bool HasError { get; private set; }
 
-        public Error Error {
+        public Error Error
+        {
             get { return error; }
-            set {
+            set
+            {
                 error = value;
                 HasError = true;
             }

@@ -11,7 +11,7 @@ namespace KRPC.Server.TCP
     /// <summary>
     /// A raw TCP server.
     /// </summary>
-    public sealed class TCPServer : IServer<byte,byte>
+    public sealed class TCPServer : IServer<byte, byte>
     {
         /// <summary>
         /// Event handler for when the server starts.
@@ -26,23 +26,23 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Event handler for when a new client requests a connection.
         /// </summary>
-        public event EventHandler<ClientRequestingConnectionEventArgs<byte,byte>> OnClientRequestingConnection;
+        public event EventHandler<ClientRequestingConnectionEventArgs<byte, byte>> OnClientRequestingConnection;
 
         /// <summary>
         /// Event handler for when a new client has connected.
         /// </summary>
-        public event EventHandler<ClientConnectedEventArgs<byte,byte>> OnClientConnected;
+        public event EventHandler<ClientConnectedEventArgs<byte, byte>> OnClientConnected;
 
         /// <summary>
         /// Event handler when client activity occurs.
         /// </summary>
-        #pragma warning disable 0067
-        public event EventHandler<ClientActivityEventArgs<byte,byte>> OnClientActivity;
+#pragma warning disable 0067
+        public event EventHandler<ClientActivityEventArgs<byte, byte>> OnClientActivity;
 
         /// <summary>
         /// Event handler when a client disconnects.
         /// </summary>
-        public event EventHandler<ClientDisconnectedEventArgs<byte,byte>> OnClientDisconnected;
+        public event EventHandler<ClientDisconnectedEventArgs<byte, byte>> OnClientDisconnected;
 
         /// <summary>
         /// The actual local port number of the server. Will be identical to
@@ -70,14 +70,14 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Connected clients.
         /// </summary>
-        List<TCPClient> clients = new List<TCPClient> ();
+        List<TCPClient> clients = new List<TCPClient>();
 
         /// <summary>
         /// Clients requesting a connection. Must be locked before accessing.
         /// </summary>
-        List<TCPClient> pendingClients = new List<TCPClient> ();
+        List<TCPClient> pendingClients = new List<TCPClient>();
 
-        object pendingClientsLock = new object ();
+        object pendingClientsLock = new object();
         ulong closedClientsBytesRead;
         ulong closedClientsBytesWritten;
 
@@ -85,7 +85,7 @@ namespace KRPC.Server.TCP
         /// Create a TCP server. After Start() is called, the server will listen for
         /// connections to the specified local address and port number.
         /// </summary>
-        public TCPServer (IPAddress address, ushort port)
+        public TCPServer(IPAddress address, ushort port)
         {
             ListenAddress = address;
             ListenPort = port;
@@ -94,118 +94,132 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Start the server.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        public void Start ()
+        public void Start()
         {
             if (OnClientRequestingConnection == null)
-                throw new ServerException ("Client request handler not set");
-            if (running) {
-                Logger.WriteLine ("TCPServer: start requested, but server is already running", Logger.Severity.Warning);
+                throw new ServerException("Client request handler not set");
+            if (running)
+            {
+                Logger.WriteLine("TCPServer: start requested, but server is already running", Logger.Severity.Warning);
                 return;
             }
-            Logger.WriteLine ("TCPServer: starting", Logger.Severity.Debug);
-            tcpListener = new TcpListener (ListenAddress, ListenPort);
-            try {
-                tcpListener.Start ();
-            } catch (SocketException exn) {
+            Logger.WriteLine("TCPServer: starting", Logger.Severity.Debug);
+            tcpListener = new TcpListener(ListenAddress, ListenPort);
+            try
+            {
+                tcpListener.Start();
+            }
+            catch (SocketException exn)
+            {
                 string socketError = "socket error '" + exn.SocketErrorCode + "': " + exn.Message;
-                Logger.WriteLine ("TCPServer: failed to start server; " + socketError, Logger.Severity.Error);
-                throw new ServerException (socketError);
+                Logger.WriteLine("TCPServer: failed to start server; " + socketError, Logger.Severity.Error);
+                throw new ServerException(socketError);
             }
             var endPoint = (IPEndPoint)tcpListener.LocalEndpoint;
             actualPort = (ushort)endPoint.Port;
-            startedEvent = new AutoResetEvent (false);
-            listenerThread = new Thread (ListenerThread);
-            listenerThread.Start ();
-            startedEvent.WaitOne (500);
-            if (!running) {
-                Logger.WriteLine ("TCPServer: failed to start server, timed out waiting for TcpListener to start", Logger.Severity.Error);
-                listenerThread.Abort ();
-                listenerThread.Join ();
+            startedEvent = new AutoResetEvent(false);
+            listenerThread = new Thread(ListenerThread);
+            listenerThread.Start();
+            startedEvent.WaitOne(500);
+            if (!running)
+            {
+                Logger.WriteLine("TCPServer: failed to start server, timed out waiting for TcpListener to start", Logger.Severity.Error);
+                listenerThread.Abort();
+                listenerThread.Join();
                 tcpListener = null;
-                throw new ServerException ("Failed to start server, timed out waiting for TcpListener to start");
+                throw new ServerException("Failed to start server, timed out waiting for TcpListener to start");
             }
-            EventHandlerExtensions.Invoke (OnStarted, this);
-            Logger.WriteLine ("TCPServer: started successfully", Logger.Severity.Debug);
-            if (ListenAddress.ToString () == "0.0.0.0")
-                Logger.WriteLine ("TCPServer: listening on all local network interfaces", Logger.Severity.Debug);
+            EventHandlerExtensions.Invoke(OnStarted, this);
+            Logger.WriteLine("TCPServer: started successfully", Logger.Severity.Debug);
+            if (ListenAddress.ToString() == "0.0.0.0")
+                Logger.WriteLine("TCPServer: listening on all local network interfaces", Logger.Severity.Debug);
             else
-                Logger.WriteLine ("TCPServer: listening on local address " + Address, Logger.Severity.Debug);
-            Logger.WriteLine ("TCPServer: listening on port " + actualPort, Logger.Severity.Debug);
+                Logger.WriteLine("TCPServer: listening on local address " + Address, Logger.Severity.Debug);
+            Logger.WriteLine("TCPServer: listening on port " + actualPort, Logger.Severity.Debug);
         }
 
         /// <summary>
         /// Stop the server.
         /// </summary>
-        public void Stop ()
+        public void Stop()
         {
             if (!running)
                 return;
 
-            Logger.WriteLine ("TCPServer: stop requested", Logger.Severity.Debug);
-            tcpListener.Stop ();
-            if (!listenerThread.Join (3000))
-                throw new ServerException ("Failed to stop TCP listener thread (timed out after 3 seconds)");
+            Logger.WriteLine("TCPServer: stop requested", Logger.Severity.Debug);
+            tcpListener.Stop();
+            if (!listenerThread.Join(3000))
+                throw new ServerException("Failed to stop TCP listener thread (timed out after 3 seconds)");
 
             // Close all client connections
-            foreach (var client in pendingClients) {
-                Logger.WriteLine ("TCPServer: cancelling pending connection to client (" + client.Address + ")", Logger.Severity.Debug);
-                DisconnectClient (client, true);
+            foreach (var client in pendingClients)
+            {
+                Logger.WriteLine("TCPServer: cancelling pending connection to client (" + client.Address + ")", Logger.Severity.Debug);
+                DisconnectClient(client, true);
             }
-            foreach (var client in clients) {
-                Logger.WriteLine ("TCPServer: closing connection to client (" + client.Address + ")", Logger.Severity.Debug);
-                DisconnectClient (client);
+            foreach (var client in clients)
+            {
+                Logger.WriteLine("TCPServer: closing connection to client (" + client.Address + ")", Logger.Severity.Debug);
+                DisconnectClient(client);
             }
-            pendingClients.Clear ();
-            clients.Clear ();
+            pendingClients.Clear();
+            clients.Clear();
 
             // Exited cleanly
             running = false;
-            Logger.WriteLine ("TCPServer: stopped successfully", Logger.Severity.Debug);
+            Logger.WriteLine("TCPServer: stopped successfully", Logger.Severity.Debug);
 
-            EventHandlerExtensions.Invoke (OnStopped, this);
+            EventHandlerExtensions.Invoke(OnStopped, this);
         }
 
         /// <summary>
         /// Update the server.
         /// </summary>
-        public void Update ()
+        public void Update()
         {
             // Remove disconnected clients
-            for (int i = clients.Count - 1; i >= 0; i--) {
-                var client = clients [i];
-                if (!client.Connected) {
-                    clients.RemoveAt (i);
-                    DisconnectClient (client);
+            for (int i = clients.Count - 1; i >= 0; i--)
+            {
+                var client = clients[i];
+                if (!client.Connected)
+                {
+                    clients.RemoveAt(i);
+                    DisconnectClient(client);
                 }
             }
 
             // Process pending clients
-            lock (pendingClientsLock) {
-                if (pendingClients.Count > 0) {
-                    var stillPendingClients = new List<TCPClient> ();
-                    foreach (var client in pendingClients) {
+            lock (pendingClientsLock)
+            {
+                if (pendingClients.Count > 0)
+                {
+                    var stillPendingClients = new List<TCPClient>();
+                    foreach (var client in pendingClients)
+                    {
                         // Trigger OnClientRequestingConnection events to verify the connection
-                        var args = new ClientRequestingConnectionEventArgs<byte,byte> (client);
-                        EventHandlerExtensions.Invoke (OnClientRequestingConnection, this, args);
+                        var args = new ClientRequestingConnectionEventArgs<byte, byte>(client);
+                        EventHandlerExtensions.Invoke(OnClientRequestingConnection, this, args);
 
                         // Deny the connection
-                        if (args.Request.ShouldDeny) {
-                            Logger.WriteLine ("TCPServer: client connection denied (" + client.Address + ")", Logger.Severity.Debug);
-                            DisconnectClient (client, true);
+                        if (args.Request.ShouldDeny)
+                        {
+                            Logger.WriteLine("TCPServer: client connection denied (" + client.Address + ")", Logger.Severity.Debug);
+                            DisconnectClient(client, true);
                         }
 
                         // Allow the connection
-                        else if (args.Request.ShouldAllow) {
-                            Logger.WriteLine ("TCPServer: client connection accepted (" + client.Address + ")", Logger.Severity.Debug);
-                            clients.Add (client);
-                            EventHandlerExtensions.Invoke (OnClientConnected, this, new ClientConnectedEventArgs<byte,byte> (client));
+                        else if (args.Request.ShouldAllow)
+                        {
+                            Logger.WriteLine("TCPServer: client connection accepted (" + client.Address + ")", Logger.Severity.Debug);
+                            clients.Add(client);
+                            EventHandlerExtensions.Invoke(OnClientConnected, this, new ClientConnectedEventArgs<byte, byte>(client));
                         }
 
                         // Still pending, will either be denied or allowed on a subsequent called to Update
-                        else {
-                            Logger.WriteLine ("TCPServer: client connection still pending (" + client.Address + ")", Logger.Severity.Debug);
-                            stillPendingClients.Add (client);
+                        else
+                        {
+                            Logger.WriteLine("TCPServer: client connection still pending (" + client.Address + ")", Logger.Severity.Debug);
+                            stillPendingClients.Add(client);
                         }
                     }
                     pendingClients = stillPendingClients;
@@ -216,7 +230,8 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Address the server is listening on. Format depends on the server protocol.
         /// </summary>
-        public string Address {
+        public string Address
+        {
             get { return ListenAddress + ":" + (Running ? ActualPort : ListenPort); }
         }
 
@@ -228,18 +243,27 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Information about the server.
         /// </summary>
-        public string Info {
-            get {
-                if (IPAddress.IsLoopback (ListenAddress))
+        public string Info
+        {
+            get
+            {
+                if (IPAddress.IsLoopback(ListenAddress))
                     return localClientOnlyText;
                 if (ListenAddress == IPAddress.Any)
                     return anyClientText;
-                try {
-                    var subnet = NetworkInformation.GetSubnetMask (ListenAddress);
-                    return string.Format (subnetAllowedText, subnet);
-                } catch (NotImplementedException) {
-                } catch (ArgumentException) {
-                } catch (DllNotFoundException) {
+                try
+                {
+                    var subnet = NetworkInformation.GetSubnetMask(ListenAddress);
+                    return string.Format(subnetAllowedText, subnet);
+                }
+                catch (NotImplementedException)
+                {
+                }
+                catch (ArgumentException)
+                {
+                }
+                catch (DllNotFoundException)
+                {
                 }
                 return unknownClientsAllowedText;
             }
@@ -248,15 +272,18 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Whether the server is running.
         /// </summary>
-        public bool Running {
+        public bool Running
+        {
             get { return running; }
         }
 
         /// <summary>
         /// Clients conneted to the server.
         /// </summary>
-        public IEnumerable<IClient<byte,byte>> Clients {
-            get {
+        public IEnumerable<IClient<byte, byte>> Clients
+        {
+            get
+            {
                 foreach (var client in clients)
                     yield return client;
             }
@@ -265,11 +292,13 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Number of bytes received from clients.
         /// </summary>
-        public ulong BytesRead {
-            get {
+        public ulong BytesRead
+        {
+            get
+            {
                 ulong read = closedClientsBytesRead;
                 for (int i = 0; i < clients.Count; i++)
-                    read += clients [i].Stream.BytesRead;
+                    read += clients[i].Stream.BytesRead;
                 return read;
             }
         }
@@ -277,11 +306,13 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Number of bytes sent to clients.
         /// </summary>
-        public ulong BytesWritten {
-            get {
+        public ulong BytesWritten
+        {
+            get
+            {
                 ulong written = closedClientsBytesWritten;
                 for (int i = 0; i < clients.Count; i++)
-                    written += clients [i].Stream.BytesWritten;
+                    written += clients[i].Stream.BytesWritten;
                 return written;
             }
         }
@@ -289,12 +320,12 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Clear statistics.
         /// </summary>
-        public void ClearStats ()
+        public void ClearStats()
         {
             closedClientsBytesRead = 0;
             closedClientsBytesWritten = 0;
             foreach (var client in clients)
-                client.Stream.ClearStats ();
+                client.Stream.ClearStats();
         }
 
         /// <summary>
@@ -312,59 +343,70 @@ namespace KRPC.Server.TCP
         /// <summary>
         /// Port number that the server is currently listening on.
         /// </summary>
-        public ushort ActualPort {
-            get {
+        public ushort ActualPort
+        {
+            get
+            {
                 if (!Running)
-                    throw new InvalidOperationException ("Server is not running");
+                    throw new InvalidOperationException("Server is not running");
                 return actualPort;
             }
         }
 
-        [SuppressMessage ("Gendarme.Rules.Correctness", "EnsureLocalDisposalRule")]
-        [SuppressMessage ("Gendarme.Rules.Exceptions", "DoNotSwallowErrorsCatchingNonSpecificExceptionsRule")]
-        void ListenerThread ()
+        void ListenerThread()
         {
-            try {
-                try {
+            try
+            {
+                try
+                {
                     running = true;
-                    startedEvent.Set ();
-                    while (true) {
+                    startedEvent.Set();
+                    while (true)
+                    {
                         // Block until a client connects to the server
-                        var client = tcpListener.AcceptTcpClient ();
-                        Logger.WriteLine ("TCPServer.Listener: client requesting connection (" + client.Client.RemoteEndPoint + ")", Logger.Severity.Debug);
+                        var client = tcpListener.AcceptTcpClient();
+                        Logger.WriteLine("TCPServer.Listener: client requesting connection (" + client.Client.RemoteEndPoint + ")", Logger.Severity.Debug);
                         // Add to pending clients
-                        lock (pendingClientsLock) {
-                            pendingClients.Add (new TCPClient (client));
+                        lock (pendingClientsLock)
+                        {
+                            pendingClients.Add(new TCPClient(client));
                         }
                     }
-                } catch (SocketException e) {
+                }
+                catch (SocketException e)
+                {
                     if (e.SocketErrorCode == SocketError.Interrupted)
-                        Logger.WriteLine ("TCPServer.Listener: stopped", Logger.Severity.Debug);
+                        Logger.WriteLine("TCPServer.Listener: stopped", Logger.Severity.Debug);
                     else
                         throw;
                 }
-            } catch (Exception e) {
-                Logger.WriteLine ("TCPServer.Listener: caught exception, stopped", Logger.Severity.Error);
-                Logger.WriteLine (e.GetType ().Name);
-                Logger.WriteLine (e.Message);
-                Logger.WriteLine (e.StackTrace);
-                tcpListener.Stop ();
+            }
+            catch (Exception e)
+            {
+                Logger.WriteLine("TCPServer.Listener: caught exception, stopped", Logger.Severity.Error);
+                Logger.WriteLine(e.GetType().Name);
+                Logger.WriteLine(e.Message);
+                Logger.WriteLine(e.StackTrace);
+                tcpListener.Stop();
             }
         }
 
-        void DisconnectClient (IClient<byte,byte> client, bool noEvent = false)
+        void DisconnectClient(IClient<byte, byte> client, bool noEvent = false)
         {
             var clientAddress = client.Address;
-            try {
+            try
+            {
                 var stream = client.Stream;
                 closedClientsBytesRead += stream.BytesRead;
                 closedClientsBytesWritten += stream.BytesWritten;
-            } catch (ClientDisconnectedException) {
             }
-            client.Close ();
+            catch (ClientDisconnectedException)
+            {
+            }
+            client.Close();
             if (!noEvent)
-                EventHandlerExtensions.Invoke (OnClientDisconnected, this, new ClientDisconnectedEventArgs<byte,byte> (client));
-            Logger.WriteLine ("TCPServer: client disconnected (" + clientAddress + ")");
+                EventHandlerExtensions.Invoke(OnClientDisconnected, this, new ClientDisconnectedEventArgs<byte, byte>(client));
+            Logger.WriteLine("TCPServer: client disconnected (" + clientAddress + ")");
         }
     }
 }
