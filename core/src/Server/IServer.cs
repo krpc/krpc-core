@@ -11,18 +11,18 @@ namespace KRPC.Server
         /// <summary>
         /// Start the server.
         /// </summary>
-        void Start ();
+        void Start();
 
         /// <summary>
         /// Stop the server.
         /// </summary>
-        void Stop ();
+        void Stop();
 
         /// <summary>
         /// Update the server. Call this regularly to ensure timely handling
         /// of new client connections and other functionality.
         /// </summary>
-        void Update ();
+        void Update();
 
         /// <summary>
         /// The servers address.
@@ -52,7 +52,7 @@ namespace KRPC.Server
         /// <summary>
         /// Clear the bytes read and bytes written counts.
         /// </summary>
-        void ClearStats ();
+        void ClearStats();
 
         /// <summary>
         /// Handler to trigger when the server starts.
@@ -95,26 +95,26 @@ namespace KRPC.Server
     /// A generic server, that receives values of type TIn from clients and
     /// sends values of type TOut to them.
     /// </summary>
-    public interface IServer<TIn,TOut> : IBaseServer
+    public interface IServer<TIn, TOut> : IBaseServer
     {
         /// <summary>
         /// Clients that are connected to the server.
         /// </summary>
-        IEnumerable<IClient<TIn,TOut>> Clients { get; }
+        IEnumerable<IClient<TIn, TOut>> Clients { get; }
 
         /// <summary>
         /// Handler to trigger when a new client requests a connection.
         /// </summary>
-        event EventHandler<ClientRequestingConnectionEventArgs<TIn,TOut>> OnClientRequestingConnection;
+        event EventHandler<ClientRequestingConnectionEventArgs<TIn, TOut>> OnClientRequestingConnection;
 
         /// <summary>
         /// Handler to trigger when a client has connected.
         /// </summary>
-        event EventHandler<ClientConnectedEventArgs<TIn,TOut>> OnClientConnected;
+        event EventHandler<ClientConnectedEventArgs<TIn, TOut>> OnClientConnected;
 
         /// <summary>
         /// Handler to trigger when a client has disconnected.
         /// </summary>
-        event EventHandler<ClientDisconnectedEventArgs<TIn,TOut>> OnClientDisconnected;
+        event EventHandler<ClientDisconnectedEventArgs<TIn, TOut>> OnClientDisconnected;
     }
 }

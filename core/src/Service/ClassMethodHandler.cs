@@ -18,12 +18,12 @@ namespace KRPC.Service
         readonly ProcedureParameter[] parameters;
         readonly object[] methodArguments;
 
-        public ClassMethodHandler (Type classType, MethodInfo methodInfo, bool returnIsNullable)
+        public ClassMethodHandler(Type classType, MethodInfo methodInfo, bool returnIsNullable)
         {
             method = methodInfo;
-            var parameterList = method.GetParameters ().Select (x => new ProcedureParameter (x)).ToList ();
-            parameterList.Insert (0, new ProcedureParameter (classType, "this"));
-            parameters = parameterList.ToArray ();
+            var parameterList = method.GetParameters().Select(x => new ProcedureParameter(x)).ToList();
+            parameterList.Insert(0, new ProcedureParameter(classType, "this"));
+            parameters = parameterList.ToArray();
             methodArguments = new object[parameters.Length - 1];
             ReturnIsNullable = returnIsNullable;
         }
@@ -32,20 +32,22 @@ namespace KRPC.Service
         /// Invokes a method on an object. The first parameter must be an the objects GUID, which is
         /// used to fetch the instance, and the remaining parameters are passed to the method.
         /// </summary>
-        public object Invoke (params object[] arguments)
+        public object Invoke(params object[] arguments)
         {
-            object instance = arguments [0];
+            object instance = arguments[0];
             // TODO: should be able to invoke default arguments using Type.Missing, but get "System.ArgumentException : failed to convert parameters"
             for (int i = 1; i < arguments.Length; i++)
-                methodArguments [i - 1] = (arguments [i] == Type.Missing) ? parameters [i].DefaultValue : arguments [i];
-            return method.Invoke (instance, methodArguments);
+                methodArguments[i - 1] = (arguments[i] == Type.Missing) ? parameters[i].DefaultValue : arguments[i];
+            return method.Invoke(instance, methodArguments);
         }
 
-        public IEnumerable<ProcedureParameter> Parameters {
+        public IEnumerable<ProcedureParameter> Parameters
+        {
             get { return parameters; }
         }
 
-        public Type ReturnType {
+        public Type ReturnType
+        {
             get { return method.ReturnType; }
         }
 

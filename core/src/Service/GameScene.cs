@@ -10,8 +10,6 @@ namespace KRPC.Service
     /// </summary>
     [Flags]
     [Serializable]
-    [SuppressMessage ("Gendarme.Rules.Design", "FlagsShouldNotDefineAZeroValueRule")]
-    [SuppressMessage ("Gendarme.Rules.Naming", "UsePluralNameInEnumFlagsRule")]
     public enum GameScene
     {
         /// <summary>
@@ -65,13 +63,15 @@ namespace KRPC.Service
         All = ~0
     }
 
-    [SuppressMessage ("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
-    static class GameSceneUtils {
-        public static string Name(GameScene scene) {
+    static class GameSceneUtils
+    {
+        public static string Name(GameScene scene)
+        {
             return scene.ToString().Replace("Inherit, ", "");
         }
 
-        public static IList<string> Serialize(GameScene scene) {
+        public static IList<string> Serialize(GameScene scene)
+        {
             IList<string> result = new List<string>();
             if ((scene & GameScene.SpaceCenter) != 0)
                 result.Add("SPACE_CENTER");

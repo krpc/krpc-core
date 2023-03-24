@@ -5,98 +5,100 @@ using KRPC.Server;
 
 namespace KRPC.Test.Server
 {
-    [SuppressMessage ("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
-    [SuppressMessage ("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
-    [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
-    sealed class TestStream : IStream<byte,byte>, IDisposable
+    [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidLackOfCohesionOfMethodsRule")]
+    [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
+    [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
+    sealed class TestStream : IStream<byte, byte>, IDisposable
     {
         MemoryStream outputStream;
         MemoryStream inputStream;
 
-        public TestStream (byte[] input, byte[] output = null)
+        public TestStream(byte[] input, byte[] output = null)
         {
-            inputStream = new MemoryStream (input);
+            inputStream = new MemoryStream(input);
             if (output != null)
-                outputStream = new MemoryStream (output);
+                outputStream = new MemoryStream(output);
         }
 
-        public TestStream (MemoryStream input = null, MemoryStream output = null)
+        public TestStream(MemoryStream input = null, MemoryStream output = null)
         {
             inputStream = input;
             outputStream = output;
             if (inputStream != null)
-                inputStream.Seek (0, SeekOrigin.Begin);
+                inputStream.Seek(0, SeekOrigin.Begin);
         }
 
         bool disposed;
 
-        public void Dispose ()
+        public void Dispose()
         {
-            if (!disposed) {
+            if (!disposed)
+            {
                 if (inputStream != null)
-                    inputStream.Dispose ();
+                    inputStream.Dispose();
                 if (outputStream != null)
-                    outputStream.Dispose ();
+                    outputStream.Dispose();
                 disposed = true;
             }
         }
 
-        void CheckDisposed ()
+        void CheckDisposed()
         {
             if (disposed)
-                throw new ObjectDisposedException (GetType ().Name);
+                throw new ObjectDisposedException(GetType().Name);
         }
 
-        public bool DataAvailable {
+        public bool DataAvailable
+        {
             get { return !Closed && inputStream.Position < inputStream.Length; }
         }
 
-        public byte Read ()
+        public byte Read()
         {
-            CheckDisposed ();
+            CheckDisposed();
             if (Closed)
-                throw new InvalidOperationException ();
-            return (byte)inputStream.ReadByte ();
+                throw new InvalidOperationException();
+            return (byte)inputStream.ReadByte();
         }
 
-        public int Read (byte[] buffer, int offset)
+        public int Read(byte[] buffer, int offset)
         {
-            CheckDisposed ();
+            CheckDisposed();
             if (Closed)
-                throw new InvalidOperationException ();
-            var size = inputStream.Read (buffer, offset, buffer.Length - offset);
+                throw new InvalidOperationException();
+            var size = inputStream.Read(buffer, offset, buffer.Length - offset);
             BytesRead += (ulong)size;
             return size;
         }
 
-        public int Read (byte[] buffer, int offset, int size)
+        public int Read(byte[] buffer, int offset, int size)
         {
-            CheckDisposed ();
+            CheckDisposed();
             if (Closed)
-                throw new InvalidOperationException ();
-            size = inputStream.Read (buffer, offset, size);
+                throw new InvalidOperationException();
+            size = inputStream.Read(buffer, offset, size);
             BytesRead += (ulong)size;
             return size;
         }
 
-        public void Write (byte value)
+        public void Write(byte value)
         {
-            CheckDisposed ();
-            throw new NotSupportedException ();
+            CheckDisposed();
+            throw new NotSupportedException();
         }
 
-        public void Write (byte[] buffer)
+        public void Write(byte[] buffer)
         {
-            CheckDisposed ();
-            Write (buffer, 0, buffer.Length);
+            CheckDisposed();
+            Write(buffer, 0, buffer.Length);
         }
 
-        public void Write (byte[] buffer, int offset, int size)
+        public void Write(byte[] buffer, int offset, int size)
         {
-            CheckDisposed ();
+            CheckDisposed();
             if (Closed || outputStream == null)
-                throw new InvalidOperationException ();
-            outputStream.Write (buffer, offset, size);
+                throw new InvalidOperationException();
+            outputStream.Write(buffer, offset, size);
             BytesWritten += (ulong)size;
         }
 
@@ -104,18 +106,18 @@ namespace KRPC.Test.Server
 
         public ulong BytesWritten { get; private set; }
 
-        public void ClearStats ()
+        public void ClearStats()
         {
-            CheckDisposed ();
+            CheckDisposed();
             BytesRead = 0;
             BytesWritten = 0;
         }
 
         public bool Closed { get; set; }
 
-        public void Close ()
+        public void Close()
         {
-            CheckDisposed ();
+            CheckDisposed();
             inputStream = null;
             outputStream = null;
             Closed = true;

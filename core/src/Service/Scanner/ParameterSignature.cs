@@ -37,14 +37,14 @@ namespace KRPC.Service.Scanner
         /// <summary>
         /// Create a parameter signature for a reflected parameter.
         /// </summary>
-        public ParameterSignature (string fullProcedureName, ProcedureParameter parameter)
+        public ParameterSignature(string fullProcedureName, ProcedureParameter parameter)
         {
             Name = parameter.Name;
             Type = parameter.Type;
 
             // Check the parameter type is valid
-            if (!TypeUtils.IsAValidType (Type))
-                throw new ServiceException (Type + " is not a valid Procedure parameter type, in " + fullProcedureName);
+            if (!TypeUtils.IsAValidType(Type))
+                throw new ServiceException(Type + " is not a valid Procedure parameter type, in " + fullProcedureName);
 
             HasDefaultValue = parameter.HasDefaultValue;
             if (HasDefaultValue)
@@ -55,14 +55,15 @@ namespace KRPC.Service.Scanner
         /// <summary>
         /// Serialize the signature.
         /// </summary>
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue ("name", Name);
-            info.AddValue ("type", TypeUtils.SerializeType (Type));
+            info.AddValue("name", Name);
+            info.AddValue("type", TypeUtils.SerializeType(Type));
             if (HasDefaultValue)
-                info.AddValue ("default_value", Server.ProtocolBuffers.Encoder.Encode (DefaultValue).ToByteArray ());
-            if (Nullable) {
-                info.AddValue ("nullable", Nullable);
+                info.AddValue("default_value", Server.ProtocolBuffers.Encoder.Encode(DefaultValue).ToByteArray());
+            if (Nullable)
+            {
+                info.AddValue("nullable", Nullable);
             }
         }
     }

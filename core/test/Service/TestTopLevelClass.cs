@@ -5,13 +5,13 @@ namespace KRPC.Test.Service
     /// <summary>
     /// A class defined at the top level, but included in a service
     /// </summary>
-    [KRPCClass (Service = "TestService")]
+    [KRPCClass(Service = "TestService")]
     public class TestTopLevelClass
     {
         [KRPCMethod]
-        public string AMethod (int x)
+        public string AMethod(int x)
         {
-            return x.ToString ();
+            return x.ToString();
         }
 
         [KRPCProperty]

@@ -5,7 +5,7 @@ namespace KRPC.Service.Attributes
     /// <summary>
     /// A kRPC enum.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Enum)]
+    [AttributeUsage(AttributeTargets.Enum)]
     public sealed class KRPCEnumAttribute : Attribute
     {
         /// <summary>

@@ -5,7 +5,8 @@ namespace KRPC.Service
 {
     static class ValueUtils
     {
-        public static bool Equal(object x, object y) {
+        public static bool Equal(object x, object y)
+        {
             if (ReferenceEquals(x, y))
                 return true;
             if (ReferenceEquals(x, null) || ReferenceEquals(y, null))
@@ -22,18 +23,21 @@ namespace KRPC.Service
             return x.Equals(y);
         }
 
-        static bool ListsEqual(IList x, IList y) {
+        static bool ListsEqual(IList x, IList y)
+        {
             var sizeX = x.Count;
             if (sizeX != y.Count)
                 return false;
-            for (var i = 0; i < sizeX; i++) {
+            for (var i = 0; i < sizeX; i++)
+            {
                 if (!Equal(x[i], y[i]))
                     return false;
             }
             return true;
         }
 
-        static bool SetsEqual(IEnumerable x, IEnumerable y) {
+        static bool SetsEqual(IEnumerable x, IEnumerable y)
+        {
             var enumX = x.GetEnumerator();
             var enumY = y.GetEnumerator();
             var sizeX = 0;
@@ -45,11 +49,14 @@ namespace KRPC.Service
             if (sizeX != sizeY)
                 return false;
             enumX.Reset();
-            while (enumX.MoveNext()) {
+            while (enumX.MoveNext())
+            {
                 bool found = false;
                 enumY.Reset();
-                while (enumY.MoveNext()) {
-                    if (Equal(enumX.Current, enumY.Current)) {
+                while (enumY.MoveNext())
+                {
+                    if (Equal(enumX.Current, enumY.Current))
+                    {
                         found = true;
                         break;
                     }
@@ -60,10 +67,12 @@ namespace KRPC.Service
             return true;
         }
 
-        static bool DictionariesEqual(IDictionary x, IDictionary y) {
+        static bool DictionariesEqual(IDictionary x, IDictionary y)
+        {
             if (x.Count != y.Count)
                 return false;
-            foreach (var key in x.Keys) {
+            foreach (var key in x.Keys)
+            {
                 if (!y.Contains(key))
                     return false;
                 if (!Equal(x[key], y[key]))

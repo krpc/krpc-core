@@ -1,6 +1,6 @@
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class Error : IMessage
     {
         public string Service { get; private set; }
@@ -11,7 +11,7 @@ namespace KRPC.Service.Messages
 
         public string StackTrace { get; private set; }
 
-        public Error (string description, string stackTrace)
+        public Error(string description, string stackTrace)
         {
             Service = string.Empty;
             Name = string.Empty;
@@ -19,7 +19,7 @@ namespace KRPC.Service.Messages
             StackTrace = stackTrace;
         }
 
-        public Error (string service, string name, string description)
+        public Error(string service, string name, string description)
         {
             Service = service;
             Name = name;
@@ -27,7 +27,7 @@ namespace KRPC.Service.Messages
             StackTrace = string.Empty;
         }
 
-        public Error (string service, string name, string description, string stackTrace)
+        public Error(string service, string name, string description, string stackTrace)
         {
             Service = service;
             Name = name;

@@ -28,19 +28,19 @@ namespace KRPC.Service.Scanner
         /// <summary>
         /// Create a class signature
         /// </summary>
-        public ClassSignature (string serviceName, string className, string documentation)
+        public ClassSignature(string serviceName, string className, string documentation)
         {
             Name = className;
             FullyQualifiedName = serviceName + "." + Name;
-            Documentation = DocumentationUtils.ResolveCrefs (documentation);
+            Documentation = DocumentationUtils.ResolveCrefs(documentation);
         }
 
         /// <summary>
         /// Serialize the signature.
         /// </summary>
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue ("documentation", Documentation);
+            info.AddValue("documentation", Documentation);
         }
     }
 }

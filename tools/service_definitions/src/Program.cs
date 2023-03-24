@@ -14,20 +14,20 @@ namespace ServiceDefinitions
 {
     static class MainClass
     {
-        static void Help (OptionSet options)
+        static void Help(OptionSet options)
         {
-            Console.Error.WriteLine ("usage: ServiceDefinitions.exe [-h] [-v] [--output=PATH] service assembly...");
-            Console.Error.WriteLine ();
-            Console.Error.WriteLine ("Generate service definitions JSON file for a kRPC service");
-            Console.Error.WriteLine ();
-            options.WriteOptionDescriptions (Console.Error);
-            Console.Error.WriteLine ("  service                    Name of service to generate");
-            Console.Error.WriteLine ("  assembly...                Path(s) to assembly DLL(s) to load");
+            Console.Error.WriteLine("usage: ServiceDefinitions.exe [-h] [-v] [--output=PATH] service assembly...");
+            Console.Error.WriteLine();
+            Console.Error.WriteLine("Generate service definitions JSON file for a kRPC service");
+            Console.Error.WriteLine();
+            options.WriteOptionDescriptions(Console.Error);
+            Console.Error.WriteLine("  service                    Name of service to generate");
+            Console.Error.WriteLine("  assembly...                Path(s) to assembly DLL(s) to load");
         }
 
-        [SuppressMessage ("Gendarme.Rules.Portability", "ExitCodeIsLimitedOnUnixRule")]
-        [SuppressMessage ("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
-        public static int Main (string [] args)
+        [SuppressMessage("Gendarme.Rules.Portability", "ExitCodeIsLimitedOnUnixRule")]
+        [SuppressMessage("Gendarme.Rules.Smells", "AvoidLongMethodsRule")]
+        public static int Main(string[] args)
         {
             bool showHelp = false;
             bool showVersion = false;
@@ -44,71 +44,87 @@ namespace ServiceDefinitions
                     (string v) => outputPath = v
                 }
             };
-            List<string> positionalArgs = options.Parse (args);
+            List<string> positionalArgs = options.Parse(args);
 
-            if (showHelp) {
-                Help (options);
+            if (showHelp)
+            {
+                Help(options);
                 return 0;
             }
 
-            if (showVersion) {
-                var version = Assembly.GetEntryAssembly ().GetName().Version;
-                Console.Error.WriteLine ("ServiceDefinitions.exe version " + version);
+            if (showVersion)
+            {
+                var version = Assembly.GetEntryAssembly().GetName().Version;
+                Console.Error.WriteLine("ServiceDefinitions.exe version " + version);
                 return 0;
             }
 
-            if (positionalArgs.Count < 2) {
-                Console.Error.WriteLine ("Not enough arguments");
+            if (positionalArgs.Count < 2)
+            {
+                Console.Error.WriteLine("Not enough arguments");
                 return 1;
             }
 
             Logger.Enabled = true;
             Logger.Level = Logger.Severity.Warning;
-            var service = positionalArgs [0];
-            for (var i = 1; i < positionalArgs.Count; i++) {
-                var path = positionalArgs [i];
+            var service = positionalArgs[0];
+            for (var i = 1; i < positionalArgs.Count; i++)
+            {
+                var path = positionalArgs[i];
 
                 if (!File.Exists(path))
                 {
-                    Console.Error.WriteLine ("Assembly '" + path + "' does not exist.");
+                    Console.Error.WriteLine("Assembly '" + path + "' does not exist.");
                     return 1;
                 }
-                try {
-                    Assembly.LoadFrom (path);
-                } catch (FileNotFoundException e) {
-                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'.");
-                    Console.Error.WriteLine (e.Message);
+                try
+                {
+                    Assembly.LoadFrom(path);
+                }
+                catch (FileNotFoundException e)
+                {
+                    Console.Error.WriteLine("Failed to load assembly '" + path + "'.");
+                    Console.Error.WriteLine(e.Message);
                     if (e.InnerException != null)
-                        Console.Error.WriteLine (e.InnerException.Message);
+                        Console.Error.WriteLine(e.InnerException.Message);
                     return 1;
-                } catch (FileLoadException e) {
-                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'.");
-                    Console.Error.WriteLine (e.Message);
+                }
+                catch (FileLoadException e)
+                {
+                    Console.Error.WriteLine("Failed to load assembly '" + path + "'.");
+                    Console.Error.WriteLine(e.Message);
                     if (e.InnerException != null)
-                        Console.Error.WriteLine (e.InnerException.Message);
+                        Console.Error.WriteLine(e.InnerException.Message);
                     return 1;
-                } catch (BadImageFormatException) {
-                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'. Bad image format.");
+                }
+                catch (BadImageFormatException)
+                {
+                    Console.Error.WriteLine("Failed to load assembly '" + path + "'. Bad image format.");
                     return 1;
-                } catch (SecurityException) {
-                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'. Security exception.");
+                }
+                catch (SecurityException)
+                {
+                    Console.Error.WriteLine("Failed to load assembly '" + path + "'. Security exception.");
                     return 1;
-                } catch (PathTooLongException) {
-                    Console.Error.WriteLine ("Failed to load assembly '" + path + "'. File name too long.");
+                }
+                catch (PathTooLongException)
+                {
+                    Console.Error.WriteLine("Failed to load assembly '" + path + "'. File name too long.");
                     return 1;
                 }
             }
-            var services = KRPC.Service.Scanner.Scanner.GetServices ();
-            if (!services.ContainsKey (service)) {
-                Console.Error.WriteLine ("Service " + service + " not found");
+            var services = KRPC.Service.Scanner.Scanner.GetServices();
+            if (!services.ContainsKey(service))
+            {
+                Console.Error.WriteLine("Service " + service + " not found");
                 return 1;
             }
-            services = new Dictionary<string, KRPC.Service.Scanner.ServiceSignature> { { service, services [service] } };
-            string output = JsonConvert.SerializeObject (services, Formatting.Indented);
+            services = new Dictionary<string, KRPC.Service.Scanner.ServiceSignature> { { service, services[service] } };
+            string output = JsonConvert.SerializeObject(services, Formatting.Indented);
             if (outputPath != null)
-                File.WriteAllText (outputPath, output);
+                File.WriteAllText(outputPath, output);
             else
-                Console.Write (output);
+                Console.Write(output);
             return 0;
         }
     }

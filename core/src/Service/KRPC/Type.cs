@@ -6,13 +6,13 @@ namespace KRPC.Service.KRPC
     /// <summary>
     /// A server side expression.
     /// </summary>
-    [KRPCClass (Service = "KRPC")]
-    [SuppressMessage ("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
+    [KRPCClass(Service = "KRPC")]
+    [SuppressMessage("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     public class Type
     {
         internal System.Type InternalType { get; private set; }
 
-        internal Type (System.Type type)
+        internal Type(System.Type type)
         {
             InternalType = type;
         }
@@ -21,45 +21,45 @@ namespace KRPC.Service.KRPC
         /// Double type.
         /// </summary>
         [KRPCMethod]
-        public static Type Double ()
+        public static Type Double()
         {
-            return new Type (typeof (double));
+            return new Type(typeof(double));
         }
 
         /// <summary>
         /// Float type.
         /// </summary>
         [KRPCMethod]
-        public static Type Float ()
+        public static Type Float()
         {
-            return new Type (typeof (float));
+            return new Type(typeof(float));
         }
 
         /// <summary>
         /// Int type.
         /// </summary>
         [KRPCMethod]
-        public static Type Int ()
+        public static Type Int()
         {
-            return new Type (typeof (int));
+            return new Type(typeof(int));
         }
 
         /// <summary>
         /// Bool type.
         /// </summary>
         [KRPCMethod]
-        public static Type Bool ()
+        public static Type Bool()
         {
-            return new Type (typeof (bool));
+            return new Type(typeof(bool));
         }
 
         /// <summary>
         /// String type.
         /// </summary>
         [KRPCMethod]
-        public static Type String ()
+        public static Type String()
         {
-            return new Type (typeof (string));
+            return new Type(typeof(string));
         }
     }
 }

@@ -12,28 +12,31 @@ namespace KRPC.Server
         /// <summary>
         /// Should the connection be allowed?
         /// </summary>
-        public bool ShouldAllow {
+        public bool ShouldAllow
+        {
             get { return allow && !deny; }
         }
 
         /// <summary>
         /// Should the connection be denied?
         /// </summary>
-        public bool ShouldDeny {
+        public bool ShouldDeny
+        {
             get { return deny; }
         }
 
         /// <summary>
         /// Is a decision still pending?
         /// </summary>
-        public bool StillPending {
+        public bool StillPending
+        {
             get { return !allow && !deny; }
         }
 
         /// <summary>
         /// Allow the connection
         /// </summary>
-        public void Allow ()
+        public void Allow()
         {
             allow = true;
         }
@@ -41,7 +44,7 @@ namespace KRPC.Server
         /// <summary>
         /// Deny the connection
         /// </summary>
-        public void Deny ()
+        public void Deny()
         {
             deny = true;
         }

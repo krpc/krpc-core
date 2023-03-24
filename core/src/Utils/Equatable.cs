@@ -12,50 +12,50 @@ namespace KRPC.Utils
         /// <summary>
         /// Returns true if the objects are equal.
         /// </summary>
-        public abstract bool Equals (T other);
+        public abstract bool Equals(T other);
 
         /// <summary>
         /// Hash the object.
         /// </summary>
-        public override abstract int GetHashCode ();
+        public override abstract int GetHashCode();
 
         /// <summary>
         /// Returns true if the objects are equal.
         /// </summary>
-        public sealed override bool Equals (object obj)
+        public sealed override bool Equals(object obj)
         {
-            if (ReferenceEquals (this, obj))
+            if (ReferenceEquals(this, obj))
                 return true;
-            if (ReferenceEquals (obj, null))
+            if (ReferenceEquals(obj, null))
                 return false;
             var typedObj = obj as T;
-            return typedObj != null && Equals (typedObj);
+            return typedObj != null && Equals(typedObj);
         }
 
         /// <summary>
         /// Returns true if the objects are equal.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Design.Generic", "DoNotDeclareStaticMembersOnGenericTypesRule")]
-        public static bool operator == (Equatable<T> lhs, Equatable<T> rhs)
+        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotDeclareStaticMembersOnGenericTypesRule")]
+        public static bool operator ==(Equatable<T> lhs, Equatable<T> rhs)
         {
-            if (ReferenceEquals (lhs, null) || ReferenceEquals (rhs, null))
-                return ReferenceEquals (lhs, rhs);
-            if (ReferenceEquals (lhs, rhs))
+            if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+                return ReferenceEquals(lhs, rhs);
+            if (ReferenceEquals(lhs, rhs))
                 return true;
-            return lhs.Equals (rhs);
+            return lhs.Equals(rhs);
         }
 
         /// <summary>
         /// Returns true if the objects are not equal.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Design.Generic", "DoNotDeclareStaticMembersOnGenericTypesRule")]
-        public static bool operator != (Equatable<T> lhs, Equatable<T> rhs)
+        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotDeclareStaticMembersOnGenericTypesRule")]
+        public static bool operator !=(Equatable<T> lhs, Equatable<T> rhs)
         {
-            if (ReferenceEquals (lhs, null) || ReferenceEquals (rhs, null))
-                return !ReferenceEquals (lhs, rhs);
-            if (ReferenceEquals (lhs, rhs))
+            if (ReferenceEquals(lhs, null) || ReferenceEquals(rhs, null))
+                return !ReferenceEquals(lhs, rhs);
+            if (ReferenceEquals(lhs, rhs))
                 return false;
-            return !(lhs.Equals (rhs));
+            return !(lhs.Equals(rhs));
         }
     }
 }

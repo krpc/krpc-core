@@ -10,7 +10,7 @@ namespace KRPC.Server
         /// <summary>
         /// A client event for the given client.
         /// </summary>
-        public ServerEventArgs (Server server)
+        public ServerEventArgs(Server server)
         {
             Server = server;
         }

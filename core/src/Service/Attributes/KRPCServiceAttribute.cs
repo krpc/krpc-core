@@ -5,7 +5,7 @@ namespace KRPC.Service.Attributes
     /// <summary>
     /// A kRPC service.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class)]
     public sealed class KRPCServiceAttribute : Attribute
     {
         /// <summary>
@@ -26,7 +26,7 @@ namespace KRPC.Service.Attributes
         /// <summary>
         /// A kRPC service.
         /// </summary>
-        public KRPCServiceAttribute ()
+        public KRPCServiceAttribute()
         {
             GameScene = GameScene.All;
         }

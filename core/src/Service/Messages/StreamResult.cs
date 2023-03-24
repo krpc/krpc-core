@@ -1,15 +1,15 @@
 namespace KRPC.Service.Messages
 {
-    #pragma warning disable 1591
+#pragma warning disable 1591
     public class StreamResult : IMessage
     {
         public ulong Id { get; set; }
 
         public ProcedureResult Result { get; set; }
 
-        public StreamResult ()
+        public StreamResult()
         {
-            Result = new ProcedureResult ();
+            Result = new ProcedureResult();
         }
     }
 }

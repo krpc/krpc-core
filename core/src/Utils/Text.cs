@@ -3,7 +3,7 @@ using System.Text;
 
 namespace KRPC.Utils
 {
-    [SuppressMessage ("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
+    [SuppressMessage("Gendarme.Rules.Smells", "AvoidSpeculativeGeneralityRule")]
     static class Text
     {
         const byte CONTINUATION_MASK = 0xc0;
@@ -20,13 +20,16 @@ namespace KRPC.Utils
         /// <summary>
         /// Returns true if the given data is a valid UTF8 string.
         /// </summary>
-        public static bool IsValidUTF8 (byte[] data, int index, int count)
+        public static bool IsValidUTF8(byte[] data, int index, int count)
         {
-            try {
-                Encoding encoding = new UTF8Encoding (true, true);
-                encoding.GetCharCount (data, index, count);
+            try
+            {
+                Encoding encoding = new UTF8Encoding(true, true);
+                encoding.GetCharCount(data, index, count);
                 return true;
-            } catch (DecoderFallbackException) {
+            }
+            catch (DecoderFallbackException)
+            {
                 return false;
             }
         }
@@ -35,21 +38,22 @@ namespace KRPC.Utils
         /// Returns true if the given data is valid, but possible truncated, UTF8 string.
         /// If true, sets <paramref name="length"/> to the number of bytes at the end of the array that are a valid, but truncated UTF8 character/
         /// </summary>
-        public static bool IsValidTruncatedUTF8 (byte[] data, int index, int count, ref int length)
+        public static bool IsValidTruncatedUTF8(byte[] data, int index, int count, ref int length)
         {
             if (count == 0)
                 return true;
             int continuationBytes = 0;
             int position = index + count - 1;
             // Count the number of bytes at the end of the data that are continuation bytes
-            while (position >= index && (data [position] & CONTINUATION_MASK) == CONTINUATION_HEAD) {
+            while (position >= index && (data[position] & CONTINUATION_MASK) == CONTINUATION_HEAD)
+            {
                 continuationBytes++;
                 position--;
             }
             // Fail if there is no start byte
             if (position < index)
                 return false;
-            var startByte = data [position];
+            var startByte = data[position];
             // Check that the code point is in the correct range for the number of bytes
             if ((startByte & TWO_BYTE_MASK) == 0)
                 return false;
@@ -72,10 +76,11 @@ namespace KRPC.Utils
                 return false;
             // Check that maximum code point U+10FFFF is not exceeded
             // has binary value xxxx100 xx001111 xx111111 xx111111
-            if (maxContinuationBytes == 3) {
+            if (maxContinuationBytes == 3)
+            {
                 if ((startByte & (~FOUR_BYTE_MASK)) > 0x4)
                     return false;
-                if (continuationBytes > 0 && (data [position + 1] & (~CONTINUATION_MASK)) > 0xf)
+                if (continuationBytes > 0 && (data[position + 1] & (~CONTINUATION_MASK)) > 0xf)
                     return false;
             }
             // Fail if there are more continuation bytes than allowed by the start byte
@@ -84,7 +89,7 @@ namespace KRPC.Utils
             // Validate the rest of the string
             if (continuationBytes != maxContinuationBytes)
                 count -= 1 + continuationBytes;
-            bool result = IsValidUTF8 (data, index, count);
+            bool result = IsValidUTF8(data, index, count);
             if (result && continuationBytes != maxContinuationBytes)
                 length = 1 + continuationBytes;
             return result;

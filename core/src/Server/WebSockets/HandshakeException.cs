@@ -7,20 +7,20 @@ namespace KRPC.Server.WebSockets
     {
         public Response Response { get; private set; }
 
-        public HandshakeException (Response response)
+        public HandshakeException(Response response)
         {
             Response = response;
         }
 
-        public HandshakeException ()
+        public HandshakeException()
         {
         }
 
-        public HandshakeException (string message) : base (message)
+        public HandshakeException(string message) : base(message)
         {
         }
 
-        public HandshakeException (string message, Exception innerException) : base (message, innerException)
+        public HandshakeException(string message, Exception innerException) : base(message, innerException)
         {
         }
     }

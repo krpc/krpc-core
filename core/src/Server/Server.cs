@@ -11,7 +11,7 @@ namespace KRPC.Server
     /// <summary>
     /// A kRPC server.
     /// </summary>
-    [SuppressMessage ("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
+    [SuppressMessage("Gendarme.Rules.Correctness", "DeclareEventsExplicitlyRule")]
     public sealed class Server : IServer
     {
         /// <summary>
@@ -29,9 +29,9 @@ namespace KRPC.Server
         /// </summary>
         public string Name { get; set; }
 
-        internal IServer<Request,Response> RPCServer { get; private set; }
+        internal IServer<Request, Response> RPCServer { get; private set; }
 
-        internal IServer<NoMessage,StreamUpdate> StreamServer { get; private set; }
+        internal IServer<NoMessage, StreamUpdate> StreamServer { get; private set; }
 
         /// <summary>
         /// Event triggered when the server starts
@@ -61,7 +61,7 @@ namespace KRPC.Server
         /// <summary>
         /// Construct a server, from an RPC server and stream server instance.
         /// </summary>
-        public Server (Guid id, Protocol protocol, string name, IServer<Request,Response> rpcServer, IServer<NoMessage,StreamUpdate> streamServer)
+        public Server(Guid id, Protocol protocol, string name, IServer<Request, Response> rpcServer, IServer<NoMessage, StreamUpdate> streamServer)
         {
             Id = id;
             Protocol = protocol;
@@ -70,28 +70,32 @@ namespace KRPC.Server
             StreamServer = streamServer;
 
             // Tie events to underlying server
-            RPCServer.OnStarted += (s, e) => EventHandlerExtensions.Invoke (OnStarted, this);
-            RPCServer.OnStopped += (s, e) => EventHandlerExtensions.Invoke (OnStopped, this);
-            RPCServer.OnClientRequestingConnection += (s, e) => EventHandlerExtensions.Invoke (OnClientRequestingConnection, s, e);
-            RPCServer.OnClientConnected += (s, e) => EventHandlerExtensions.Invoke (OnClientConnected, s, new ClientConnectedEventArgs (e.Client));
-            RPCServer.OnClientDisconnected += (s, e) => EventHandlerExtensions.Invoke (OnClientDisconnected, s, new ClientDisconnectedEventArgs (e.Client));
+            RPCServer.OnStarted += (s, e) => EventHandlerExtensions.Invoke(OnStarted, this);
+            RPCServer.OnStopped += (s, e) => EventHandlerExtensions.Invoke(OnStopped, this);
+            RPCServer.OnClientRequestingConnection += (s, e) => EventHandlerExtensions.Invoke(OnClientRequestingConnection, s, e);
+            RPCServer.OnClientConnected += (s, e) => EventHandlerExtensions.Invoke(OnClientConnected, s, new ClientConnectedEventArgs(e.Client));
+            RPCServer.OnClientDisconnected += (s, e) => EventHandlerExtensions.Invoke(OnClientDisconnected, s, new ClientDisconnectedEventArgs(e.Client));
 
             // Add/remove clients from the scheduler
-            RPCServer.OnClientConnected += (s, e) => Core.Instance.RPCClientConnected (e.Client);
-            RPCServer.OnClientDisconnected += (s, e) => Core.Instance.RPCClientDisconnected (e.Client);
+            RPCServer.OnClientConnected += (s, e) => Core.Instance.RPCClientConnected(e.Client);
+            RPCServer.OnClientDisconnected += (s, e) => Core.Instance.RPCClientDisconnected(e.Client);
 
             // Add/remove clients from the list of stream requests
-            StreamServer.OnClientConnected += (s, e) => Core.Instance.StreamClientConnected (e.Client);
-            StreamServer.OnClientDisconnected += (s, e) => Core.Instance.StreamClientDisconnected (e.Client);
+            StreamServer.OnClientConnected += (s, e) => Core.Instance.StreamClientConnected(e.Client);
+            StreamServer.OnClientDisconnected += (s, e) => Core.Instance.StreamClientDisconnected(e.Client);
 
             // Validate stream client identifiers
-            StreamServer.OnClientRequestingConnection += (s, e) => {
-                if (RPCServer.Clients.Any (c => c.Guid == e.Client.Guid)) {
-                    Logger.WriteLine ("Accepting stream server connection (" + e.Client.Address + ")", Logger.Severity.Debug);
-                    e.Request.Allow ();
-                } else {
-                    Logger.WriteLine ("Denying stream server connection, invalid client id (" + e.Client.Address + ")", Logger.Severity.Debug);
-                    e.Request.Deny ();
+            StreamServer.OnClientRequestingConnection += (s, e) =>
+            {
+                if (RPCServer.Clients.Any(c => c.Guid == e.Client.Guid))
+                {
+                    Logger.WriteLine("Accepting stream server connection (" + e.Client.Address + ")", Logger.Severity.Debug);
+                    e.Request.Allow();
+                }
+                else
+                {
+                    Logger.WriteLine("Denying stream server connection, invalid client id (" + e.Client.Address + ")", Logger.Severity.Debug);
+                    e.Request.Deny();
                 }
             };
         }
@@ -99,37 +103,39 @@ namespace KRPC.Server
         /// <summary>
         /// Start the server
         /// </summary>
-        public void Start ()
+        public void Start()
         {
-            RPCServer.Start ();
-            StreamServer.Start ();
-            ClearStats ();
+            RPCServer.Start();
+            StreamServer.Start();
+            ClearStats();
         }
 
         /// <summary>
         /// Stop the server
         /// </summary>
-        public void Stop ()
+        public void Stop()
         {
-            RPCServer.Stop ();
-            StreamServer.Stop ();
-            ObjectStore.Clear ();
+            RPCServer.Stop();
+            StreamServer.Stop();
+            ObjectStore.Clear();
         }
 
         /// <summary>
         /// Update the server.
         /// </summary>
-        public void Update ()
+        public void Update()
         {
-            RPCServer.Update ();
-            StreamServer.Update ();
+            RPCServer.Update();
+            StreamServer.Update();
         }
 
         /// <summary>
         /// The servers address.
         /// </summary>
-        public string Address {
-            get {
+        public string Address
+        {
+            get
+            {
                 return
                 "RPC server: " + RPCServer.Address + Environment.NewLine +
                 "Stream server: " + StreamServer.Address;
@@ -139,14 +145,16 @@ namespace KRPC.Server
         /// <summary>
         /// Information about the server.
         /// </summary>
-        public string Info {
+        public string Info
+        {
             get { return RPCServer.Info; }
         }
 
         /// <summary>
         /// Returns true if the server is running
         /// </summary>
-        public bool Running {
+        public bool Running
+        {
             get { return RPCServer.Running && StreamServer.Running; }
         }
 
@@ -154,31 +162,34 @@ namespace KRPC.Server
         /// Returns a list of clients the server knows about. Note that they might
         /// not be connected to the server.
         /// </summary>
-        public IEnumerable<IClient> Clients {
-            get { return RPCServer.Clients.Cast <IClient> (); }
+        public IEnumerable<IClient> Clients
+        {
+            get { return RPCServer.Clients.Cast<IClient>(); }
         }
 
         /// <summary>
         /// Get the total number of bytes read from the network.
         /// </summary>
-        public ulong BytesRead {
+        public ulong BytesRead
+        {
             get { return RPCServer.BytesRead + StreamServer.BytesRead; }
         }
 
         /// <summary>
         /// Get the total number of bytes written to the network.
         /// </summary>
-        public ulong BytesWritten {
+        public ulong BytesWritten
+        {
             get { return RPCServer.BytesWritten + StreamServer.BytesWritten; }
         }
 
         /// <summary>
         /// Clear the server statistics.
         /// </summary>
-        public void ClearStats ()
+        public void ClearStats()
         {
-            RPCServer.ClearStats ();
-            StreamServer.ClearStats ();
+            RPCServer.ClearStats();
+            StreamServer.ClearStats();
         }
     }
 }

@@ -33,21 +33,21 @@ namespace KRPC.Service.Scanner
         /// <summary>
         /// Create an enumeration signature
         /// </summary>
-        public EnumerationSignature (string serviceName, string enumName, IList<EnumerationValueSignature> values, string documentation)
+        public EnumerationSignature(string serviceName, string enumName, IList<EnumerationValueSignature> values, string documentation)
         {
             Name = enumName;
             FullyQualifiedName = serviceName + "." + Name;
             Values = values;
-            Documentation = DocumentationUtils.ResolveCrefs (documentation);
+            Documentation = DocumentationUtils.ResolveCrefs(documentation);
         }
 
         /// <summary>
         /// Serialize the signature.
         /// </summary>
-        public void GetObjectData (SerializationInfo info, StreamingContext context)
+        public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue ("documentation", Documentation);
-            info.AddValue ("values", Values);
+            info.AddValue("documentation", Documentation);
+            info.AddValue("values", Values);
         }
     }
 }

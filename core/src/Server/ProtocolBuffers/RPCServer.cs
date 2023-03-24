@@ -15,64 +15,74 @@ namespace KRPC.Server.ProtocolBuffers
         /// <summary>
         /// Construct an RPC server from a byte server.
         /// </summary>
-        public RPCServer (IServer<byte,byte> server) : base (server)
+        public RPCServer(IServer<byte, byte> server) : base(server)
         {
         }
 
         /// <summary>
         /// Handle the initiation of a client connection request
         /// </summary>
-        protected override IClient<Request,Response> CreateClient (object sender, ClientRequestingConnectionEventArgs<byte,byte> args)
+        protected override IClient<Request, Response> CreateClient(object sender, ClientRequestingConnectionEventArgs<byte, byte> args)
         {
             var client = args.Client;
             var address = client.Address;
-            try {
-                Logger.WriteLine ("ProtocolBuffers: client requesting connection (" + address + ")", Logger.Severity.Debug);
+            try
+            {
+                Logger.WriteLine("ProtocolBuffers: client requesting connection (" + address + ")", Logger.Severity.Debug);
                 bool timeout;
-                var request = Utils.ReadMessage<ConnectionRequest> (client, out timeout);
-                if (timeout) {
-                    WriteErrorConnectionResponse (client, Status.Timeout, "Connection request message not received after waiting 3 seconds");
-                    args.Request.Deny ();
-                    Logger.WriteLine ("ProtocolBuffers: client connection timed out (" + address + ")", Logger.Severity.Error);
+                var request = Utils.ReadMessage<ConnectionRequest>(client, out timeout);
+                if (timeout)
+                {
+                    WriteErrorConnectionResponse(client, Status.Timeout, "Connection request message not received after waiting 3 seconds");
+                    args.Request.Deny();
+                    Logger.WriteLine("ProtocolBuffers: client connection timed out (" + address + ")", Logger.Severity.Error);
                     return null;
                 }
                 if (request == null)
                     return null;
-                if (request.Type != Type.Rpc) {
-                    var name = request.Type.ToString ().ToLower ();
-                    WriteErrorConnectionResponse (client, Status.WrongType,
+                if (request.Type != Type.Rpc)
+                {
+                    var name = request.Type.ToString().ToLower();
+                    WriteErrorConnectionResponse(client, Status.WrongType,
                         "Connection request was for the " + name + " server, but this is the rpc server. " +
                         "Did you connect to the wrong port number?");
-                } else {
-                    return new RPCClient (request.ClientName, args.Client);
                 }
-            } catch (InvalidProtocolBufferException e) {
-                WriteErrorConnectionResponse (client, Status.MalformedMessage, e.Message);
+                else
+                {
+                    return new RPCClient(request.ClientName, args.Client);
+                }
             }
-            args.Request.Deny ();
-            Logger.WriteLine ("ProtocolBuffers: client connection denied (" + address + ")", Logger.Severity.Error);
+            catch (InvalidProtocolBufferException e)
+            {
+                WriteErrorConnectionResponse(client, Status.MalformedMessage, e.Message);
+            }
+            args.Request.Deny();
+            Logger.WriteLine("ProtocolBuffers: client connection denied (" + address + ")", Logger.Severity.Error);
             return null;
         }
 
         /// <summary>
         /// Handle a client connection request
         /// </summary>
-        public override void HandleClientRequestingConnection (object sender, ClientRequestingConnectionEventArgs<byte,byte> args)
+        public override void HandleClientRequestingConnection(object sender, ClientRequestingConnectionEventArgs<byte, byte> args)
         {
-            base.HandleClientRequestingConnection (sender, args);
+            base.HandleClientRequestingConnection(sender, args);
             var client = args.Client;
-            if (args.Request.ShouldAllow) {
-                Utils.WriteConnectionResponse (client);
-                Logger.WriteLine ("ProtocolBuffers: client connection accepted (" + args.Client.Address + ")");
-            } else if (args.Request.ShouldDeny) {
-                client.Stream.Close ();
+            if (args.Request.ShouldAllow)
+            {
+                Utils.WriteConnectionResponse(client);
+                Logger.WriteLine("ProtocolBuffers: client connection accepted (" + args.Client.Address + ")");
+            }
+            else if (args.Request.ShouldDeny)
+            {
+                client.Stream.Close();
             }
         }
 
-        static void WriteErrorConnectionResponse (IClient<byte,byte> client, Status status, string message)
+        static void WriteErrorConnectionResponse(IClient<byte, byte> client, Status status, string message)
         {
-            Utils.WriteConnectionResponse (client, status, message);
-            Logger.WriteLine ("ProtocolBuffers: client connection denied: " + status + " " + message, Logger.Severity.Error);
+            Utils.WriteConnectionResponse(client, status, message);
+            Logger.WriteLine("ProtocolBuffers: client connection denied: " + status + " " + message, Logger.Severity.Error);
         }
     }
 }

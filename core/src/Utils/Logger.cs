@@ -15,8 +15,9 @@ namespace KRPC.Utils
         /// <summary>
         /// Format string for log messages.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
-        public static string Format {
+        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
+        public static string Format
+        {
             get { return format; }
             set { format = value; }
         }
@@ -24,8 +25,9 @@ namespace KRPC.Utils
         /// <summary>
         /// Whether logging is enabled.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
-        public static bool Enabled {
+        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
+        public static bool Enabled
+        {
             get { return enabled; }
             set { enabled = value; }
         }
@@ -33,7 +35,8 @@ namespace KRPC.Utils
         /// <summary>
         /// Severity of messages to output.
         /// </summary>
-        public static Severity Level {
+        public static Severity Level
+        {
             get { return level; }
             set { level = value; }
         }
@@ -43,7 +46,7 @@ namespace KRPC.Utils
         /// </summary>
         [Flags]
         [Serializable]
-        [SuppressMessage ("Gendarme.Rules.Naming", "UsePluralNameInEnumFlagsRule")]
+        [SuppressMessage("Gendarme.Rules.Naming", "UsePluralNameInEnumFlagsRule")]
         public enum Severity
         {
             /// <summary>
@@ -67,14 +70,14 @@ namespace KRPC.Utils
         /// <summary>
         /// Write a message to the log.
         /// </summary>
-        [SuppressMessage ("Gendarme.Rules.BadPractice", "DisableDebuggingCodeRule")]
-        public static void WriteLine (string message, Severity severity = Severity.Info)
+        [SuppressMessage("Gendarme.Rules.BadPractice", "DisableDebuggingCodeRule")]
+        public static void WriteLine(string message, Severity severity = Severity.Info)
         {
-            if (ShouldLog (severity))
-                Console.WriteLine (string.Format (format, DateTime.Now, severity, message));
+            if (ShouldLog(severity))
+                Console.WriteLine(string.Format(format, DateTime.Now, severity, message));
         }
 
-        internal static bool ShouldLog (Severity severity)
+        internal static bool ShouldLog(Severity severity)
         {
             return Enabled && severity >= Level;
         }

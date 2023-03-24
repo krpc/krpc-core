@@ -12,59 +12,59 @@ namespace TestServer
     /// <summary>
     /// Service documentation string.
     /// </summary>
-    [KRPCService (Id = 9999)]
+    [KRPCService(Id = 9999)]
     public static class TestService
     {
         /// <summary>
         /// Procedure documentation string.
         /// </summary>
         [KRPCProcedure]
-        public static string FloatToString (float value)
+        public static string FloatToString(float value)
         {
-            return value.ToString (CultureInfo.InvariantCulture);
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         [KRPCProcedure]
-        public static string DoubleToString (double value)
+        public static string DoubleToString(double value)
         {
-            return value.ToString (CultureInfo.InvariantCulture);
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         [KRPCProcedure]
-        public static string Int32ToString (int value)
+        public static string Int32ToString(int value)
         {
-            return value.ToString (CultureInfo.InvariantCulture);
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         [KRPCProcedure]
-        public static string Int64ToString (long value)
+        public static string Int64ToString(long value)
         {
-            return value.ToString (CultureInfo.InvariantCulture);
+            return value.ToString(CultureInfo.InvariantCulture);
         }
 
         [KRPCProcedure]
-        public static string BoolToString (bool value)
+        public static string BoolToString(bool value)
         {
-            return value.ToString ();
+            return value.ToString();
         }
 
         [KRPCProcedure]
-        public static int StringToInt32 (string value)
+        public static int StringToInt32(string value)
         {
-            return Convert.ToInt32 (value);
+            return Convert.ToInt32(value);
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Globalization", "PreferStringComparisonOverrideRule")]
-        public static string BytesToHexString (byte[] value)
+        [SuppressMessage("Gendarme.Rules.Globalization", "PreferStringComparisonOverrideRule")]
+        public static string BytesToHexString(byte[] value)
         {
-            return BitConverter.ToString (value).Replace ("-", string.Empty).ToLower ();
+            return BitConverter.ToString(value).Replace("-", string.Empty).ToLower();
         }
 
         [KRPCProcedure]
-        public static string AddMultipleValues (float x, int y, long z)
+        public static string AddMultipleValues(float x, int y, long z)
         {
-            return (x + y + z).ToString (CultureInfo.InvariantCulture);
+            return (x + y + z).ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -79,29 +79,30 @@ namespace TestServer
         static string stringPropertyPrivateSet = "foo";
 
         [KRPCProperty]
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
-        public static string StringPropertyPrivateSet {
+        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUncalledPrivateCodeRule")]
+        public static string StringPropertyPrivateSet
+        {
             get { return stringPropertyPrivateSet; }
             private set { stringPropertyPrivateSet = value; }
         }
 
         [KRPCProcedure]
-        public static TestClass CreateTestObject (string value)
+        public static TestClass CreateTestObject(string value)
         {
-            return new TestClass (value);
+            return new TestClass(value);
         }
 
-        [KRPCProcedure (Nullable = true)]
-        public static TestClass EchoTestObject ([KRPCNullable] TestClass value)
+        [KRPCProcedure(Nullable = true)]
+        public static TestClass EchoTestObject([KRPCNullable] TestClass value)
         {
             return value;
         }
 
-        [KRPCProperty (Nullable = true)]
+        [KRPCProperty(Nullable = true)]
         public static TestClass ObjectProperty { get; set; }
 
         [KRPCProcedure]
-        public static TestClass ReturnNullWhenNotAllowed ()
+        public static TestClass ReturnNullWhenNotAllowed()
         {
             return null;
         }
@@ -110,46 +111,46 @@ namespace TestServer
         /// Class documentation string.
         /// </summary>
         [KRPCClass]
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage ("Gendarme.Rules.Design", "ImplementEqualsAndGetHashCodeInPairRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "ImplementEqualsAndGetHashCodeInPairRule")]
         public sealed class TestClass : Equatable<TestClass>
         {
             internal string instanceValue;
 
-            public TestClass (string value)
+            public TestClass(string value)
             {
                 instanceValue = value;
             }
 
-            public sealed override bool Equals (TestClass other)
+            public sealed override bool Equals(TestClass other)
             {
-                return !ReferenceEquals (other, null) && instanceValue == other.instanceValue;
+                return !ReferenceEquals(other, null) && instanceValue == other.instanceValue;
             }
 
-            public sealed override int GetHashCode ()
+            public sealed override int GetHashCode()
             {
-                return instanceValue.GetHashCode ();
+                return instanceValue.GetHashCode();
             }
 
             /// <summary>
             /// Method documentation string.
             /// </summary>
             [KRPCMethod]
-            public string GetValue ()
+            public string GetValue()
             {
                 return "value=" + instanceValue;
             }
 
             [KRPCMethod]
-            public string FloatToString (float x)
+            public string FloatToString(float x)
             {
-                return instanceValue + x.ToString (CultureInfo.InvariantCulture);
+                return instanceValue + x.ToString(CultureInfo.InvariantCulture);
             }
 
             [KRPCMethod]
-            public string ObjectToString ([KRPCNullable] TestClass other)
+            public string ObjectToString([KRPCNullable] TestClass other)
             {
-                return instanceValue + (ReferenceEquals (other, null) ? "null" : other.instanceValue);
+                return instanceValue + (ReferenceEquals(other, null) ? "null" : other.instanceValue);
             }
 
             /// <summary>
@@ -158,38 +159,40 @@ namespace TestServer
             [KRPCProperty]
             public int IntProperty { get; set; }
 
-            [KRPCProperty (Nullable = true)]
+            [KRPCProperty(Nullable = true)]
             public TestClass ObjectProperty { get; set; }
 
             [KRPCProperty]
-            [SuppressMessage ("Gendarme.Rules.Design", "AvoidPropertiesWithoutGetAccessorRule")]
-            public string StringPropertyPrivateGet {
+            [SuppressMessage("Gendarme.Rules.Design", "AvoidPropertiesWithoutGetAccessorRule")]
+            public string StringPropertyPrivateGet
+            {
                 set { instanceValue = value; }
             }
 
             [KRPCProperty]
-            public string StringPropertyPrivateSet {
+            public string StringPropertyPrivateSet
+            {
                 get { return instanceValue; }
             }
 
             [KRPCMethod]
-            [SuppressMessage ("Gendarme.Rules.Correctness", "MethodCanBeMadeStaticRule")]
-            [SuppressMessage ("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
-            public string OptionalArguments (string x, string y = "foo", string z = "bar", TestClass obj = null)
+            [SuppressMessage("Gendarme.Rules.Correctness", "MethodCanBeMadeStaticRule")]
+            [SuppressMessage("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
+            public string OptionalArguments(string x, string y = "foo", string z = "bar", TestClass obj = null)
             {
                 return x + y + z + (obj == null ? "null" : obj.instanceValue);
             }
 
             [KRPCMethod]
-            public static string StaticMethod (string a = "", string b = "")
+            public static string StaticMethod(string a = "", string b = "")
             {
                 return "jeb" + a + b;
             }
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
-        public static string OptionalArguments (string x, string y = "foo", string z = "bar", TestClass obj = null)
+        [SuppressMessage("Gendarme.Rules.Correctness", "CheckParametersNullityInVisibleMethodsRule")]
+        public static string OptionalArguments(string x, string y = "foo", string z = "bar", TestClass obj = null)
         {
             return x + y + z + (obj == null ? "null" : obj.instanceValue);
         }
@@ -199,8 +202,8 @@ namespace TestServer
         /// </summary>
         [KRPCEnum]
         [Serializable]
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage ("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Naming", "UseCorrectSuffixRule")]
         public enum TestEnum
         {
             /// <summary>
@@ -218,136 +221,136 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        public static TestEnum EnumReturn ()
+        public static TestEnum EnumReturn()
         {
             return TestEnum.ValueB;
         }
 
         [KRPCProcedure]
-        public static TestEnum EnumEcho (TestEnum x)
+        public static TestEnum EnumEcho(TestEnum x)
         {
             return x;
         }
 
         [KRPCProcedure]
-        public static TestEnum EnumDefaultArg (TestEnum x = TestEnum.ValueC)
+        public static TestEnum EnumDefaultArg(TestEnum x = TestEnum.ValueC)
         {
             return x;
         }
 
         [KRPCProcedure]
-        public static int BlockingProcedure (int n, int sum = 0)
+        public static int BlockingProcedure(int n, int sum = 0)
         {
             if (n == 0)
                 return sum;
-            throw new YieldException<Func<int>> (() => BlockingProcedure(n - 1, sum + n));
+            throw new YieldException<Func<int>>(() => BlockingProcedure(n - 1, sum + n));
         }
 
         [KRPCProcedure]
-        public static IList<int> IncrementList (IList<int> l)
+        public static IList<int> IncrementList(IList<int> l)
         {
             if (l == null)
-                throw new ArgumentNullException (nameof (l));
-            return l.Select (x => x + 1).ToList ();
+                throw new ArgumentNullException(nameof(l));
+            return l.Select(x => x + 1).ToList();
         }
 
         [KRPCProcedure]
-        public static IDictionary<string,int> IncrementDictionary (IDictionary<string,int> d)
+        public static IDictionary<string, int> IncrementDictionary(IDictionary<string, int> d)
         {
             if (d == null)
-                throw new ArgumentNullException (nameof (d));
-            var result = new Dictionary<string,int> ();
+                throw new ArgumentNullException(nameof(d));
+            var result = new Dictionary<string, int>();
             foreach (var entry in d)
-                result [entry.Key] = entry.Value + 1;
+                result[entry.Key] = entry.Value + 1;
             return result;
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
-        public static HashSet<int> IncrementSet (HashSet<int> h)
+        [SuppressMessage("Gendarme.Rules.Maintainability", "AvoidUnnecessarySpecializationRule")]
+        public static HashSet<int> IncrementSet(HashSet<int> h)
         {
             if (h == null)
-                throw new ArgumentNullException (nameof (h));
-            var result = new HashSet<int> ();
+                throw new ArgumentNullException(nameof(h));
+            var result = new HashSet<int>();
             foreach (var item in h)
-                result.Add (item + 1);
+                result.Add(item + 1);
             return result;
         }
 
         [KRPCProcedure]
-        public static Tuple<int,long> IncrementTuple (Tuple<int,long> t)
+        public static Tuple<int, long> IncrementTuple(Tuple<int, long> t)
         {
             if (t == null)
-                throw new ArgumentNullException (nameof (t));
-            return Tuple.Create (t.Item1 + 1, t.Item2 + 1);
+                throw new ArgumentNullException(nameof(t));
+            return Tuple.Create(t.Item1 + 1, t.Item2 + 1);
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Design.Generic", "DoNotExposeNestedGenericSignaturesRule")]
-        public static IDictionary<string,IList<int>> IncrementNestedCollection (IDictionary<string,IList<int>> d)
+        [SuppressMessage("Gendarme.Rules.Design.Generic", "DoNotExposeNestedGenericSignaturesRule")]
+        public static IDictionary<string, IList<int>> IncrementNestedCollection(IDictionary<string, IList<int>> d)
         {
             if (d == null)
-                throw new ArgumentNullException (nameof (d));
-            IDictionary<string,IList<int>> result = new Dictionary<string,IList<int>> ();
+                throw new ArgumentNullException(nameof(d));
+            IDictionary<string, IList<int>> result = new Dictionary<string, IList<int>>();
             foreach (var entry in d)
-                result [entry.Key] = entry.Value.Select (x => x + 1).ToList ();
+                result[entry.Key] = entry.Value.Select(x => x + 1).ToList();
             return result;
         }
 
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateTupleDefault
         {
-            public static object Create ()
+            public static object Create()
             {
-                return new Tuple<int,bool> (1, false);
+                return new Tuple<int, bool>(1, false);
             }
         }
 
         [KRPCProcedure]
-        public static Tuple<int,bool> TupleDefault (
-            [KRPCDefaultValue (typeof(CreateTupleDefault))] Tuple<int,bool> x)
+        public static Tuple<int, bool> TupleDefault(
+            [KRPCDefaultValue(typeof(CreateTupleDefault))] Tuple<int, bool> x)
         {
             return x;
         }
 
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateListDefault
         {
-            public static object Create ()
+            public static object Create()
             {
                 return new List<int> { 1, 2, 3 };
             }
         }
 
         [KRPCProcedure]
-        public static IList<int> ListDefault (
-            [KRPCDefaultValue (typeof(CreateListDefault))] IList<int> x)
+        public static IList<int> ListDefault(
+            [KRPCDefaultValue(typeof(CreateListDefault))] IList<int> x)
         {
             return x;
         }
 
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateSetDefault
         {
-            public static object Create ()
+            public static object Create()
             {
                 return new HashSet<int> { 1, 2, 3 };
             }
         }
 
         [KRPCProcedure]
-        public static HashSet<int> SetDefault (
-            [KRPCDefaultValue (typeof(CreateSetDefault))] HashSet<int> x)
+        public static HashSet<int> SetDefault(
+            [KRPCDefaultValue(typeof(CreateSetDefault))] HashSet<int> x)
         {
             return x;
         }
 
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
         public static class CreateDictionaryDefault
         {
-            public static object Create ()
+            public static object Create()
             {
-                return new Dictionary<int,bool> {
+                return new Dictionary<int, bool> {
                     { 1, false },
                     { 2, true }
                 };
@@ -355,33 +358,33 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        public static IDictionary<int,bool> DictionaryDefault (
-            [KRPCDefaultValue (typeof(CreateDictionaryDefault))] IDictionary<int,bool> x)
+        public static IDictionary<int, bool> DictionaryDefault(
+            [KRPCDefaultValue(typeof(CreateDictionaryDefault))] IDictionary<int, bool> x)
         {
             return x;
         }
 
         [KRPCProcedure]
-        public static IList<TestClass> AddToObjectList (IList<TestClass> l, string value)
+        public static IList<TestClass> AddToObjectList(IList<TestClass> l, string value)
         {
             if (l == null)
-                throw new ArgumentNullException (nameof (l));
-            l.Add (new TestClass (value));
+                throw new ArgumentNullException(nameof(l));
+            l.Add(new TestClass(value));
             return l;
         }
 
-        static IDictionary<Guid, IDictionary<string, int>> counters = new Dictionary<Guid, IDictionary<string, int>> ();
+        static IDictionary<Guid, IDictionary<string, int>> counters = new Dictionary<Guid, IDictionary<string, int>>();
 
         [KRPCProcedure]
-        public static int Counter (string id = "", int divisor = 1)
+        public static int Counter(string id = "", int divisor = 1)
         {
             var client = CallContext.Client.Guid;
-            if (!counters.ContainsKey (client))
-                counters [client] = new Dictionary<string, int> ();
-            if (!counters [client].ContainsKey (id))
-                counters [client][id] = 0;
-            counters [client][id]++;
-            return counters [client][id] / divisor;
+            if (!counters.ContainsKey(client))
+                counters[client] = new Dictionary<string, int>();
+            if (!counters[client].ContainsKey(id))
+                counters[client][id] = 0;
+            counters[client][id]++;
+            return counters[client][id] / divisor;
         }
 
         [KRPCProcedure]
@@ -408,51 +411,51 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        public static int ThrowArgumentException ()
+        public static int ThrowArgumentException()
         {
-            throw new ArgumentException ("Invalid argument");
+            throw new ArgumentException("Invalid argument");
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
-        public static int ThrowArgumentNullException (string foo)
+        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
+        public static int ThrowArgumentNullException(string foo)
         {
-            throw new ArgumentNullException (nameof (foo));
+            throw new ArgumentNullException(nameof(foo));
         }
 
         [KRPCProcedure]
-        [SuppressMessage ("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
-        public static int ThrowArgumentOutOfRangeException (int foo)
+        [SuppressMessage("Gendarme.Rules.Performance", "AvoidUnusedParametersRule")]
+        public static int ThrowArgumentOutOfRangeException(int foo)
         {
-            throw new ArgumentOutOfRangeException (nameof (foo));
+            throw new ArgumentOutOfRangeException(nameof(foo));
         }
 
-        [SuppressMessage ("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
-        [SuppressMessage ("Gendarme.Rules.Exceptions", "MissingExceptionConstructorsRule")]
-        [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializableAttributeOnISerializableTypeRule")]
-        [SuppressMessage ("Gendarme.Rules.Serialization", "MissingSerializationConstructorRule")]
+        [SuppressMessage("Gendarme.Rules.Design", "AvoidVisibleNestedTypesRule")]
+        [SuppressMessage("Gendarme.Rules.Exceptions", "MissingExceptionConstructorsRule")]
+        [SuppressMessage("Gendarme.Rules.Serialization", "MissingSerializableAttributeOnISerializableTypeRule")]
+        [SuppressMessage("Gendarme.Rules.Serialization", "MissingSerializationConstructorRule")]
         [KRPCException]
         public sealed class CustomException : System.Exception
         {
-            public CustomException ()
+            public CustomException()
             {
             }
 
-            public CustomException (string message)
-            : base (message)
+            public CustomException(string message)
+            : base(message)
             {
             }
 
-            public CustomException (string message, System.Exception innerException)
+            public CustomException(string message, System.Exception innerException)
             : base(message, innerException)
             {
             }
         }
 
         [KRPCProcedure]
-        public static int ThrowCustomException ()
+        public static int ThrowCustomException()
         {
-            throw new CustomException ("A custom kRPC exception");
+            throw new CustomException("A custom kRPC exception");
         }
 
         static int customExceptionCount;
@@ -473,14 +476,17 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        public static KRPC.Service.Messages.Event OnTimer (uint milliseconds, uint repeats = 1) {
-            var evnt = new KRPC.Service.Event ();
-            var timer = new System.Timers.Timer (milliseconds);
-            timer.Elapsed += (s, e) => {
-                evnt.Trigger ();
+        public static KRPC.Service.Messages.Event OnTimer(uint milliseconds, uint repeats = 1)
+        {
+            var evnt = new KRPC.Service.Event();
+            var timer = new System.Timers.Timer(milliseconds);
+            timer.Elapsed += (s, e) =>
+            {
+                evnt.Trigger();
                 repeats--;
-                if (repeats == 0) {
-                    evnt.Remove ();
+                if (repeats == 0)
+                {
+                    evnt.Remove();
                     timer.Enabled = false;
                 }
             };
@@ -489,16 +495,19 @@ namespace TestServer
         }
 
         [KRPCProcedure]
-        public static KRPC.Service.Messages.Event OnTimerUsingLambda (uint milliseconds) {
+        public static KRPC.Service.Messages.Event OnTimerUsingLambda(uint milliseconds)
+        {
             bool triggered = false;
-            var timer = new System.Timers.Timer (milliseconds);
-            timer.Elapsed += (s, e) => {
+            var timer = new System.Timers.Timer(milliseconds);
+            timer.Elapsed += (s, e) =>
+            {
                 triggered = true;
                 timer.Enabled = false;
             };
             timer.Start();
-            var evnt = new KRPC.Service.Event (
-                (KRPC.Service.Event e) => {
+            var evnt = new KRPC.Service.Event(
+                (KRPC.Service.Event e) =>
+                {
                     if (triggered)
                         e.Remove();
                     return triggered;

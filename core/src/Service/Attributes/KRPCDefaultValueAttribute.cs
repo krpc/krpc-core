@@ -7,7 +7,7 @@ namespace KRPC.Service.Attributes
     /// This attribute can be used as a workaround to set the default value to a
     /// non-compile time constant, which is not ordinarily permitted in C#.
     /// </summary>
-    [AttributeUsage (AttributeTargets.Parameter)]
+    [AttributeUsage(AttributeTargets.Parameter)]
     public sealed class KRPCDefaultValueAttribute : Attribute
     {
         /// <summary>
@@ -17,7 +17,7 @@ namespace KRPC.Service.Attributes
         /// The type of a static class with a static method
         /// named Create that returns an instance of the default value.
         /// </param>
-        public KRPCDefaultValueAttribute (Type valueConstructor)
+        public KRPCDefaultValueAttribute(Type valueConstructor)
         {
             ValueConstructor = valueConstructor;
         }
@@ -31,9 +31,11 @@ namespace KRPC.Service.Attributes
         /// <summary>
         /// The default value.
         /// </summary>
-        public object Value {
-            get {
-                return ValueConstructor.GetMethod ("Create").Invoke (null, null);
+        public object Value
+        {
+            get
+            {
+                return ValueConstructor.GetMethod("Create").Invoke(null, null);
             }
         }
     }

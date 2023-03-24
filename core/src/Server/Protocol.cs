@@ -6,7 +6,7 @@ namespace KRPC.Server
     /// <summary>
     /// The protocol of a server.
     /// </summary>
-    [SuppressMessage ("Gendarme.Rules.Naming", "DoNotPrefixValuesWithEnumNameRule")]
+    [SuppressMessage("Gendarme.Rules.Naming", "DoNotPrefixValuesWithEnumNameRule")]
     [Serializable]
     public enum Protocol
     {
