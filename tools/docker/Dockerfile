@@ -61,6 +61,13 @@ RUN apt-get update && \
     librsvg2-bin cmake automake autoconf libtool luarocks maven cppcheck socat openjdk-11-jdk && \
     apt-get clean
 
+# Install buildifier
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends golang && \
+    apt-get clean && \
+    go install github.com/bazelbuild/buildtools/buildifier@6.0.1
+ENV PATH="${PATH}:/root/go/bin"
+
 # Configure Bazel
 COPY bazelrc /etc/bazel.bazelrc
 RUN chmod 0644 /etc/bazel.bazelrc
