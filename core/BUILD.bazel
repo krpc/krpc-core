@@ -3,12 +3,21 @@ load("@rules_dotnet//dotnet:defs.bzl", "csharp_library", "csharp_nunit_test")
 load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
-csharp_library(
-    name = "core",
+# Note: publicly export the source files for KRPC.Core.dll
+# so that kRPC1 server plugin can build it using KSP1 assemblies
+# See issue ...
+filegroup(
+    name = "srcs",
     srcs = glob(["src/**/*.cs"]) + [
         ":assembly_info",
         "//protobuf:krpc_csharp",
     ],
+    visibility = ["//visibility:public"],
+)
+
+csharp_library(
+    name = "core",
+    srcs = [":srcs"],
     out = "KRPC.Core",
     private_deps = ["@paket.nuget_deps//netstandard.library.ref"],
     target_frameworks = ["netstandard2.1"],
