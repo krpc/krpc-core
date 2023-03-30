@@ -1,12 +1,21 @@
 runs:
   using: composite
   steps:
+    - name: get-bazel-version
+      run: |
+        import os, subprocess
+        version = subprocess.check_output(["bazel", "--version"]).decode().strip().partition(" ")[2]
+        print("bazel version =", version)
+        env_file = os.getenv("GITHUB_ENV")
+        with open(env_file, "a") as fp:
+            fp.write("BAZEL_VERSION=" + version + "\n")
+      shell: python
     - name: restore-bazel-cache
       id: bazel-cache
       uses: actions/cache/restore@v3
       with:
         path: ~/.cache/bazel
-        key: bazel-cache-${{ hashFiles('WORKSPACE.bazel') }}
+        key: bazel-cache-${{ env.BAZEL_VERSION }}-${{ hashFiles('WORKSPACE.bazel') }}
     - name: bazel-fetch
       if: steps.bazel-cache.outputs.cache-hit != 'true'
       run: bazel fetch //...
