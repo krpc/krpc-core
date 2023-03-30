@@ -2,7 +2,6 @@ FROM ubuntu:22.04
 LABEL maintainer="djungelorm <djungelorm@users.noreply.github.com>"
 
 ARG bazel_version
-ARG ksp_version
 
 # Install essential packages
 RUN apt-get update && \
@@ -25,14 +24,6 @@ RUN apt-get update && \
     ./bazel-${bazel_version}-installer-linux-x86_64.sh && \
     rm bazel-${bazel_version}-installer-linux-x86_64.sh && \
     bazel version
-
-# Install stripped KSP libs
-RUN mkdir /usr/local/lib/ksp-${ksp_version} && \
-    cd /usr/local/lib/ksp-${ksp_version} && \
-    wget https://s3.amazonaws.com/krpc/lib/ksp-${ksp_version}.tar.gz && \
-    tar -xf ksp-${ksp_version}.tar.gz && \
-    rm ksp-${ksp_version}.tar.gz && \
-    ln -s /usr/local/lib/ksp-${ksp_version} /usr/local/lib/ksp
 
 # Install dotnet
 RUN apt-get update && \
