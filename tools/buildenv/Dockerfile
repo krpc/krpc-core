@@ -36,7 +36,7 @@ RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
     echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | \
       tee /etc/apt/sources.list.d/mono-official-stable.list && \
     apt-get update && \
-    apt-get install -y mono-devel gendarme && \
+    apt-get install -y mono-devel && \
     apt-get clean
 
 # Install latex

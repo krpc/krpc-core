@@ -1,5 +1,6 @@
 v3.2.0
  * Remove ksp libs (can now be obtained from ksp-lib repository)
+ * Remove gendarme
 
 v3.1.1
  * Add buildifier
