@@ -13,7 +13,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/krpc/buildenv:3.1.1
+      image: ghcr.io/krpc/buildenv:3.2.0
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -28,7 +28,7 @@ jobs:
   build-krpc-core-linux:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/krpc/buildenv:3.1.1
+      image: ghcr.io/krpc/buildenv:3.2.0
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -59,7 +59,7 @@ jobs:
   build-krpc-core-sln-linux:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/krpc/buildenv:3.1.1
+      image: ghcr.io/krpc/buildenv:3.2.0
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
@@ -86,7 +86,7 @@ jobs:
   test-krpc-core-linux:
     runs-on: ubuntu-latest
     container:
-      image: ghcr.io/krpc/buildenv:3.1.1
+      image: ghcr.io/krpc/buildenv:3.2.0
       credentials:
         username: ${{ github.actor }}
         password: ${{ secrets.github_token }}
