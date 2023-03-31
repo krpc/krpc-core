@@ -52,7 +52,20 @@ namespace KRPC.Utils
         {
             foreach (var type in AllTypes())
             {
-                if (type.IsDefined(typeof(TAttribute), inherit))
+                var isDefined = false;
+                // Note: we skip the type if there is an exception looking up the attributes.
+                // This occurs using standalone ServiceDefinitions tool and KSP2 assemblies.
+                try
+                {
+                    isDefined = type.IsDefined(typeof(TAttribute), inherit);
+                }
+                catch (System.TypeLoadException)
+                {
+                }
+                catch (System.IO.FileNotFoundException)
+                {
+                }
+                if (isDefined)
                     yield return type;
             }
         }
