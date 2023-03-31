@@ -6,9 +6,14 @@ def _impl(ctx):
     libs = []
     for src in ctx.attr.srcs:
         libs.extend(src[DotnetAssemblyInfo].libs)
+
+    docs = []
+    for src in ctx.attr.srcs:
+        docs.extend(src[DotnetAssemblyInfo].docs)
+
     args = ["--output=%s" % ctx.outputs.out.path, ctx.attr.service] + [x.path for x in libs]
     ctx.actions.run(
-        inputs = libs,
+        inputs = libs + docs,
         outputs = [ctx.outputs.out],
         arguments = args,
         progress_message = "Generating service definitions for %s" % ctx.outputs.out.short_path,
