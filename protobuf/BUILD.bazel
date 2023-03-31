@@ -4,6 +4,7 @@ load("@build_stack_rules_proto//rules:proto_compile.bzl", "proto_compile")
 proto_library(
     name = "krpc_proto",
     srcs = ["krpc.proto"],
+    visibility = ["//visibility:public"],
 )
 
 proto_compile(
