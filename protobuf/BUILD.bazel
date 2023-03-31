@@ -13,6 +13,26 @@ proto_compile(
     outputs = ["KRPC.cs"],
     plugins = ["@build_stack_rules_proto//plugin/builtin:csharp"],
     proto = "krpc_proto",
+    protoc = ":unity_protoc",
+    visibility = ["//visibility:public"],
+)
+
+genrule(
+    name = "unity_protoc",
+    srcs = select({
+        "@bazel_tools//src/conditions:darwin": [
+            "@prebuilt_protoc_osx_unity//:protoc",
+        ],
+        "@bazel_tools//src/conditions:windows": [
+            "@prebuilt_protoc_windows_unity//:protoc",
+        ],
+        "//conditions:default": [
+            "@prebuilt_protoc_linux_unity//:protoc",
+        ],
+    }),
+    outs = ["protoc.exe"],
+    cmd = "cp $< $@",
+    executable = True,
     visibility = ["//visibility:public"],
 )
 

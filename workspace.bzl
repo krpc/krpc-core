@@ -28,7 +28,7 @@ def krpc_core_workspace():
 
 def krpc_core_prebuilt_protoc():
     http_archive(
-        name = "prebuilt_protoc_linux",
+        name = "prebuilt_protoc_linux_unity",
         build_file_content = """
 filegroup(
     name = "protoc",
@@ -43,7 +43,7 @@ filegroup(
     )
 
     http_archive(
-        name = "prebuilt_protoc_osx",
+        name = "prebuilt_protoc_osx_unity",
         build_file_content = """
 filegroup(
     name = "protoc",
@@ -58,7 +58,7 @@ filegroup(
     )
 
     http_archive(
-        name = "prebuilt_protoc_windows",
+        name = "prebuilt_protoc_windows_unity",
         build_file_content = """
 filegroup(
     name = "protoc",
@@ -69,5 +69,50 @@ filegroup(
         sha256 = "964f055db26372e46d8232a09fe6d661de3ca1b82fbbc1ede33696b1e379a11b",
         urls = [
             "https://github.com/google/protobuf/releases/download/v3.10.1/protoc-3.10.1-win32.zip",
+        ],
+    )
+
+    http_archive(
+        name = "prebuilt_protoc_linux",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "3a4c1e5f2516c639d3079b1586e703fc7bcfa2136d58bda24d1d54f949c315e8",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v21.12/protoc-21.12-linux-x86_64.zip",
+        ],
+    )
+
+    http_archive(
+        name = "prebuilt_protoc_osx",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "9448ff40278504a7ae5139bb70c962acc78c32d8fc54b4890a55c14c68b9d10a",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v21.12/protoc-21.12-osx-x86_64.zip",
+        ],
+    )
+
+    http_archive(
+        name = "prebuilt_protoc_windows",
+        build_file_content = """
+filegroup(
+    name = "protoc",
+    srcs = ["bin/protoc.exe"],
+    visibility = ["//visibility:public"],
+)
+""",
+        sha256 = "6de4ef4e65c7edb834a2a9fca6d85388adc5dd71fc8bff8b60569717d01dabea",
+        urls = [
+            "https://github.com/google/protobuf/releases/download/v21.12/protoc-21.12-win32.zip",
         ],
     )
