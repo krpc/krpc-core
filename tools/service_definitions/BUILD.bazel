@@ -1,5 +1,7 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
-load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary")
+load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "publish_binary")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files", "strip_prefix")
 load("//:config.bzl", "version")
 
 csharp_binary(
@@ -27,4 +29,26 @@ expand_template(
     substitutions = {"{VERSION}": version},
     template = "src/AssemblyInfo.cs.tmpl",
     visibility = ["//visibility:public"],
+)
+
+# FIXME: remove .json files
+# FIXME: include readme
+# FIXME: include correct license
+pkg_zip(
+    name = "archive",
+    out = "ServiceDefinitions-%s.zip" % version,
+    srcs = [":archive_files", ":LICENSE"],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "archive_files",
+    srcs = [":binary_files"],
+    strip_prefix = strip_prefix.files_only()
+)
+
+publish_binary(
+    name = "binary_files",
+    binary = ":service_definitions",
+    target_framework = "net6.0",
 )

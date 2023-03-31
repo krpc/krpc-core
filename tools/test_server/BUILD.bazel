@@ -1,5 +1,7 @@
 load("@bazel_skylib//rules:expand_template.bzl", "expand_template")
 load("@rules_dotnet//dotnet:defs.bzl", "csharp_binary", "csharp_library", "publish_binary")
+load("@rules_pkg//pkg:pkg.bzl", "pkg_zip")
+load("@rules_pkg//pkg:mappings.bzl", "pkg_files", "strip_prefix")
 load("//tools/service_definitions:defs.bzl", "service_definitions")
 load("//:config.bzl", "version")
 
@@ -67,11 +69,24 @@ service_definitions(
     visibility = ["//visibility:public"],
 )
 
-# TODO: include readme and service definitions
-# TODO: package as a zip file
-# FIXME: .runtimeconfig.json and .deps.json are named using "test_server", not "TestServer"
+# FIXME: remove .json files
+# FIXME: include readme
+# FIXME: include correct license
+pkg_zip(
+    name = "archive",
+    out = "TestServer-%s.zip" % version,
+    srcs = [":archive_files", ":README.md"],
+    visibility = ["//visibility:public"],
+)
+
+pkg_files(
+    name = "archive_files",
+    srcs = [":binary_files"],
+    strip_prefix = strip_prefix.files_only()
+)
+
 publish_binary(
-    name = "publish_test_server",
+    name = "binary_files",
     binary = ":test_server",
     target_framework = "net6.0",
 )
