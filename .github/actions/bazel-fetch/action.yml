@@ -25,7 +25,7 @@ runs:
       shell: python
     - name: restore-bazel-cache
       id: bazel-cache
-      uses: actions/cache/restore@v3
+      uses: actions/cache/restore@v4
       with:
         path: ${{ env.BAZEL_CACHE_PATH }}
         key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('WORKSPACE.bazel') }}
@@ -37,7 +37,7 @@ runs:
       shell: python
     - name: save-bazel-cache
       if: steps.bazel-cache.outputs.cache-hit != 'true'
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: ${{ env.BAZEL_CACHE_PATH }}
         key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('WORKSPACE.bazel') }}
