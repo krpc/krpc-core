@@ -36,7 +36,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: fetch
-        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@action-bazel-fetch-v1
       - name: build
         run: >
           bazel build
@@ -67,7 +67,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: fetch
-        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@action-bazel-fetch-v1
       - name: deps
         run: bazel build //:csproj
       - name: build
@@ -94,7 +94,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4
       - name: fetch
-        uses: krpc/krpc-core/.github/actions/bazel-fetch@main
+        uses: krpc/krpc-core/.github/actions/bazel-fetch@action-bazel-fetch-v1
       - name: test
         run: bazel test //core:test
 
