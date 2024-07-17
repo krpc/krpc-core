@@ -56,7 +56,8 @@ RUN apt-get update && \
 RUN apt-get update && \
     apt-get install -y --no-install-recommends golang && \
     apt-get clean && \
-    go install github.com/bazelbuild/buildtools/buildifier@6.0.1
+    git clone https://github.com/bazelbuild/buildtools.git --depth 1 --branch v7.1.2 && \
+    (cd buildtools/buildifier; go install)
 ENV PATH="${PATH}:/root/go/bin"
 
 # Configure Bazel

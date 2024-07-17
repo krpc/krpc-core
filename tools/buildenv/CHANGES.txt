@@ -1,3 +1,6 @@
+v3.4.1
+ * Update buildifier to 7.1.2
+
 v3.4.0
  * Update to Bazel 7.2.1
 
