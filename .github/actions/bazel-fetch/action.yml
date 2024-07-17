@@ -28,7 +28,7 @@ runs:
       uses: actions/cache/restore@v4
       with:
         path: ${{ env.BAZEL_CACHE_PATH }}
-        key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('WORKSPACE.bazel') }}
+        key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('MODULE.bazel') }}
     - name: bazel-fetch
       if: steps.bazel-cache.outputs.cache-hit != 'true'
       run: |
@@ -40,4 +40,4 @@ runs:
       uses: actions/cache/save@v4
       with:
         path: ${{ env.BAZEL_CACHE_PATH }}
-        key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('WORKSPACE.bazel') }}
+        key: bazel-cache-${{ runner.os }}-${{ env.BAZEL_VERSION }}-${{ hashFiles('MODULE.bazel') }}
