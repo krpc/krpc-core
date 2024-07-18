@@ -57,11 +57,15 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends golang && \
     apt-get clean && \
     git clone https://github.com/bazelbuild/buildtools.git --depth 1 --branch v7.1.2 && \
-    (cd buildtools/buildifier; go install)
-ENV PATH="${PATH}:/root/go/bin"
+    (cd buildtools/buildifier; GOBIN=/usr/local/bin go install)
 
 # Configure Bazel
 COPY bazelrc /etc/bazel.bazelrc
 RUN chmod 0644 /etc/bazel.bazelrc
 
 WORKDIR /build
+
+# Add github actions user
+RUN groupadd -g 121 runner
+RUN useradd -mr -d /home/runner -u 1001 -g 121 runner
+RUN usermod -aG sudo runner
