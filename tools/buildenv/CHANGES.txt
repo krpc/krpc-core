@@ -1,3 +1,7 @@
+v3.4.3
+ * Run with github actions uid and gid
+ * Fix buildifier not installed for all users
+
 v3.4.2
  * Remove --distinct_host_configuration from bazelrc
 
