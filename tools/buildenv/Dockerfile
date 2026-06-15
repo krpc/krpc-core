@@ -1,4 +1,4 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 LABEL maintainer="djungelorm <djungelorm@users.noreply.github.com>"
 
 ARG bazel_version
@@ -7,37 +7,32 @@ ARG bazel_version
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     curl ca-certificates gnupg git wget gosu \
-    python3 python-is-python3 python3-dev python3-setuptools python3-virtualenv && \
+    python3 python-is-python3 python3-dev python3-pip python3-venv && \
     apt-get clean
 
 # Install Bazel
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    pkg-config zip g++ zlib1g-dev unzip && \
-    echo "deb [arch=amd64] http://storage.googleapis.com/bazel-apt stable jdk1.8" | \
-      tee /etc/apt/sources.list.d/bazel.list && \
-    curl https://bazel.build/bazel-release.pub.gpg | apt-key add - && \
-    apt-get update && \
-    apt-get clean && \
-    wget https://github.com/bazelbuild/bazel/releases/download/${bazel_version}/bazel-${bazel_version}-installer-linux-x86_64.sh && \
-    chmod +x bazel-${bazel_version}-installer-linux-x86_64.sh && \
-    ./bazel-${bazel_version}-installer-linux-x86_64.sh && \
-    rm bazel-${bazel_version}-installer-linux-x86_64.sh && \
-    bazel version
+RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazelisk-linux-amd64 -O /usr/local/bin/bazel && \
+    chmod +x /usr/local/bin/bazel
+COPY bazelrc /etc/bazel.bazelrc
+RUN chmod 0644 /etc/bazel.bazelrc
+ENV BAZELISK_HOME=/usr/local/share/bazelisk
+RUN USE_BAZEL_VERSION=7.2.1 bazel version && chmod -R a+rwX /usr/local/share/bazelisk
 
 # Install dotnet
 RUN apt-get update && \
-    apt-get install -y dotnet-sdk-6.0 && \
-    apt-get install -y dotnet-runtime-6.0
+    apt-get install -y dotnet-sdk-10.0 && \
+    apt-get install -y dotnet-runtime-10.0
 
 # Install mono
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 \
-      --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
-    echo "deb https://download.mono-project.com/repo/ubuntu stable-focal main" | \
-      tee /etc/apt/sources.list.d/mono-official-stable.list && \
-    apt-get update && \
-    apt-get install -y mono-devel && \
-    apt-get clean
+RUN gpg --keyserver hkp://keyserver.ubuntu.com:80 \
+        --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF && \
+      gpg --export 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF \
+        > /etc/apt/keyrings/mono.gpg && \
+      echo "deb [signed-by=/etc/apt/keyrings/mono.gpg] https://download.mono-project.com/repo/ubuntu stable-focal main" | \
+        tee /etc/apt/sources.list.d/mono-official-stable.list && \
+      apt-get update && \
+      apt-get install -y mono-complete && \
+      apt-get clean
 
 # Install latex
 RUN apt-get update && \
@@ -49,7 +44,7 @@ RUN apt-get update && \
 # Install other build tools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    librsvg2-bin cmake automake autoconf libtool luarocks maven cppcheck socat openjdk-11-jdk && \
+    gcc g++ librsvg2-bin cmake automake autoconf libtool luarocks maven cppcheck socat openjdk-11-jdk && \
     apt-get clean
 
 # Install buildifier
@@ -59,13 +54,11 @@ RUN apt-get update && \
     git clone https://github.com/bazelbuild/buildtools.git --depth 1 --branch v7.1.2 && \
     (cd buildtools/buildifier; GOBIN=/usr/local/bin go install)
 
-# Configure Bazel
-COPY bazelrc /etc/bazel.bazelrc
-RUN chmod 0644 /etc/bazel.bazelrc
-
 WORKDIR /build
 
 # Add github actions user
-RUN groupadd -g 121 runner
-RUN useradd -mr -d /home/runner -u 1001 -g 121 runner
+ARG UID=1001
+ARG GID=121
+RUN groupadd -g $GID runner
+RUN useradd -mr -d /home/runner -u $UID -g $GID runner
 RUN usermod -aG sudo runner
