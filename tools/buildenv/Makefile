@@ -3,9 +3,7 @@
 VERSION=`cat VERSION.txt`
 
 build:
-	docker build \
-	  --build-arg bazel_version=7.2.1 \
-	  -t ghcr.io/krpc/buildenv:$(VERSION) .
+	docker build -t ghcr.io/krpc/buildenv:$(VERSION) .
 
 test:
 	docker run -t --user 1001:121 -i ghcr.io/krpc/buildenv:$(VERSION)

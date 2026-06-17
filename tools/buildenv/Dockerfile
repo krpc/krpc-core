@@ -1,8 +1,6 @@
 FROM ubuntu:24.04
 LABEL maintainer="djungelorm <djungelorm@users.noreply.github.com>"
 
-ARG bazel_version
-
 # Install essential packages
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
@@ -16,7 +14,7 @@ RUN wget https://github.com/bazelbuild/bazelisk/releases/download/v1.29.0/bazeli
 COPY bazelrc /etc/bazel.bazelrc
 RUN chmod 0644 /etc/bazel.bazelrc
 ENV BAZELISK_HOME=/usr/local/share/bazelisk
-RUN USE_BAZEL_VERSION=7.2.1 bazel version && chmod -R a+rwX /usr/local/share/bazelisk
+RUN USE_BAZEL_VERSION=9.1.1 bazel version && chmod -R a+rwX /usr/local/share/bazelisk
 
 # Install dotnet
 RUN apt-get update && \
