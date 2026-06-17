@@ -52,6 +52,29 @@ RUN apt-get update && \
     git clone https://github.com/bazelbuild/buildtools.git --depth 1 --branch v7.1.2 && \
     (cd buildtools/buildifier; GOBIN=/usr/local/bin go install)
 
+# Install ASIO
+RUN apt-get update && \
+    apt-get install -y libasio-dev && \
+    apt-get clean
+
+# Install Protobuf
+ARG PROTOBUF_VERSION=35.1
+RUN mkdir /protobuf && \
+    cd /protobuf && \
+    wget -O protobuf.tar.gz \
+      https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-${PROTOBUF_VERSION}.tar.gz && \
+    tar xf protobuf.tar.gz && \
+    cd protobuf-${PROTOBUF_VERSION} && \
+    cmake -S . -B build \
+      -DCMAKE_BUILD_TYPE=Release \
+      -Dprotobuf_BUILD_TESTS=OFF \
+      -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build && \
+    ldconfig && \
+    cd / && \
+    rm -rf /protobuf*
+
 WORKDIR /build
 
 # Add github actions user
