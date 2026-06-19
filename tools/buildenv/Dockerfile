@@ -42,7 +42,7 @@ RUN apt-get update && \
 # Install other build tools
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-    gcc g++ ccache librsvg2-bin cmake automake autoconf libtool luarocks maven cppcheck socat openjdk-11-jdk && \
+    gcc g++ ccache librsvg2-bin cmake luarocks maven cppcheck socat openjdk-11-jdk && \
     apt-get clean
 
 # Install buildifier
@@ -74,6 +74,27 @@ RUN mkdir /protobuf && \
     ldconfig && \
     cd / && \
     rm -rf /protobuf*
+
+# Install python-protobuf via pip; nanopb generator needs runtime_version (protobuf >= 4.25)
+RUN pip3 install --break-system-packages protobuf
+
+# Install Nanopb
+ARG NANOPB_VERSION=0.4.9.1
+RUN mkdir /nanopb && \
+    cd /nanopb && \
+    wget -O nanopb.tar.gz \
+      https://github.com/nanopb/nanopb/archive/refs/tags/${NANOPB_VERSION}.tar.gz && \
+    tar xf nanopb.tar.gz && \
+    cd nanopb-${NANOPB_VERSION} && \
+    cmake -S . -B build \
+      -DCMAKE_BUILD_TYPE=Release \
+      -Dnanopb_BUILD_GENERATOR=ON \
+      -DCMAKE_INSTALL_PREFIX=/usr/local && \
+    cmake --build build -j$(nproc) && \
+    cmake --install build && \
+    ldconfig && \
+    cd / && \
+    rm -rf /nanopb*
 
 WORKDIR /build
 

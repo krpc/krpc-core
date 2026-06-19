@@ -1,3 +1,7 @@
+v3.8.0
+ * Add system-installed nanopb for C-nano client testing
+ * Remove autotools
+
 v3.7.1
  * Add ccache
 
