@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This repository is no longer used, as KSP2 and kRPC2 have been abandoned. We no longer need a "core" shared repository between kRPC1/2, so all development has been moved back to the kRPC1 repository.
+
 # kRPC Core
 
 ​[![ci](https://github.com/krpc/krpc-core/actions/workflows/ci.yml/badge.svg)](https://github.com/krpc/krpc-core/actions/workflows/ci.yml)
